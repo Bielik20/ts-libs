@@ -19,6 +19,7 @@
   "projects": {
     "ts-utils": { "tags": [] },
     "redux-entity": { "tags": [] },
-    "http-client": { "tags": [] }
+    "http-client": { "tags": [] },
+    "react-di": { "tags": [] }
   }
 }
