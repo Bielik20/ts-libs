@@ -16,5 +16,9 @@
       }
     }
   },
-  "projects": { "ts-utils": { "tags": [] }, "redux-entity": { "tags": [] } }
+  "projects": {
+    "ts-utils": { "tags": [] },
+    "redux-entity": { "tags": [] },
+    "http-client": { "tags": [] }
+  }
 }

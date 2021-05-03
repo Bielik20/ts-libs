@@ -16,7 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "@ns3/ts-utils": ["libs/ts-utils/src/index.ts"],
-      "@ns3/redux-entity": ["libs/redux-entity/src/index.ts"]
+      "@ns3/redux-entity": ["libs/redux-entity/src/index.ts"],
+      "@ns3/http-client": ["libs/http-client/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
