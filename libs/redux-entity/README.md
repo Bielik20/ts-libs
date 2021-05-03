@@ -1,7 +1,9 @@
-# redux-entity
+# Redux Entity
 
-This library was generated with [Nx](https://nx.dev).
+Pure redux version of [@ngrx/entity](https://ngrx.io/guide/entity) library.
 
-## Running unit tests
+## Installation
 
-Run `nx test redux-entity` to execute the unit tests via [Jest](https://jestjs.io).
+```
+npm i @ns3/redux-entity
+```
