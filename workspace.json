@@ -1,10 +1,36 @@
 {
-  
-  
   "version": 2,
-  
-  "projects": {},
-  "cli": {
-    "defaultCollection": "@nrwl/workspace"
+  "cli": { "defaultCollection": "@nrwl/react" },
+  "generators": { "@nrwl/react": { "application": { "babel": true } } },
+  "projects": {
+    "ts-utils": {
+      "root": "libs/ts-utils",
+      "sourceRoot": "libs/ts-utils/src",
+      "projectType": "library",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/web:package",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/libs/ts-utils",
+            "tsConfig": "libs/ts-utils/tsconfig.lib.json",
+            "project": "libs/ts-utils/package.json",
+            "entryFile": "libs/ts-utils/src/index.ts",
+            "external": ["react", "react-dom"],
+            "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+            "assets": [{ "glob": "libs/ts-utils/README.md", "input": ".", "output": "." }]
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": { "lintFilePatterns": ["libs/ts-utils/**/*.{ts,tsx,js,jsx}"] }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/ts-utils"],
+          "options": { "jestConfig": "libs/ts-utils/jest.config.js", "passWithNoTests": true }
+        }
+      }
+    }
   }
 }
