@@ -1935,6 +1935,21 @@
     yargs "15.4.1"
     yargs-parser "20.0.0"
 
+"@ns3/nx-core@0.6.1":
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/@ns3/nx-core/-/nx-core-0.6.1.tgz#3580799e30ea16c9f1f0ab9868092407ee6de7fa"
+  integrity sha512-DSYSCcnat7WMhySJnxg2zc4cyJ0a7vo2NwM22MaKGDxMua4nLURfIbMn3XtVylvc6GeKbiOISrG4MQOvVBzduA==
+  dependencies:
+    fs-extra "^9.1.0"
+
+"@ns3/nx-npm@^0.6.1":
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/@ns3/nx-npm/-/nx-npm-0.6.1.tgz#a44e5c25db14dd0cf658438f57d629e710eb0706"
+  integrity sha512-Jr+qMVXJg71hNMdgXghyEVqTFKY5Io2FYF1BQKjj2808s0UWVZ0Sl1eXQYf+0MTFOAqyf18Wu6swK0CDF6NE2w==
+  dependencies:
+    "@ns3/nx-core" "0.6.1"
+    fs-extra "^9.1.0"
+
 "@octokit/auth-token@^2.4.4":
   version "2.4.5"
   resolved "https://registry.yarnpkg.com/@octokit/auth-token/-/auth-token-2.4.5.tgz#568ccfb8cb46f36441fac094ce34f7a875b197f3"
@@ -6360,7 +6375,7 @@ fs-extra@8.1.0, fs-extra@^8.1.0:
     jsonfile "^4.0.0"
     universalify "^0.1.0"
 
-fs-extra@^9.0.0:
+fs-extra@^9.0.0, fs-extra@^9.1.0:
   version "9.1.0"
   resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-9.1.0.tgz#5954460c764a8da2094ba3554bf839e6b9a7c86d"
   integrity sha512-hcg3ZmepS30/7BSFqRvoo3DOMQu7IjqxO5nCDt+zM9XWjb33Wg7ziNT+Qvqbuc3+gWpzO02JubVyk2G4Zvo1OQ==

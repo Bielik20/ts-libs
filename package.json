@@ -2,6 +2,10 @@
   "name": "ts-libs",
   "version": "0.0.0-development",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Bielik20/ts-libs"
+  },
   "scripts": {
     "script": "node tools/src/scripts",
     "nx": "nx",
@@ -60,6 +64,7 @@
     "@nrwl/tao": "12.0.8",
     "@nrwl/web": "12.0.8",
     "@nrwl/workspace": "12.0.8",
+    "@ns3/nx-npm": "^0.6.1",
     "@testing-library/react": "11.2.6",
     "@types/jest": "26.0.8",
     "@types/lodash": "^4.14.166",

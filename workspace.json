@@ -29,7 +29,9 @@
           "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/ts-utils"],
           "options": { "jestConfig": "libs/ts-utils/jest.config.js", "passWithNoTests": true }
-        }
+        },
+        "version": { "executor": "@ns3/nx-npm:version" },
+        "publish": { "executor": "@ns3/nx-npm:publish" }
       }
     }
   }
