@@ -1,3 +1,7 @@
 {
-  "babelrcRoots": ["*"]
+  "babelrcRoots": ["*"],
+  "plugins": [
+    "transform-typescript-metadata",
+    "lodash"
+  ]
 }
