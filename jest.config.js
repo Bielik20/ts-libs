@@ -3,5 +3,6 @@ module.exports = {
     '<rootDir>/libs/ts-utils',
     '<rootDir>/libs/redux-entity',
     '<rootDir>/libs/http-client',
+    '<rootDir>/libs/react-di',
   ],
 };
