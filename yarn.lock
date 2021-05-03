@@ -2867,6 +2867,13 @@
     "@webassemblyjs/wast-parser" "1.8.5"
     "@xtuc/long" "4.2.2"
 
+"@wikia/dependency-injection@^2.2.3":
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/@wikia/dependency-injection/-/dependency-injection-2.2.3.tgz#5be534867fafd324e84f24967fc9e58d1bcf8b5c"
+  integrity sha512-Ymh5b25dYpRXYAef6em3iHutpysNYtqSVamolGv/BiKycVNgksxL76ccQCsIkMQBsq8jn15s2yka3UfOwpoFZQ==
+  dependencies:
+    reflect-metadata "^0.1.13"
+
 "@xtuc/ieee754@^1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@xtuc/ieee754/-/ieee754-1.2.0.tgz#eef014a3145ae477a1cbc00cd1e552336dceb790"
@@ -11292,6 +11299,11 @@ redeyed@~2.1.0:
   integrity sha1-iYS1gV2ZyyIEacme7v/jiRPmzAs=
   dependencies:
     esprima "~4.0.0"
+
+reflect-metadata@^0.1.13:
+  version "0.1.13"
+  resolved "https://registry.yarnpkg.com/reflect-metadata/-/reflect-metadata-0.1.13.tgz#67ae3ca57c972a2aa1642b10fe363fe32d49dc08"
+  integrity sha512-Ts1Y/anZELhSsjMcU605fU9RE4Oi3p5ORujwbIKXfWa+0Zxs510Qrmrce5/Jowq3cHSZSJqBjypxmHarc+vEWg==
 
 regenerate-unicode-properties@^8.2.0:
   version "8.2.0"
