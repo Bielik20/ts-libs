@@ -33,6 +33,37 @@
         "version": { "executor": "@ns3/nx-npm:version" },
         "publish": { "executor": "@ns3/nx-npm:publish" }
       }
+    },
+    "redux-entity": {
+      "root": "libs/redux-entity",
+      "sourceRoot": "libs/redux-entity/src",
+      "projectType": "library",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/web:package",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/libs/redux-entity",
+            "tsConfig": "libs/redux-entity/tsconfig.lib.json",
+            "project": "libs/redux-entity/package.json",
+            "entryFile": "libs/redux-entity/src/index.ts",
+            "external": ["react", "react-dom"],
+            "rollupConfig": "./tools/src/plugins/react-rollup-plugin",
+            "assets": [{ "glob": "libs/redux-entity/README.md", "input": ".", "output": "." }]
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": { "lintFilePatterns": ["libs/redux-entity/**/*.{ts,tsx,js,jsx}"] }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/redux-entity"],
+          "options": { "jestConfig": "libs/redux-entity/jest.config.js", "passWithNoTests": true }
+        },
+        "version": { "executor": "@ns3/nx-npm:version" },
+        "publish": { "executor": "@ns3/nx-npm:publish" }
+      }
     }
   }
 }

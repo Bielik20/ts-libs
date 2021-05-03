@@ -16,5 +16,5 @@
       }
     }
   },
-  "projects": { "ts-utils": { "tags": [] } }
+  "projects": { "ts-utils": { "tags": [] }, "redux-entity": { "tags": [] } }
 }
