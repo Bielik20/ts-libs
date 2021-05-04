@@ -6,6 +6,7 @@ type StreamPendingResult = [status: 'pending', value: null, error: null];
 type StreamSuccessResult<T> = [status: 'success', value: T, error: null];
 type StreamErrorResult = [status: 'error', value: null, error: Error];
 
+// TODO: support path stream$ and callback with stream (the same for usePromise)
 export function useStream<T>(stream$: Observable<T>, deps?: DependencyList): StreamResult<T> {
   const [value, setValue] = useState<StreamResult<T>>(['pending', null, null]);
 

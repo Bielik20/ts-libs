@@ -1,26 +1,40 @@
-import React from 'react';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { ThemeProvider } from '@material-ui/core/styles';
+import { HttpInterceptors } from '@ns3/http-client';
+import { DiProvider, useDependencyInjection } from '@ns3/react-di';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
-import { ReactComponent as NxLogo } from '../public/nx-logo-white.svg';
-import './styles.css';
+import React from 'react';
+import { AppLayout } from 'react-demo/layout/app-layout';
+import { DelayInterceptor } from 'react-demo/shared/delay.interceptor';
+import theme from '../src/theme';
 
-function CustomApp({ Component, pageProps }: AppProps) {
+export default function MyApp({ Component, pageProps }: AppProps) {
+  const container = useDependencyInjection([HttpInterceptors.provide(DelayInterceptor)]);
+
+  React.useEffect(() => {
+    // Remove the server-side injected CSS.
+    const jssStyles = document.querySelector('#jss-server-side');
+    if (jssStyles) {
+      jssStyles.parentElement.removeChild(jssStyles);
+    }
+  }, []);
+
   return (
-    <>
+    <React.Fragment>
       <Head>
-        <title>Welcome to react-demo!</title>
+        <title>My page</title>
+        <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
       </Head>
-      <div className="app">
-        <header className="flex">
-          <NxLogo width="75" height="50" />
-          <h1>Welcome to react-demo!</h1>
-        </header>
-        <main>
-          <Component {...pageProps} />
-        </main>
-      </div>
-    </>
+      <DiProvider value={container}>
+        <ThemeProvider theme={theme}>
+          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+          <CssBaseline />
+          <AppLayout>
+            <Component {...pageProps} />
+          </AppLayout>
+        </ThemeProvider>
+      </DiProvider>
+    </React.Fragment>
   );
 }
-
-export default CustomApp;
