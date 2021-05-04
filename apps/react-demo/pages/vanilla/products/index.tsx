@@ -14,7 +14,10 @@ import { LoaderComp } from 'react-demo/shared/loader.comp';
 export default function Products() {
   const router = useRouter();
   const productsService = useDependency(ProductsService);
-  const [status, products, error] = useStream(productsService.list({ limit: 10, skip: 0 }), []);
+  const [status, products, error] = useStream(
+    () => productsService.list({ limit: 10, skip: 0 }),
+    [],
+  );
 
   if (status === 'error') {
     return <ErrorComp error={error} />;

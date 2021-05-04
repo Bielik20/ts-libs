@@ -6,11 +6,14 @@ type StreamPendingResult = [status: 'pending', value: null, error: null];
 type StreamSuccessResult<T> = [status: 'success', value: T, error: null];
 type StreamErrorResult = [status: 'error', value: null, error: Error];
 
-// TODO: support path stream$ and callback with stream (the same for usePromise)
-export function useStream<T>(stream$: Observable<T>, deps?: DependencyList): StreamResult<T> {
+export function useStream<T>(
+  streamFactory: () => Observable<T>,
+  deps?: DependencyList,
+): StreamResult<T> {
   const [value, setValue] = useState<StreamResult<T>>(['pending', null, null]);
 
   useEffect(() => {
+    const stream$ = streamFactory();
     const subscription = stream$.subscribe(
       (value) => setValue(['success', value, null]),
       (error) => setValue(['error', null, error]),

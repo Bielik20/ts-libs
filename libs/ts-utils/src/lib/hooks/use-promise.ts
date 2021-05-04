@@ -5,14 +5,17 @@ type PromisePendingResult = [status: 'pending', value: null, error: null];
 type PromiseSuccessResult<T> = [status: 'success', value: T, error: null];
 type PromiseErrorResult = [status: 'error', value: null, error: Error];
 
-export function usePromise<T>(promise: () => Promise<T>, deps?: DependencyList): PromiseResult<T> {
+export function usePromise<T>(
+  promiseFactory: () => Promise<T>,
+  deps?: DependencyList,
+): PromiseResult<T> {
   const [value, setValue] = useState<PromiseResult<T>>(['pending', null, null]);
 
   useEffect(() => {
     let ended = false;
     const expression = async () => {
       try {
-        const value = await promise();
+        const value = await promiseFactory();
 
         if (!ended) {
           setValue(['success', value, null]);

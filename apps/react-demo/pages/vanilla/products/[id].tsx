@@ -13,7 +13,7 @@ import { LoaderComp } from 'react-demo/shared/loader.comp';
 export default function ProductDetails() {
   const router = useRouter();
   const productsService = useDependency(ProductsService);
-  const [status, product, error] = useStream(productsService.get(router.query.id as string), [
+  const [status, product, error] = useStream(() => productsService.get(router.query.id as string), [
     router.query.id,
   ]);
 
