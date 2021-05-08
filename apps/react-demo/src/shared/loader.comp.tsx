@@ -1,10 +1,12 @@
-import { CircularProgress, Container } from '@material-ui/core';
+import { CircularProgress } from '@material-ui/core';
 import React, { FunctionComponent } from 'react';
 
 export const LoaderComp: FunctionComponent = () => {
   return (
-    <Container maxWidth="md">
+    <div
+      style={{ display: 'flex', margin: '40px', justifyContent: 'center', alignContent: 'center' }}
+    >
       <CircularProgress />
-    </Container>
+    </div>
   );
 };

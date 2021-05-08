@@ -1,0 +1,68 @@
+import { HttpClient, toResponse } from '@ns3/http-client';
+import { Injectable } from '@wikia/dependency-injection';
+import { Product } from 'react-demo/products/models/product';
+import { ProductPagination } from 'react-demo/products/models/product-pagination';
+import { SimpleProductsListStore } from 'react-demo/recipes/simple/products/services/simple-products-list.store';
+import { SimpleProductsStore } from 'react-demo/recipes/simple/products/services/simple-products.store';
+import { combineLatest, Observable } from 'rxjs';
+import { filter, map, mergeMap, tap } from 'rxjs/operators';
+
+@Injectable()
+export class SimpleProductsService {
+  private url = '/api/products';
+
+  constructor(
+    private httpClient: HttpClient,
+    private productsStore: SimpleProductsStore,
+    private productsListStore: SimpleProductsListStore,
+  ) {}
+
+  get(id: string): Observable<Product> {
+    console.log(id);
+    return this.productsStore
+      .connect(id, () => this.httpClient.get(`${this.url}/${id}`).pipe(toResponse()))
+      .pipe(filter((v) => !!v));
+  }
+
+  delete(id: string): Observable<void> {
+    return this.httpClient.delete(`${this.url}/${id}`).pipe(
+      toResponse<void>(),
+      tap(() => this.productsStore.remove(id)),
+    );
+  }
+
+  create(value: Omit<Product, 'id'>): Observable<Product> {
+    return this.httpClient.post(this.url, value).pipe(
+      toResponse<Product>(),
+      tap((product) => this.productsStore.set(product.id, product)),
+    );
+  }
+
+  patch(id: string, value: Partial<Product>): Observable<Product> {
+    return this.httpClient.patch(`${this.url}/${id}`, value).pipe(
+      toResponse<Product>(),
+      tap((product) => this.productsStore.set(product.id, product)),
+    );
+  }
+
+  list(query: ProductPagination): Observable<Product[]> {
+    const url = `${this.url}?limit=${query.limit}&skip=${query.skip}`;
+
+    console.log(url);
+
+    return this.productsListStore
+      .connect(url, () =>
+        this.httpClient.get(url).pipe(
+          toResponse<Product[]>(),
+          tap((products) =>
+            products.forEach((product) => this.productsStore.set(product.id, product)),
+          ),
+          map((products) => products.map((product) => product.id)),
+        ),
+      )
+      .pipe(
+        filter((v) => !!v),
+        mergeMap((ids) => combineLatest(ids.map((id) => this.productsStore.get(id)))),
+      );
+  }
+}

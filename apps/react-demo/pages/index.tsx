@@ -4,6 +4,7 @@ import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import { Link } from 'react-demo/layout/link';
+import { simpleRecipe } from 'react-demo/recipes/simple/simple-recipe';
 import { vanillaRecipe } from 'react-demo/recipes/vanilla/vanilla-recipe';
 
 export default function Index() {
@@ -42,4 +43,4 @@ export default function Index() {
   );
 }
 
-const recipes = [vanillaRecipe];
+const recipes = [vanillaRecipe, simpleRecipe];

@@ -5,7 +5,7 @@ import { useMemo } from 'react';
 import { ProductPagination } from 'react-demo/products/models/product-pagination';
 import { ProductsShellComp } from 'react-demo/products/ui/products-shell.comp';
 import { ProductsComp } from 'react-demo/products/ui/products.comp';
-import { VanillaProductsService } from 'react-demo/recipes/vanilla/products/services/vanilla-products.service';
+import { SimpleProductsService } from 'react-demo/recipes/simple/products/services/simple-products.service';
 import { ErrorComp } from 'react-demo/shared/error.comp';
 import { LoaderComp } from 'react-demo/shared/loader.comp';
 
@@ -18,7 +18,7 @@ export default function Products() {
     }),
     [router.query],
   );
-  const productsService = useDependency(VanillaProductsService);
+  const productsService = useDependency(SimpleProductsService);
   const [status, products, error] = useStream(() => productsService.list(query), [query]);
 
   if (status === 'error') {
