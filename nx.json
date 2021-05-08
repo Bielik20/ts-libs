@@ -1,14 +1,9 @@
 {
   "implicitDependencies": {
-    "package.json": {
-      "dependencies": "*",
-      "devDependencies": "*"
-    },
+    "package.json": { "dependencies": "*", "devDependencies": "*" },
     ".eslintrc.json": "*"
   },
-  "affected": {
-    "defaultBase": "master"
-  },
+  "affected": { "defaultBase": "master" },
   "npmScope": "ns3",
   "tasksRunnerOptions": {
     "default": {
@@ -22,24 +17,12 @@
     }
   },
   "projects": {
-    "ts-utils": {
-      "tags": []
-    },
-    "redux-entity": {
-      "tags": []
-    },
-    "http-client": {
-      "tags": []
-    },
-    "react-di": {
-      "tags": []
-    },
-    "react-demo": {
-      "tags": []
-    },
-    "react-demo-e2e": {
-      "tags": [],
-      "implicitDependencies": ["react-demo"]
-    }
+    "ts-utils": { "tags": [] },
+    "redux-entity": { "tags": [] },
+    "http-client": { "tags": [] },
+    "react-di": { "tags": [] },
+    "react-demo": { "tags": [] },
+    "react-demo-e2e": { "tags": [], "implicitDependencies": ["react-demo"] },
+    "rx-store": { "tags": [] }
   }
 }
