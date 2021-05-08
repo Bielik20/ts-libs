@@ -1,6 +1,7 @@
 import { RxMapStore } from '@ns3/rx-store';
-import { BehaviorSubject, combineLatest, Observable, of, throwError } from 'rxjs';
-import { catchError, map, mergeMap, tap } from 'rxjs/operators';
+import { isDefined } from '@ns3/ts-utils';
+import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
+import { map, switchMap, tap } from 'rxjs/operators';
 
 type RxConnectedMapStoreOptions<TParentKey, TParentValue> = {
   parent: RxMapStore<TParentKey, TParentValue>;
@@ -28,13 +29,13 @@ export class RxConnectedMapStore<
   get(key: TKey): Observable<ReadonlyArray<TParentValue> | undefined> {
     return this.ensure(key)
       .pipe(
-        mergeMap((keys) => {
+        switchMap((keys) => {
           if (keys === undefined) {
             return of(undefined);
           }
           return of(keys).pipe(
-            mergeMap((ids) => combineLatest(ids.map((id) => this.parent.get(id)))),
-            map((values) => values.filter((value) => !!value)),
+            switchMap((ids) => combineLatest(ids.map((id) => this.parent.get(id)))),
+            map((values) => values.filter(isDefined)),
           );
         }),
       );
@@ -48,11 +49,11 @@ export class RxConnectedMapStore<
   }
 
   remove(key: TKey): void {
-    if (!this.map.has(key)) {
+    const subject$ = this.map.get(key);
+
+    if (!subject$) {
       return;
     }
-
-    const subject$ = this.map.get(key);
 
     subject$.next(undefined);
     this.map.delete(key);
@@ -61,23 +62,22 @@ export class RxConnectedMapStore<
   connect(
     key: TKey,
     stream$: () => Observable<ReadonlyArray<TParentValue>>,
-  ): Observable<ReadonlyArray<TParentValue>> {
+  ): Observable<ReadonlyArray<TParentValue> | undefined> {
     if (this.map.has(key)) {
       return this.get(key);
     }
 
     return stream$().pipe(
       tap((value) => this.set(key, value)),
-      catchError((error) => throwError(error)),
-      mergeMap(() => this.get(key)),
+      switchMap(() => this.get(key)),
     );
   }
 
-  private ensure(key: TKey): BehaviorSubject<ReadonlyArray<TParentKey>> {
+  private ensure(key: TKey): BehaviorSubject<ReadonlyArray<TParentKey> | undefined> {
     if (!this.map.has(key)) {
-      this.map.set(key, new BehaviorSubject<ReadonlyArray<TParentKey>>(undefined));
+      this.map.set(key, new BehaviorSubject<ReadonlyArray<TParentKey> | undefined>(undefined));
     }
 
-    return this.map.get(key);
+    return this.map.get(key) as BehaviorSubject<ReadonlyArray<TParentKey> | undefined>;
   }
 }
