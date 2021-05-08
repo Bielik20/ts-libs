@@ -5,8 +5,8 @@ import { Product } from 'react-demo/products/models/product';
 import { ProductPagination } from 'react-demo/products/models/product-pagination';
 import { SimpleProductsListStore } from 'react-demo/recipes/simple/products/services/simple-products-list.store';
 import { SimpleProductsStore } from 'react-demo/recipes/simple/products/services/simple-products.store';
-import { combineLatest, Observable } from 'rxjs';
-import { map, mergeMap, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Injectable()
 export class SimpleProductsService {
@@ -45,23 +45,11 @@ export class SimpleProductsService {
     );
   }
 
-  list(query: ProductPagination): Observable<Product[]> {
+  list(query: ProductPagination): Observable<ReadonlyArray<Product>> {
     const url = `${this.url}?limit=${query.limit}&skip=${query.skip}`;
 
     return this.productsListStore
-      .connect(url, () =>
-        this.httpClient.get(url).pipe(
-          toResponse<Product[]>(),
-          tap((products) =>
-            products.forEach((product) => this.productsStore.set(product.id, product)),
-          ),
-          map((products) => products.map((product) => product.id)),
-        ),
-      )
-      .pipe(
-        omitUndefined(),
-        mergeMap((ids) => combineLatest(ids.map((id) => this.productsStore.get(id)))),
-        map((values) => values.filter((value) => !!value)),
-      );
+      .connect(url, () => this.httpClient.get(url).pipe(toResponse<Product[]>()))
+      .pipe(omitUndefined());
   }
 }
