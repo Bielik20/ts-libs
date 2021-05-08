@@ -22,6 +22,10 @@ export default function Products() {
   const productsService = useDependency(SimpleProductsService);
   const [status, products, error] = useStream(() => productsService.list(query), [query]);
 
+  if (status === 'idle') {
+    return null;
+  }
+
   if (status === 'error') {
     return (
       <ProductsShellComp query={query}>

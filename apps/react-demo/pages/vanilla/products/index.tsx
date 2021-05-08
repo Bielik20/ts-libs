@@ -30,7 +30,7 @@ export default function Products() {
     );
   }
 
-  if (status === 'pending') {
+  if (status === 'pending' || status === 'idle') {
     return (
       <ProductsShellComp query={query}>
         <LoaderComp />

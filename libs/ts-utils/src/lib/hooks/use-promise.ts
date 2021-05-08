@@ -1,15 +1,20 @@
 import { DependencyList, useEffect, useState } from 'react';
+import {
+  ErrorResult,
+  makeErrorResult,
+  makeSuccessResult,
+  PENDING_RESULT,
+  PendingResult,
+  SuccessResult,
+} from '../utils/results';
 
-export type PromiseResult<T> = PromisePendingResult | PromiseSuccessResult<T> | PromiseErrorResult;
-type PromisePendingResult = [status: 'pending', value: null, error: null];
-type PromiseSuccessResult<T> = [status: 'success', value: T, error: null];
-type PromiseErrorResult = [status: 'error', value: null, error: Error];
+export type PromiseResult<T> = PendingResult | SuccessResult<T> | ErrorResult;
 
 export function usePromise<T>(
   promiseFactory: () => Promise<T>,
   deps?: DependencyList,
 ): PromiseResult<T> {
-  const [value, setValue] = useState<PromiseResult<T>>(['pending', null, null]);
+  const [value, setValue] = useState<PromiseResult<T>>(PENDING_RESULT);
 
   useEffect(() => {
     let ended = false;
@@ -18,11 +23,11 @@ export function usePromise<T>(
         const value = await promiseFactory();
 
         if (!ended) {
-          setValue(['success', value, null]);
+          setValue(makeSuccessResult(value));
         }
       } catch (error) {
         if (!ended) {
-          setValue(['error', null, error]);
+          setValue(makeErrorResult(error));
         }
       }
     };
@@ -31,7 +36,7 @@ export function usePromise<T>(
 
     return () => {
       ended = true;
-      setValue(['pending', null, null]);
+      setValue(PENDING_RESULT);
     };
   }, deps);
 

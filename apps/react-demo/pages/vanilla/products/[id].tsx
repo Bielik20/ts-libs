@@ -40,7 +40,7 @@ export default function ProductDetails() {
     return <ErrorComp error={error} />;
   }
 
-  if (status === 'pending') {
+  if (status === 'pending' || status === 'idle') {
     return <LoaderComp />;
   }
 
