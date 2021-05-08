@@ -11,7 +11,7 @@ import { takeUntil } from 'rxjs/operators';
 
 export default function ProductDetails() {
   const router = useRouter();
-  const unsubscribe$ = useUnsubscribe();
+  const unsubscribe$ = useUnsubscribe([]);
   const productsService = useDependency(VanillaProductsService);
   const [status, product, error] = useStream(() => productsService.get(router.query.id as string), [
     router.query.id,

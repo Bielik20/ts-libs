@@ -11,7 +11,7 @@ type Props = {
 };
 
 export const SimpleProductListItemCont: FunctionComponent<Props> = ({ product }) => {
-  const unsubscribe$ = useUnsubscribe();
+  const unsubscribe$ = useUnsubscribe([]);
   const productsService = useDependency(SimpleProductsService);
   const [deleting, setDeleting] = useState(false);
   const onDelete = () => {

@@ -1,8 +1,8 @@
-import { useEffect } from 'react';
+import { DependencyList, useEffect } from 'react';
 import { Observable, Subject } from 'rxjs';
 import useConstant from 'use-constant';
 
-export function useUnsubscribe(): Observable<void> {
+export function useUnsubscribe(deps?: DependencyList): Observable<void> {
   const unsubscribe$ = useConstant(() => new Subject<void>());
 
   useEffect(() => {
@@ -10,7 +10,7 @@ export function useUnsubscribe(): Observable<void> {
       unsubscribe$.next();
       unsubscribe$.complete();
     };
-  }, []);
+  }, deps);
 
   return unsubscribe$;
 }
