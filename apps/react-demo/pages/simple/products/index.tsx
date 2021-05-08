@@ -1,11 +1,12 @@
+import { List } from '@material-ui/core';
 import { useDependency } from '@ns3/react-di';
 import { useStream } from '@ns3/ts-utils';
 import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 import { ProductPagination } from 'react-demo/products/models/product-pagination';
 import { ProductsShellComp } from 'react-demo/products/ui/products-shell.comp';
-import { ProductsComp } from 'react-demo/products/ui/products.comp';
 import { SimpleProductsService } from 'react-demo/recipes/simple/products/services/simple-products.service';
+import { SimpleProductListItemCont } from 'react-demo/recipes/simple/products/ui/simple-product-list-item.cont';
 import { ErrorComp } from 'react-demo/shared/error.comp';
 import { LoaderComp } from 'react-demo/shared/loader.comp';
 
@@ -39,7 +40,11 @@ export default function Products() {
 
   return (
     <ProductsShellComp query={query}>
-      <ProductsComp products={products} />
+      <List component="nav">
+        {products.map((product) => (
+          <SimpleProductListItemCont key={product.id} product={product} />
+        ))}
+      </List>
     </ProductsShellComp>
   );
 }

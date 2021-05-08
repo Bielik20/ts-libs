@@ -5,6 +5,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import { Link } from 'react-demo/layout/link';
+import { recipes } from 'react-demo/recipes/recipes';
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -19,12 +20,14 @@ export const AppLayout: React.FC = ({ children }) => {
     <>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6" className={classes.title}>
+          <Typography variant="h6" className={classes.title} component={Link} naked href="/">
             Reactive Store
           </Typography>
-          <Button color="inherit" component={Link} naked href="/">
-            Home
-          </Button>
+          {recipes.map((recipe) => (
+            <Button key={recipe.title} color="inherit" component={Link} naked href={recipe.url}>
+              {recipe.title}
+            </Button>
+          ))}
         </Toolbar>
       </AppBar>
       {children}

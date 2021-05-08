@@ -11,6 +11,6 @@ function generateProduct(): Product {
   return {
     id: faker.datatype.uuid(),
     name: faker.vehicle.vehicle(),
-    price: +faker.finance.amount(10, 10000, 2),
+    price: +faker.finance.amount(10, 10000, 0),
   };
 }
