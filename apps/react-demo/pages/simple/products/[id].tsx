@@ -38,6 +38,10 @@ export default function ProductDetails() {
       .subscribe(() => setUpdating(false));
   };
 
+  if (status === 'idle') {
+    return null;
+  }
+
   if (status === 'error') {
     return <ErrorComp error={error} />;
   }
