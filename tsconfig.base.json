@@ -18,7 +18,8 @@
       "@ns3/ts-utils": ["libs/ts-utils/src/index.ts"],
       "@ns3/redux-entity": ["libs/redux-entity/src/index.ts"],
       "@ns3/http-client": ["libs/http-client/src/index.ts"],
-      "@ns3/react-di": ["libs/react-di/src/index.ts"]
+      "@ns3/react-di": ["libs/react-di/src/index.ts"],
+      "@ns3/rx-store": ["libs/rx-store/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
