@@ -61,6 +61,7 @@ export class SimpleProductsService {
       .pipe(
         omitUndefined(),
         mergeMap((ids) => combineLatest(ids.map((id) => this.productsStore.get(id)))),
+        map((values) => values.filter((value) => !!value)),
       );
   }
 }
