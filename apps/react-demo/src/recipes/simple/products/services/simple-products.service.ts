@@ -1,11 +1,12 @@
 import { HttpClient, toResponse } from '@ns3/http-client';
+import { omitUndefined } from '@ns3/rx-store';
 import { Injectable } from '@wikia/dependency-injection';
 import { Product } from 'react-demo/products/models/product';
 import { ProductPagination } from 'react-demo/products/models/product-pagination';
 import { SimpleProductsListStore } from 'react-demo/recipes/simple/products/services/simple-products-list.store';
 import { SimpleProductsStore } from 'react-demo/recipes/simple/products/services/simple-products.store';
 import { combineLatest, Observable } from 'rxjs';
-import { filter, map, mergeMap, tap } from 'rxjs/operators';
+import { map, mergeMap, tap } from 'rxjs/operators';
 
 @Injectable()
 export class SimpleProductsService {
@@ -18,10 +19,9 @@ export class SimpleProductsService {
   ) {}
 
   get(id: string): Observable<Product> {
-    console.log(id);
     return this.productsStore
       .connect(id, () => this.httpClient.get(`${this.url}/${id}`).pipe(toResponse()))
-      .pipe(filter((v) => !!v));
+      .pipe(omitUndefined());
   }
 
   delete(id: string): Observable<void> {
@@ -48,8 +48,6 @@ export class SimpleProductsService {
   list(query: ProductPagination): Observable<Product[]> {
     const url = `${this.url}?limit=${query.limit}&skip=${query.skip}`;
 
-    console.log(url);
-
     return this.productsListStore
       .connect(url, () =>
         this.httpClient.get(url).pipe(
@@ -61,7 +59,7 @@ export class SimpleProductsService {
         ),
       )
       .pipe(
-        filter((v) => !!v),
+        omitUndefined(),
         mergeMap((ids) => combineLatest(ids.map((id) => this.productsStore.get(id)))),
       );
   }
