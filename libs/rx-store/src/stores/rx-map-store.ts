@@ -1,19 +1,17 @@
-import { BehaviorSubject, EMPTY, merge, Observable, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, mergeMap, tap } from 'rxjs/operators';
 
-export class RxMapStore<TKey = string, T = unknown> {
-  private map = new Map<TKey, BehaviorSubject<T | undefined>>();
+export class RxMapStore<TKey, TValue> {
+  private map = new Map<TKey, BehaviorSubject<TValue | undefined>>();
 
-  get(key: TKey): Observable<T | undefined> {
+  get(key: TKey): Observable<TValue | undefined> {
     return this.ensure(key).asObservable();
   }
 
-  set(key: TKey, value: T): Observable<T | undefined> {
+  set(key: TKey, value: TValue): void {
     const subject$ = this.ensure(key);
 
     subject$.next(value);
-
-    return subject$.asObservable();
   }
 
   remove(key: TKey): void {
@@ -27,26 +25,21 @@ export class RxMapStore<TKey = string, T = unknown> {
     this.map.delete(key);
   }
 
-  connect(key: TKey, stream$: () => Observable<T>): Observable<T> {
+  connect(key: TKey, stream$: () => Observable<TValue>): Observable<TValue> {
     if (this.map.has(key)) {
-      return this.map.get(key).asObservable();
+      return this.get(key);
     }
 
-    const subject$ = this.ensure(key);
-    const update$ = stream$().pipe(
-      tap((value) => subject$.next(value)),
-      catchError((error) => {
-        return throwError(error);
-      }),
-      mergeMap(() => EMPTY),
+    return stream$().pipe(
+      tap((value) => this.set(key, value)),
+      catchError((error) => throwError(error)),
+      mergeMap(() => this.get(key)),
     );
-
-    return merge(subject$, update$);
   }
 
-  private ensure(key: TKey): BehaviorSubject<T> {
+  private ensure(key: TKey): BehaviorSubject<TValue> {
     if (!this.map.has(key)) {
-      this.map.set(key, new BehaviorSubject<T>(undefined));
+      this.map.set(key, new BehaviorSubject<TValue>(undefined));
     }
 
     return this.map.get(key);
