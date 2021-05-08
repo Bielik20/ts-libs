@@ -10,7 +10,7 @@ export function generateProducts(): Product[] {
 function generateProduct(): Product {
   return {
     id: faker.datatype.uuid(),
-    name: faker.name.findName(),
+    name: faker.vehicle.vehicle(),
     price: +faker.finance.amount(10, 10000, 2),
   };
 }

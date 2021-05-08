@@ -14,15 +14,18 @@ export const ProductComp: FunctionComponent<Props> = ({ product }) => {
     <Container maxWidth="lg">
       <Box my={4}>
         <Typography variant="h4" component="h1" gutterBottom>
-          Product ${product.id}
+          Product
         </Typography>
         <Card>
           <CardContent>
-            <Typography variant="h5" component="h2">
+            <Typography variant="h5" component="h2" gutterBottom>
               {product.name}
             </Typography>
-            <Typography variant="body2" component="p">
-              {product.price}
+            <Typography variant="body2" component="p" gutterBottom>
+              Id: {product.id}
+            </Typography>
+            <Typography variant="body1" component="p">
+              Price: {product.price}
             </Typography>
           </CardContent>
         </Card>
