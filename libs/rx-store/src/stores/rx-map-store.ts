@@ -1,4 +1,4 @@
-import { BehaviorSubject, EMPTY, merge, Observable } from 'rxjs';
+import { BehaviorSubject, EMPTY, merge, Observable, throwError } from 'rxjs';
 import { catchError, mergeMap, tap } from 'rxjs/operators';
 
 export class RxMapStore<TKey = string, T = unknown> {
@@ -36,9 +36,7 @@ export class RxMapStore<TKey = string, T = unknown> {
     const update$ = stream$().pipe(
       tap((value) => subject$.next(value)),
       catchError((error) => {
-        subject$.error(error);
-
-        return EMPTY;
+        return throwError(error);
       }),
       mergeMap(() => EMPTY),
     );

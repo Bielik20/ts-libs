@@ -1,4 +1,4 @@
-import { Card, CardContent, Container } from '@material-ui/core';
+import { Card, CardContent } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import React, { FunctionComponent } from 'react';
 
@@ -8,7 +8,9 @@ type Props = {
 
 export const ErrorComp: FunctionComponent<Props> = ({ error }) => {
   return (
-    <Container maxWidth="md">
+    <div
+      style={{ display: 'flex', margin: '40px', justifyContent: 'center', alignContent: 'center' }}
+    >
       <Card>
         <CardContent>
           <Typography variant="h5" component="h2">
@@ -19,6 +21,6 @@ export const ErrorComp: FunctionComponent<Props> = ({ error }) => {
           </Typography>
         </CardContent>
       </Card>
-    </Container>
+    </div>
   );
 };

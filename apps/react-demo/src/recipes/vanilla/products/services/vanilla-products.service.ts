@@ -1,16 +1,21 @@
 import { HttpClient, toResponse } from '@ns3/http-client';
 import { Injectable } from '@wikia/dependency-injection';
 import { Product } from 'react-demo/products/models/product';
+import { ProductPagination } from 'react-demo/products/models/product-pagination';
 import { Observable } from 'rxjs';
 
 @Injectable()
-export class ProductsService {
+export class VanillaProductsService {
   private url = '/api/products';
 
   constructor(private httpClient: HttpClient) {}
 
   get(id: string): Observable<Product> {
     return this.httpClient.get(`${this.url}/${id}`).pipe(toResponse());
+  }
+
+  delete(id: string): Observable<void> {
+    return this.httpClient.delete(`${this.url}/${id}`).pipe(toResponse());
   }
 
   create(value: Omit<Product, 'id'>): Observable<Product> {
@@ -21,7 +26,7 @@ export class ProductsService {
     return this.httpClient.patch(`${this.url}/${id}`, value).pipe(toResponse());
   }
 
-  list(query: { limit: number; skip: number }): Observable<Product[]> {
+  list(query: ProductPagination): Observable<Product[]> {
     const url = `${this.url}?limit=${query.limit}&skip=${query.skip}`;
 
     return this.httpClient.get(url).pipe(toResponse());
