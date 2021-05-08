@@ -13,7 +13,7 @@ type Props = {
 
 export const VanillaProductListItemCont: FunctionComponent<Props> = ({ product }) => {
   const router = useRouter();
-  const unsubscribe$ = useUnsubscribe();
+  const unsubscribe$ = useUnsubscribe([]);
   const productsService = useDependency(VanillaProductsService);
   const [deleting, setDeleting] = useState(false);
   const onDelete = () => {
