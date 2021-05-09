@@ -7,7 +7,6 @@ import { ProductComp } from 'react-demo/products/ui/product.comp';
 import { SimpleProductsService } from 'react-demo/recipes/simple/products/services/simple-products.service';
 import { ErrorComp } from 'react-demo/shared/error.comp';
 import { LoaderComp } from 'react-demo/shared/loader.comp';
-import { EMPTY } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 export default function ProductDetails() {
@@ -15,7 +14,7 @@ export default function ProductDetails() {
   const unsubscribe$ = useUnsubscribe([]);
   const productsService = useDependency(SimpleProductsService);
   const [status, product, error] = useStream(
-    () => (router.query.id ? productsService.get(router.query.id as string) : EMPTY),
+    () => router.query.id && productsService.get(router.query.id as string),
     [router.query.id],
   );
   const [deleting, setDeleting] = useState(false);

@@ -1,5 +1,6 @@
 import { DependencyList, useEffect, useState } from 'react';
 import { Observable } from 'rxjs';
+import { Falsy } from '../utils/falsy';
 import {
   ErrorResult,
   IDLE_RESULT,
@@ -14,13 +15,18 @@ import {
 export type StreamResult<T> = IdleResult | PendingResult | SuccessResult<T> | ErrorResult;
 
 export function useStream<T>(
-  streamFactory: () => Observable<T>,
+  streamFactory: () => Falsy | Observable<T>,
   deps?: DependencyList,
 ): StreamResult<T> {
   const [value, setValue] = useState<StreamResult<T>>(IDLE_RESULT);
 
   useEffect(() => {
     const stream$ = streamFactory();
+
+    if (!stream$) {
+      return;
+    }
+
     let immediate = false;
     const subscription = stream$.subscribe(
       (value) => {

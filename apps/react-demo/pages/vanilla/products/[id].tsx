@@ -13,9 +13,10 @@ export default function ProductDetails() {
   const router = useRouter();
   const unsubscribe$ = useUnsubscribe([]);
   const productsService = useDependency(VanillaProductsService);
-  const [status, product, error] = useStream(() => productsService.get(router.query.id as string), [
-    router.query.id,
-  ]);
+  const [status, product, error] = useStream(
+    () => router.query.id && productsService.get(router.query.id as string),
+    [router.query.id],
+  );
   const [deleting, setDeleting] = useState(false);
   const [updating, setUpdating] = useState(false);
   const onDelete = () => {
