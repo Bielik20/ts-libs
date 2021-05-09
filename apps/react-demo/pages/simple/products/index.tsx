@@ -20,7 +20,10 @@ export default function Products() {
     [router.query],
   );
   const productsService = useDependency(SimpleProductsService);
-  const [status, products, error] = useStream(() => productsService.list(query), [query]);
+  const [status, products, error] = useStream(
+    () => router.query.limit && productsService.list(query),
+    [query],
+  );
 
   if (status === 'idle') {
     return null;
