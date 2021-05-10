@@ -1,5 +1,5 @@
 import { HttpClient, toResponse } from '@ns3/http-client';
-import { onlyDefined } from '@ns3/ts-utils';
+import { omitUndefined } from '@ns3/ts-utils';
 import { Injectable } from '@wikia/dependency-injection';
 import { Product } from 'react-demo/products/models/product';
 import { ProductPagination } from 'react-demo/products/models/product-pagination';
@@ -21,7 +21,7 @@ export class SimpleProductsService {
   get(id: string): Observable<Product> {
     return this.productsStore
       .connect(id, () => this.httpClient.get(`${this.url}/${id}`).pipe(toResponse()))
-      .pipe(onlyDefined());
+      .pipe(omitUndefined());
   }
 
   delete(id: string): Observable<void> {
@@ -50,6 +50,6 @@ export class SimpleProductsService {
 
     return this.productsListStore
       .connect(url, () => this.httpClient.get(url).pipe(toResponse<Product[]>()))
-      .pipe(onlyDefined());
+      .pipe(omitUndefined());
   }
 }
