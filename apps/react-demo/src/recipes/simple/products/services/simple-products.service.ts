@@ -28,6 +28,7 @@ export class SimpleProductsService {
     return this.httpClient.delete(`${this.url}/${id}`).pipe(
       toResponse<void>(),
       tap(() => this.productsStore.delete(id)),
+      tap(() => this.productsListStore.invalidateAll()),
     );
   }
 
