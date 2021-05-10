@@ -27,7 +27,7 @@ export class SimpleProductsService {
   delete(id: string): Observable<void> {
     return this.httpClient.delete(`${this.url}/${id}`).pipe(
       toResponse<void>(),
-      tap(() => this.productsStore.remove(id)),
+      tap(() => this.productsStore.delete(id)),
     );
   }
 

@@ -5,6 +5,12 @@ import { SimpleProductsStore } from 'react-demo/recipes/simple/products/services
 @Injectable()
 export class SimpleProductsListStore extends RxConnectedMapStore<string, SimpleProductsStore> {
   constructor(productsStore: SimpleProductsStore) {
-    super({ parent: productsStore, keyMapper: (value) => value.id });
+    super({
+      parent: productsStore,
+      keyMapper: (value) => value.id,
+      timeout: 5 * 60 * 1000, // 5 minutes
+      scope: 'all',
+      strategy: 'eager',
+    });
   }
 }
