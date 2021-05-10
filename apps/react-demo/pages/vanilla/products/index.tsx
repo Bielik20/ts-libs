@@ -1,9 +1,7 @@
 import { List } from '@material-ui/core';
 import { useDependency } from '@ns3/react-di';
 import { useStream } from '@ns3/ts-utils';
-import { useRouter } from 'next/router';
-import { useMemo } from 'react';
-import { ProductPagination } from 'react-demo/products/models/product-pagination';
+import { useProductsQuery } from 'react-demo/products/hooks/use-products-query';
 import { ProductsShellComp } from 'react-demo/products/ui/products-shell.comp';
 import { VanillaProductsService } from 'react-demo/recipes/vanilla/products/services/vanilla-products.service';
 import { VanillaProductListItemCont } from 'react-demo/recipes/vanilla/products/ui/vanilla-product-list-item.cont';
@@ -11,19 +9,13 @@ import { ErrorComp } from 'react-demo/shared/error.comp';
 import { LoaderComp } from 'react-demo/shared/loader.comp';
 
 export default function Products() {
-  const router = useRouter();
-  const query: ProductPagination = useMemo(
-    () => ({
-      limit: +router.query.limit || 10,
-      skip: +router.query.skip || 0,
-    }),
-    [router.query],
-  );
   const productsService = useDependency(VanillaProductsService);
-  const [status, products, error] = useStream(
-    () => router.query.limit && productsService.list(query),
-    [query],
-  );
+  const query = useProductsQuery();
+  const [status, products, error] = useStream(() => query && productsService.list(query), [query]);
+
+  if (status === 'idle' || !query) {
+    return null;
+  }
 
   if (status === 'error') {
     return (
@@ -33,7 +25,7 @@ export default function Products() {
     );
   }
 
-  if (status === 'pending' || status === 'idle') {
+  if (status === 'pending') {
     return (
       <ProductsShellComp query={query}>
         <LoaderComp />
