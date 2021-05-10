@@ -1,5 +1,5 @@
 import { RxMapStore } from '@ns3/rx-store';
-import { isDefined } from '@ns3/ts-utils';
+import { isNotUndefined } from '@ns3/ts-utils';
 import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 
@@ -27,18 +27,17 @@ export class RxConnectedMapStore<
   }
 
   get(key: TKey): Observable<ReadonlyArray<TParentValue> | undefined> {
-    return this.ensure(key)
-      .pipe(
-        switchMap((keys) => {
-          if (keys === undefined) {
-            return of(undefined);
-          }
-          return of(keys).pipe(
-            switchMap((ids) => combineLatest(ids.map((id) => this.parent.get(id)))),
-            map((values) => values.filter(isDefined)),
-          );
-        }),
-      );
+    return this.ensure(key).pipe(
+      switchMap((keys) => {
+        if (keys === undefined) {
+          return of(undefined);
+        }
+        return of(keys).pipe(
+          switchMap((ids) => combineLatest(ids.map((id) => this.parent.get(id)))),
+          map((values) => values.filter(isNotUndefined)),
+        );
+      }),
+    );
   }
 
   set(key: TKey, values: ReadonlyArray<TParentValue>): void {
