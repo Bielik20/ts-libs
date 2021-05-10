@@ -1,9 +1,7 @@
 import { List } from '@material-ui/core';
 import { useDependency } from '@ns3/react-di';
 import { useStream } from '@ns3/ts-utils';
-import { useRouter } from 'next/router';
-import { useMemo } from 'react';
-import { ProductPagination } from 'react-demo/products/models/product-pagination';
+import { useProductsQuery } from 'react-demo/products/hooks/use-products-query';
 import { ProductsShellComp } from 'react-demo/products/ui/products-shell.comp';
 import { SimpleProductsService } from 'react-demo/recipes/simple/products/services/simple-products.service';
 import { SimpleProductListItemCont } from 'react-demo/recipes/simple/products/ui/simple-product-list-item.cont';
@@ -11,21 +9,11 @@ import { ErrorComp } from 'react-demo/shared/error.comp';
 import { LoaderComp } from 'react-demo/shared/loader.comp';
 
 export default function Products() {
-  const router = useRouter();
-  const query: ProductPagination = useMemo(
-    () => ({
-      limit: +router.query.limit || 10,
-      skip: +router.query.skip || 0,
-    }),
-    [router.query],
-  );
   const productsService = useDependency(SimpleProductsService);
-  const [status, products, error] = useStream(
-    () => router.query.limit && productsService.list(query),
-    [query],
-  );
+  const query = useProductsQuery();
+  const [status, products, error] = useStream(() => query && productsService.list(query), [query]);
 
-  if (status === 'idle') {
+  if (status === 'idle' || !query) {
     return null;
   }
 
