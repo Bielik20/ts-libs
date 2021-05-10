@@ -1,9 +1,10 @@
 import { RxMapStore } from '@ns3/rx-store';
 import { isNotUndefined } from '@ns3/ts-utils';
-import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { combineLatest, Observable, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
+import { RxValidityMap, ValidityOptions } from './rx-validity-map';
 
-type RxConnectedMapStoreOptions<TParentKey, TParentValue> = {
+type RxConnectedMapStoreOptions<TParentKey, TParentValue> = ValidityOptions & {
   parent: RxMapStore<TParentKey, TParentValue>;
   keyMapper: (value: TParentValue) => TParentKey;
 };
@@ -16,18 +17,22 @@ export class RxConnectedMapStore<
   TParent extends RxMapStore<unknown, unknown>,
   TParentKey = ExtractKey<TParent>,
   TParentValue = ExtractValue<TParent>
-> {
-  private map = new Map<TKey, BehaviorSubject<ReadonlyArray<TParentKey> | undefined>>();
+> extends RxValidityMap<TKey, ReadonlyArray<TParentValue>, ReadonlyArray<TParentKey>> {
   private readonly parent: RxMapStore<TParentKey, TParentValue>;
   private readonly keyMapper: (value: TParentValue) => TParentKey;
 
-  constructor(options: RxConnectedMapStoreOptions<TParentKey, TParentValue>) {
-    this.parent = options.parent;
-    this.keyMapper = options.keyMapper;
+  constructor({
+    parent,
+    keyMapper,
+    ...options
+  }: RxConnectedMapStoreOptions<TParentKey, TParentValue>) {
+    super(options);
+    this.parent = parent;
+    this.keyMapper = keyMapper;
   }
 
   get(key: TKey): Observable<ReadonlyArray<TParentValue> | undefined> {
-    return this.ensure(key).pipe(
+    return this.ensure(key).value$.pipe(
       switchMap((keys) => {
         if (keys === undefined) {
           return of(undefined);
@@ -41,42 +46,9 @@ export class RxConnectedMapStore<
   }
 
   set(key: TKey, values: ReadonlyArray<TParentValue>): void {
-    const subject$ = this.ensure(key);
+    const { value$ } = this.updateExpiresAt(key);
 
     values.forEach((product) => this.parent.set(this.keyMapper(product), product));
-    subject$.next(values.map(this.keyMapper));
-  }
-
-  remove(key: TKey): void {
-    const subject$ = this.map.get(key);
-
-    if (!subject$) {
-      return;
-    }
-
-    subject$.next(undefined);
-    this.map.delete(key);
-  }
-
-  connect(
-    key: TKey,
-    stream$: () => Observable<ReadonlyArray<TParentValue>>,
-  ): Observable<ReadonlyArray<TParentValue> | undefined> {
-    if (this.map.has(key)) {
-      return this.get(key);
-    }
-
-    return stream$().pipe(
-      tap((value) => this.set(key, value)),
-      switchMap(() => this.get(key)),
-    );
-  }
-
-  private ensure(key: TKey): BehaviorSubject<ReadonlyArray<TParentKey> | undefined> {
-    if (!this.map.has(key)) {
-      this.map.set(key, new BehaviorSubject<ReadonlyArray<TParentKey> | undefined>(undefined));
-    }
-
-    return this.map.get(key) as BehaviorSubject<ReadonlyArray<TParentKey> | undefined>;
+    value$.next(values.map(this.keyMapper));
   }
 }
