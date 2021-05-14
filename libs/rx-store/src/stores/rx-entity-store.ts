@@ -7,8 +7,7 @@ export class RxEntityStore<TKey, TValue> extends RxValidityMap<TKey, TValue> {
   }
 
   set(key: TKey, value: TValue): void {
-    const { value$ } = this.updateExpiresAt(key);
-
-    value$.next(value);
+    this.updateExpiresAt(key);
+    this.updateValue(key, value);
   }
 }
