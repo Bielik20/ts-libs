@@ -1,5 +1,5 @@
 import { createInitialStateFactory } from './entity_state';
-import { EntityDefinition, Comparer, IdSelector, EntityAdapter } from './models';
+import { Comparer, EntityAdapter, EntityDefinition, IdSelector } from './models';
 import { createSortedStateAdapter } from './sorted_state_adapter';
 import { createUnsortedStateAdapter } from './unsorted_state_adapter';
 

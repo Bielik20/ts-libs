@@ -1,9 +1,12 @@
-import { EntityState, IdSelector, Comparer, EntityStateAdapter, Update, EntityMap } from './models';
+import { Comparer, EntityMap, EntityState, EntityStateAdapter, IdSelector, Update } from './models';
 import { createStateOperator, DidMutate } from './state_adapter';
 import { createUnsortedStateAdapter } from './unsorted_state_adapter';
 import { selectIdValue } from './utils';
 
-export function createSortedStateAdapter<T>(selectId: IdSelector<T>, sort: Comparer<T>): EntityStateAdapter<T>;
+export function createSortedStateAdapter<T>(
+  selectId: IdSelector<T>,
+  sort: Comparer<T>,
+): EntityStateAdapter<T>;
 export function createSortedStateAdapter<T>(selectId: any, sort: any): any {
   type R = EntityState<T>;
 
@@ -62,7 +65,8 @@ export function createSortedStateAdapter<T>(selectId: any, sort: any): any {
   function updateManyMutably(updates: any[], state: any): DidMutate {
     const models: T[] = [];
 
-    const didMutateIds = updates.filter((update) => takeUpdatedModel(models, update, state)).length > 0;
+    const didMutateIds =
+      updates.filter((update) => takeUpdatedModel(models, update, state)).length > 0;
 
     if (models.length === 0) {
       return DidMutate.None;
