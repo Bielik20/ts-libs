@@ -1,4 +1,11 @@
-import { EntityState, EntityStateAdapter, IdSelector, Update, Predicate, EntityMap } from './models';
+import {
+  EntityMap,
+  EntityState,
+  EntityStateAdapter,
+  IdSelector,
+  Predicate,
+  Update,
+} from './models';
 import { createStateOperator, DidMutate } from './state_adapter';
 import { selectIdValue } from './utils';
 
@@ -55,7 +62,8 @@ export function createUnsortedStateAdapter<T>(selectId: IdSelector<T>): any {
         : state.ids.filter((key: any) => keysOrPredicate(state.entities[key]));
 
     const didMutate =
-      keys.filter((key: any) => key in state.entities).map((key: any) => delete state.entities[key]).length > 0;
+      keys.filter((key: any) => key in state.entities).map((key: any) => delete state.entities[key])
+        .length > 0;
 
     if (didMutate) {
       state.ids = state.ids.filter((id: any) => id in state.entities);
@@ -103,7 +111,8 @@ export function createUnsortedStateAdapter<T>(selectId: IdSelector<T>): any {
     const didMutateEntities = updates.length > 0;
 
     if (didMutateEntities) {
-      const didMutateIds = updates.filter((update) => takeNewKey(newKeys, update, state)).length > 0;
+      const didMutateIds =
+        updates.filter((update) => takeNewKey(newKeys, update, state)).length > 0;
 
       if (didMutateIds) {
         state.ids = state.ids.map((id: any) => newKeys[id] || id);
