@@ -3,19 +3,19 @@ import { omitUndefined } from '@ns3/ts-utils';
 import { Injectable } from '@wikia/dependency-injection';
 import { Product } from 'react-demo/products/models/product';
 import { ProductPagination } from 'react-demo/products/models/product-pagination';
-import { SimpleProductsStore } from 'react-demo/recipes/simple/products/services/simple-products.store';
-import { SimpleProductsListStore } from 'react-demo/recipes/simple/products/services/simple-products-list.store';
+import { ProductsStore } from 'react-demo/products/services/products.store';
+import { ProductsListStore } from 'react-demo/products/services/products-list.store';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 @Injectable()
-export class SimpleProductsService {
+export class ProductsService {
   private url = '/api/products';
 
   constructor(
     private httpClient: HttpClient,
-    private productsStore: SimpleProductsStore,
-    private productsListStore: SimpleProductsListStore,
+    private productsStore: ProductsStore,
+    private productsListStore: ProductsListStore,
   ) {}
 
   get(id: string): Observable<Product> {
