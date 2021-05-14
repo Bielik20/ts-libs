@@ -3,8 +3,8 @@ import { omitUndefined } from '@ns3/ts-utils';
 import { Injectable } from '@wikia/dependency-injection';
 import { Product } from 'react-demo/products/models/product';
 import { ProductPagination } from 'react-demo/products/models/product-pagination';
-import { SimpleProductsListStore } from 'react-demo/recipes/simple/products/services/simple-products-list.store';
 import { SimpleProductsStore } from 'react-demo/recipes/simple/products/services/simple-products.store';
+import { SimpleProductsListStore } from 'react-demo/recipes/simple/products/services/simple-products-list.store';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
