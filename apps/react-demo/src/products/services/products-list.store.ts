@@ -1,10 +1,10 @@
 import { RxConnectedMapStore } from '@ns3/rx-store';
 import { Injectable } from '@wikia/dependency-injection';
-import { SimpleProductsStore } from 'react-demo/recipes/simple/products/services/simple-products.store';
+import { ProductsStore } from 'react-demo/products/services/products.store';
 
 @Injectable()
-export class SimpleProductsListStore extends RxConnectedMapStore<string, SimpleProductsStore> {
-  constructor(productsStore: SimpleProductsStore) {
+export class ProductsListStore extends RxConnectedMapStore<string, ProductsStore> {
+  constructor(productsStore: ProductsStore) {
     super({
       parent: productsStore,
       keyMapper: (value) => value.id,

@@ -3,8 +3,8 @@ import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
+import { examples } from 'react-demo/examples/examples';
 import { Link } from 'react-demo/layout/link';
-import { recipes } from 'react-demo/recipes/recipes';
 
 export default function Index() {
   return (
@@ -18,19 +18,19 @@ export default function Index() {
         </Typography>
       </Box>
       <Grid container spacing={5}>
-        {recipes.map((recipe) => (
-          <Grid item key={recipe.title} sm={6} xs={12}>
+        {examples.map((example) => (
+          <Grid item key={example.title} sm={6} xs={12}>
             <Card>
               <CardContent>
                 <Typography variant="h5" component="h2" gutterBottom>
-                  {recipe.title}
+                  {example.title}
                 </Typography>
                 <Typography variant="body2" component="p">
-                  {recipe.description}
+                  {example.description}
                 </Typography>
               </CardContent>
               <CardActions>
-                <Button component={Link} href={recipe.url} size="small">
+                <Button component={Link} href={example.url} size="small">
                   Learn More
                 </Button>
               </CardActions>

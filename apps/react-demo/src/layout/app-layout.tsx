@@ -4,8 +4,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
+import { examples } from 'react-demo/examples/examples';
 import { Link } from 'react-demo/layout/link';
-import { recipes } from 'react-demo/recipes/recipes';
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -23,9 +23,9 @@ export const AppLayout: React.FC = ({ children }) => {
           <Typography variant="h6" className={classes.title} component={Link} naked href="/">
             Reactive Store
           </Typography>
-          {recipes.map((recipe) => (
-            <Button key={recipe.title} color="inherit" component={Link} naked href={recipe.url}>
-              {recipe.title}
+          {examples.map((example) => (
+            <Button key={example.title} color="inherit" component={Link} naked href={example.url}>
+              {example.title}
             </Button>
           ))}
         </Toolbar>

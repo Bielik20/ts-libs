@@ -2,17 +2,17 @@ import { useDependency } from '@ns3/react-di';
 import { useUnsubscribe } from '@ns3/ts-utils';
 import { FunctionComponent, useState } from 'react';
 import { Product } from 'react-demo/products/models/product';
+import { ProductsService } from 'react-demo/products/services/products.service';
 import { ProductListItemComp } from 'react-demo/products/ui/product-list-item.comp';
-import { SimpleProductsService } from 'react-demo/recipes/simple/products/services/simple-products.service';
 import { takeUntil } from 'rxjs/operators';
 
 type Props = {
   product: Product;
 };
 
-export const SimpleProductListItemCont: FunctionComponent<Props> = ({ product }) => {
+export const ProductListItemCont: FunctionComponent<Props> = ({ product }) => {
   const unsubscribe$ = useUnsubscribe([]);
-  const productsService = useDependency(SimpleProductsService);
+  const productsService = useDependency(ProductsService);
   const [deleting, setDeleting] = useState(false);
   const onDelete = () => {
     setDeleting(true);
