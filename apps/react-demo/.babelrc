@@ -1,4 +1,4 @@
 {
   "presets": ["@nrwl/next/babel"],
-  "plugins": []
+  "plugins": ["transform-typescript-metadata", "lodash"]
 }
