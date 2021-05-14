@@ -1,7 +1,7 @@
-import { RxMapStore } from '@ns3/rx-store';
 import { isNotUndefined } from '@ns3/ts-utils';
 import { combineLatest, Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
+import { RxMapStore } from './rx-map-store';
 import { RxValidityMap, ValidityOptions } from './rx-validity-map';
 
 type RxConnectedMapStoreOptions<TParentKey, TParentValue> = ValidityOptions & {

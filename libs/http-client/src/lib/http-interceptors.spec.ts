@@ -1,9 +1,11 @@
-import { HttpClient, HttpInterceptor, HttpInterceptors } from '@ns3/http-client';
 import { Container, Inject, Injectable } from '@wikia/dependency-injection';
 import { Observable, of } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 import { map, tap } from 'rxjs/operators';
+import { HttpClient } from './http-client';
+import { HttpInterceptors } from './http-interceptors';
 import { HttpHandler } from './models/http-handler';
+import { HttpInterceptor } from './models/http-interceptor';
 import { HttpRequest } from './models/http-request';
 import { HttpResponse } from './models/http-response';
 
