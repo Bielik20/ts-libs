@@ -46,9 +46,8 @@ export class RxArrayStore<
   }
 
   set(key: TKey, values: ReadonlyArray<TEntityValue>): void {
-    const { value$ } = this.updateExpiresAt(key);
-
+    this.updateExpiresAt(key);
     values.forEach((product) => this.entityStore.set(this.keyMapper(product), product));
-    value$.next(values.map(this.keyMapper));
+    this.updateValue(key, values.map(this.keyMapper));
   }
 }

@@ -1,5 +1,6 @@
-import { BehaviorSubject, EMPTY, merge, Observable } from 'rxjs';
+import { BehaviorSubject, EMPTY, merge, Observable, Subject } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
+import { Change, makeChange } from '../models/change';
 
 export interface ValidityOptions {
   timeout: number;
@@ -14,6 +15,8 @@ interface ValidityObject<T> {
 
 export abstract class RxValidityMap<TKey, TValue, TInternal = TValue> {
   protected map = new Map<TKey, ValidityObject<TInternal>>();
+  protected changeSubject$ = new Subject<Change<TKey, TInternal>>();
+  readonly change$ = this.changeSubject$.asObservable();
 
   protected constructor(protected options: ValidityOptions) {}
 
@@ -66,9 +69,8 @@ export abstract class RxValidityMap<TKey, TValue, TInternal = TValue> {
   }
 
   delete(key: TKey): void {
-    const { value$ } = this.updateExpiresAt(key, 0);
-
-    value$.next(undefined);
+    this.updateExpiresAt(key, 0);
+    this.updateValue(key, undefined);
   }
 
   deleteAll(): void {
@@ -91,15 +93,18 @@ export abstract class RxValidityMap<TKey, TValue, TInternal = TValue> {
     return this.map.get(key);
   }
 
-  protected updateExpiresAt(
-    key: TKey,
-    expiresAt = Date.now() + this.options.timeout,
-  ): ValidityObject<TInternal> {
+  protected updateExpiresAt(key: TKey, expiresAt = Date.now() + this.options.timeout): void {
     const { value$ } = this.ensure(key);
     const update = { value$, expiresAt };
 
     this.map.set(key, update);
+  }
 
-    return update;
+  protected updateValue(key: TKey, newValue: TInternal): void {
+    const { value$ } = this.ensure(key);
+    const oldValue = value$.value;
+
+    value$.next(newValue);
+    this.changeSubject$.next(makeChange(key, oldValue, newValue));
   }
 }
