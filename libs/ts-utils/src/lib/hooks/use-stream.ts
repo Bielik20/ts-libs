@@ -1,50 +1,50 @@
-import { DependencyList, useEffect, useState } from 'react';
-import { Observable } from 'rxjs';
+import { DependencyList, useMemo, useState } from 'react';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { Falsy } from '../utils/falsy';
 import {
   ErrorResult,
-  IDLE_RESULT,
-  IdleResult,
   makeErrorResult,
   makeSuccessResult,
   PENDING_RESULT,
   PendingResult,
   SuccessResult,
 } from '../utils/results';
+import { useBehaviorSubjectValue } from './use-behavior-subject-value';
 
-export type StreamResult<T> = IdleResult | PendingResult | SuccessResult<T> | ErrorResult;
+export type StreamResult<T> = PendingResult | SuccessResult<T> | ErrorResult;
 
 export function useStream<T>(
-  streamFactory: () => Falsy | Observable<T>,
+  factory: () => Falsy | Observable<T>,
   deps?: DependencyList,
 ): StreamResult<T> {
-  const [value, setValue] = useState<StreamResult<T>>(IDLE_RESULT);
+  const [subscription, setSubscription] = useState<Subscription | undefined>(undefined);
+  const behaviorSubject$ = useMemo(() => new BehaviorSubject<StreamResult<T>>(PENDING_RESULT), []);
 
-  useEffect(() => {
-    const stream$ = streamFactory();
+  useMemo(() => {
+    const stream$ = factory();
+
+    subscription && subscription.unsubscribe();
 
     if (!stream$) {
-      return;
+      return behaviorSubject$.next(PENDING_RESULT);
     }
 
     let immediate = false;
-    const subscription = stream$.subscribe(
-      (value) => {
-        immediate = true;
-        setValue(makeSuccessResult(value));
-      },
-      (error) => {
-        immediate = true;
-        setValue(makeErrorResult(error));
-      },
-    );
-    !immediate && setValue(PENDING_RESULT);
 
-    return () => {
-      subscription.unsubscribe();
-      setValue(IDLE_RESULT);
-    };
+    setSubscription(
+      stream$.subscribe(
+        (v) => {
+          immediate = true;
+          behaviorSubject$.next(makeSuccessResult(v));
+        },
+        (e) => {
+          immediate = true;
+          behaviorSubject$.next(makeErrorResult(e));
+        },
+      ),
+    );
+    !immediate && behaviorSubject$.next(PENDING_RESULT);
   }, deps);
 
-  return value;
+  return useBehaviorSubjectValue(behaviorSubject$);
 }
