@@ -27,8 +27,10 @@ export class ProductsService {
   delete(id: string): Observable<void> {
     return this.httpClient.delete(`${this.url}/${id}`).pipe(
       toResponse<void>(),
-      tap(() => this.productsStore.delete(id)),
-      tap(() => this.productsListStore.invalidateAll()),
+      tap(() => {
+        this.productsStore.delete(id);
+        this.productsListStore.invalidateAll();
+      }),
     );
   }
 

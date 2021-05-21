@@ -2,6 +2,9 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Change, makeChange } from '../models/change';
 
+export type RxMapKey<Type> = Type extends RxMap<infer X, unknown> ? X : never;
+export type RxMapValue<Type> = Type extends RxMap<unknown, infer X> ? X : never;
+
 export class RxMap<TKey, TValue> {
   protected map = new Map<TKey, BehaviorSubject<TValue | undefined>>();
   protected map$ = new BehaviorSubject<void>(undefined);
