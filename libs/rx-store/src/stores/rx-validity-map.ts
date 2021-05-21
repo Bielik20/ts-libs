@@ -73,7 +73,7 @@ export abstract class RxValidityMap<TKey, TValue, TInternal = TValue> {
     this.updateValue(key, undefined);
   }
 
-  deleteAll(): void {
+  clear(): void {
     this.map.forEach((value, key) => this.delete(key));
   }
 
