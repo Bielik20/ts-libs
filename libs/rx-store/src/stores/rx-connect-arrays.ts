@@ -1,11 +1,14 @@
 import { Observable } from 'rxjs';
+import { ConnectingSet } from '../models/connecting-set';
 import { RxArrays, RxArraysOptions } from './rx-arrays';
 import { RxMap, RxMapKey, RxMapValue } from './rx-map';
 import { ValidityMap, ValidityMapConfig } from './validity-map';
 
-interface RxConnectArraysOptions<TMapKey, TMapValue>
+interface RxConnectArraysOptions<TKey, TMapKey, TMapValue>
   extends ValidityMapConfig,
-    RxArraysOptions<TMapKey, TMapValue> {}
+    RxArraysOptions<TMapKey, TMapValue> {
+  connectingSet?: ConnectingSet<TKey>;
+}
 
 export class RxConnectArrays<
   TKey,
@@ -15,9 +18,10 @@ export class RxConnectArrays<
 > extends RxArrays<TKey, TItemsMap, TItemKey, TItemValue> {
   protected readonly validityMap: ValidityMap<TKey, ReadonlyArray<TItemValue>>;
 
-  constructor(options: RxConnectArraysOptions<TItemKey, TItemValue>) {
+  constructor(options: RxConnectArraysOptions<TKey, TItemKey, TItemValue>) {
     super(options);
     this.validityMap = new ValidityMap(options, {
+      connectingSet: options.connectingSet,
       get: (key) => this.get(key),
       set: (key, value) => this.set(key, value),
     });
