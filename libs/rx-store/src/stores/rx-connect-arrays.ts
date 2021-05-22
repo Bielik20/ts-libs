@@ -38,7 +38,7 @@ export class RxConnectArrays<
     return this.validityMap.invalidateAll();
   }
 
-  protected updateValue(key: TKey, value: ReadonlyArray<TItemKey>): boolean {
+  protected updateValue(key: TKey, value: Array<TItemKey> | undefined): void {
     value === undefined ? this.validityMap.invalidate(key) : this.validityMap.validate(key);
 
     return super.updateValue(key, value);

@@ -1,7 +1,5 @@
-import { isNotUndefined } from '@ns3/ts-utils';
-import { BehaviorSubject, combineLatest, Observable, of, Subject } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
-import { Change, makeChange } from '../models/change';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { mapKeysToValues } from '../utils/map-keys-to-values';
 import { RxMap, RxMapKey, RxMapValue } from './rx-map';
 
 export interface RxArraysOptions<TMapKey, TMapValue> {
@@ -17,32 +15,47 @@ export class RxArrays<
 > {
   protected readonly itemsMap: RxMap<TItemKey, TItemValue>;
   protected readonly keyMapper: (value: TItemValue) => TItemKey;
-  protected readonly map = new Map<TKey, BehaviorSubject<ReadonlyArray<TItemKey> | undefined>>();
-  protected readonly changeSubject$ = new Subject<Change<TKey, ReadonlyArray<TItemKey>>>();
-  readonly change$ = this.changeSubject$.asObservable();
+  protected readonly map = new Map<TKey, BehaviorSubject<Array<TItemKey> | undefined>>();
 
   constructor({ itemsMap, keyMapper }: RxArraysOptions<TItemKey, TItemValue>) {
     this.itemsMap = itemsMap;
     this.keyMapper = keyMapper;
   }
 
-  get(key: TKey): Observable<ReadonlyArray<TItemValue> | undefined> {
-    return this.ensure(key).pipe(
-      switchMap((keys) => {
-        if (keys === undefined) {
-          return of(undefined);
-        }
-        return of(keys).pipe(
-          switchMap((ids) => combineLatest(ids.map((id) => this.itemsMap.get(id)))),
-          map((values) => values.filter(isNotUndefined)),
-        );
-      }),
-    );
+  get(key: TKey): Observable<Array<TItemValue> | undefined> {
+    return this.ensure(key).pipe(mapKeysToValues(this.itemsMap));
   }
 
-  set(key: TKey, values: ReadonlyArray<TItemValue>): void {
-    values.forEach((product) => this.itemsMap.set(this.keyMapper(product), product));
-    this.updateValue(key, values.map(this.keyMapper));
+  set(key: TKey, itemsToSet: ReadonlyArray<TItemValue>): void {
+    const [itemKeys, itemsEntries] = this.mapKeysAndEntries(itemsToSet);
+
+    this.itemsMap.setMany(itemsEntries);
+    this.updateValue(key, itemKeys);
+  }
+
+  append(key: TKey, itemsToAppend: ReadonlyArray<TItemValue>): void {
+    const [itemKeys, itemsEntries] = this.mapKeysAndEntries(itemsToAppend);
+    const currentItemsKeys = this.ensure(key).value || [];
+
+    this.itemsMap.setMany(itemsEntries);
+    this.updateValue(key, [...currentItemsKeys, ...itemKeys]);
+  }
+
+  prepend(key: TKey, itemsToPrepend: ReadonlyArray<TItemValue>): void {
+    const [itemKeys, itemsEntries] = this.mapKeysAndEntries(itemsToPrepend);
+    const currentItemsKeys = this.ensure(key).value || [];
+
+    this.itemsMap.setMany(itemsEntries);
+    this.updateValue(key, [...itemKeys, ...currentItemsKeys]);
+  }
+
+  remove(key: TKey, ...itemKeysToRemove: ReadonlyArray<TItemKey>): void {
+    const currentItemKeys = this.ensure(key).value || [];
+    const updatedItemKeys = currentItemKeys.filter(
+      (itemKey) => !itemKeysToRemove.includes(itemKey),
+    );
+
+    this.updateValue(key, updatedItemKeys);
   }
 
   delete(key: TKey): void {
@@ -53,23 +66,29 @@ export class RxArrays<
     this.map.forEach((value, key) => this.delete(key));
   }
 
-  protected updateValue(key: TKey, value: ReadonlyArray<TItemKey>): boolean {
-    const value$ = this.ensure(key);
-    const oldValue = value$.value;
+  protected mapKeysAndEntries(
+    items: ReadonlyArray<TItemValue>,
+  ): [keys: TItemKey[], entries: [TItemKey, TItemValue][]] {
+    const keys: TItemKey[] = [];
+    const entries: [TItemKey, TItemValue][] = [];
 
-    if (value === oldValue) {
-      return false;
+    for (const value of items) {
+      const key = this.keyMapper(value);
+
+      keys.push(key);
+      entries.push([key, value]);
     }
 
-    value$.next(value);
-    this.changeSubject$.next(makeChange(key, oldValue, value));
-
-    return true;
+    return [keys, entries];
   }
 
-  protected ensure(key: TKey): BehaviorSubject<ReadonlyArray<TItemKey> | undefined> {
+  protected updateValue(key: TKey, updatedItemKeys: Array<TItemKey> | undefined): void {
+    this.ensure(key).next(updatedItemKeys);
+  }
+
+  protected ensure(key: TKey): BehaviorSubject<Array<TItemKey> | undefined> {
     if (!this.map.has(key)) {
-      this.map.set(key, new BehaviorSubject<ReadonlyArray<TItemKey> | undefined>(undefined));
+      this.map.set(key, new BehaviorSubject<Array<TItemKey> | undefined>(undefined));
     }
 
     return this.map.get(key);
