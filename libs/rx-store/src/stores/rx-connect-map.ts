@@ -1,13 +1,19 @@
 import { Observable } from 'rxjs';
+import { ConnectingSet } from '../models/connecting-set';
 import { RxMap } from './rx-map';
 import { ValidityMap, ValidityMapConfig } from './validity-map';
+
+interface RxConnectMapOptions<TKey> extends ValidityMapConfig {
+  connectingSet?: ConnectingSet<TKey>;
+}
 
 export class RxConnectMap<TKey, TValue> extends RxMap<TKey, TValue> {
   protected readonly validityMap: ValidityMap<TKey, TValue>;
 
-  constructor(protected options: ValidityMapConfig) {
+  constructor(protected options: RxConnectMapOptions<TKey>) {
     super();
     this.validityMap = new ValidityMap(options, {
+      connectingSet: options.connectingSet,
       get: (key) => this.get(key),
       set: (key, value) => this.set(key, value),
     });

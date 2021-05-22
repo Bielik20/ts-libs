@@ -1,5 +1,6 @@
-import { EMPTY, merge, Observable } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
+import { EMPTY, merge, Observable, throwError } from 'rxjs';
+import { catchError, exhaustMap, switchMap, tap } from 'rxjs/operators';
+import { ConnectingSet, noopConnectingSet } from '../models/connecting-set';
 
 export interface ValidityMapConfig {
   timeout: number;
@@ -8,17 +9,21 @@ export interface ValidityMapConfig {
 }
 
 export interface ValidityMapHooks<TKey, TValue> {
+  connectingSet?: ConnectingSet<TKey>;
   get: (key: TKey) => Observable<TValue | undefined>;
   set: (key: TKey, value: TValue) => void;
 }
 
 export class ValidityMap<TKey, TValue> {
-  protected expiresAtMap = new Map<TKey, number>();
+  protected readonly expiresAtMap = new Map<TKey, number>();
+  protected readonly connectingSet: ConnectingSet<TKey>;
 
   constructor(
-    protected config: ValidityMapConfig,
-    protected hooks: ValidityMapHooks<TKey, TValue>,
-  ) {}
+    protected readonly config: ValidityMapConfig,
+    protected readonly hooks: ValidityMapHooks<TKey, TValue>,
+  ) {
+    this.connectingSet = hooks.connectingSet || noopConnectingSet;
+  }
 
   connect(key: TKey, factory: () => Observable<TValue>): Observable<TValue | undefined> {
     const expiresAt = this.expiresAtMap.get(key);
@@ -46,10 +51,7 @@ export class ValidityMap<TKey, TValue> {
     key: TKey,
     factory: () => Observable<TValue>,
   ): Observable<TValue | undefined> {
-    return factory().pipe(
-      tap((value) => this.hooks.set(key, value)),
-      switchMap(() => this.hooks.get(key)),
-    );
+    return this.executeFactory(key, factory).pipe(exhaustMap(() => this.hooks.get(key)));
   }
 
   protected connectLazily(
@@ -58,10 +60,22 @@ export class ValidityMap<TKey, TValue> {
   ): Observable<TValue | undefined> {
     return merge(
       this.hooks.get(key),
-      factory().pipe(
-        tap((value) => this.hooks.set(key, value)),
-        switchMap(() => EMPTY),
-      ),
+      this.executeFactory(key, factory).pipe(switchMap(() => EMPTY)),
+    );
+  }
+
+  protected executeFactory(key: TKey, factory: () => Observable<TValue>): Observable<TValue> {
+    this.connectingSet.add(key);
+
+    return factory().pipe(
+      tap((value) => {
+        this.connectingSet.delete(key);
+        this.hooks.set(key, value);
+      }),
+      catchError((err) => {
+        this.connectingSet.delete(key);
+        return throwError(err);
+      }),
     );
   }
 
