@@ -7,7 +7,7 @@ type Props = {
   onSubmit?: (product: Product) => void;
 };
 
-export const ProductFormComp: FunctionComponent<Props> = ({ product, onSubmit = () => null }) => {
+export const ProductForm: FunctionComponent<Props> = ({ product, onSubmit = () => null }) => {
   const [name, setName] = useState(product.name);
   const [price, setPrice] = useState(product.price);
 

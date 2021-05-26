@@ -8,7 +8,7 @@ type Props = {
   onDelete?: MouseEventHandler;
 };
 
-export const ProductCardComp: FunctionComponent<Props> = ({ product, onDelete = () => null }) => {
+export const ProductCard: FunctionComponent<Props> = ({ product, onDelete = () => null }) => {
   return (
     <Card>
       <CardContent>
