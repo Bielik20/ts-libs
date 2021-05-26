@@ -1,8 +1,11 @@
+import { useDependency } from '@ns3/react-di';
 import { useRouter } from 'next/router';
 import { useMemo } from 'react';
-import { ProductPagination } from 'react-demo/products/models/product-pagination';
+import { ProductsQuery } from '../models/products-query';
+import { ProductsStore } from '../services/products.store';
 
-export function useProductsQuery(): ProductPagination | false {
+export function useProductsQuery(): ProductsQuery | false {
+  const store = useDependency(ProductsStore);
   const router = useRouter();
 
   return useMemo(() => {
@@ -13,10 +16,10 @@ export function useProductsQuery(): ProductPagination | false {
     if (typeof router.query.limit === 'undefined' || typeof router.query.skip === 'undefined') {
       router.replace({
         pathname: router.pathname,
-        query: { limit: 10, skip: 0 },
+        query: store.selectedQuery$.value as any, // There is a problem with NextJS typing
       });
 
-      return false;
+      return store.selectedQuery$.value;
     }
 
     return {
