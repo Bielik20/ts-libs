@@ -1,7 +1,7 @@
 import faker from 'faker';
 import { generateProducts } from 'react-demo/products/debug/generate-products';
 import { Product } from 'react-demo/products/models/product';
-import { ProductPagination } from 'react-demo/products/models/product-pagination';
+import { ProductsQuery } from '../models/products-query';
 
 export class ProductsRepository {
   private data = generateProducts();
@@ -40,7 +40,7 @@ export class ProductsRepository {
     return toUpdate;
   }
 
-  async list(query: ProductPagination): Promise<Product[]> {
+  async list(query: ProductsQuery): Promise<Product[]> {
     return this.data.slice(+query.skip, +query.skip + +query.limit);
   }
 }

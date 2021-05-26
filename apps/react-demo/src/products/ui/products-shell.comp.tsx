@@ -5,10 +5,10 @@ import Typography from '@material-ui/core/Typography';
 import { useRouter } from 'next/router';
 import React, { FunctionComponent } from 'react';
 import { Link } from 'react-demo/layout/link';
-import { ProductPagination } from 'react-demo/products/models/product-pagination';
+import { ProductsQuery } from '../models/products-query';
 
 type Props = {
-  query: ProductPagination;
+  query: ProductsQuery;
 };
 
 export const ProductsShellComp: FunctionComponent<Props> = ({ query, children }) => {
