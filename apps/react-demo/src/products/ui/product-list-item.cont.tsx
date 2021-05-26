@@ -2,9 +2,9 @@ import { useDependency } from '@ns3/react-di';
 import { useStreamValue } from '@ns3/ts-utils';
 import { FunctionComponent } from 'react';
 import { Product } from 'react-demo/products/models/product';
-import { ProductListItemComp } from 'react-demo/products/ui/product-list-item.comp';
 import { ProductsStore } from '../services/products.store';
 import { ProductsDeletingSet } from '../services/products-deleting.set';
+import { ProductListItem } from './product-list-item';
 
 type Props = {
   product: Product;
@@ -18,5 +18,5 @@ export const ProductListItemCont: FunctionComponent<Props> = ({ product }) => {
     productsStore.delete(product.id).subscribe();
   };
 
-  return <ProductListItemComp product={product} onDelete={onDelete} deleting={deleting} />;
+  return <ProductListItem product={product} onDelete={onDelete} deleting={deleting} />;
 };

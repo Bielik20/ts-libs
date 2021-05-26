@@ -4,7 +4,7 @@ import { useStream } from '@ns3/ts-utils';
 import { useProductsQuery } from 'react-demo/products/hooks/use-products-query';
 import { ProductsStore } from 'react-demo/products/services/products.store';
 import { ProductListItemCont } from 'react-demo/products/ui/product-list-item.cont';
-import { ProductsShellComp } from 'react-demo/products/ui/products-shell.comp';
+import { ProductsShell } from 'react-demo/products/ui/products-shell';
 import { ErrorComp } from 'react-demo/shared/error.comp';
 import { LoaderComp } from 'react-demo/shared/loader.comp';
 
@@ -19,27 +19,27 @@ export default function Products() {
 
   if (status === 'error') {
     return (
-      <ProductsShellComp query={query}>
+      <ProductsShell query={query}>
         <ErrorComp error={error} />
-      </ProductsShellComp>
+      </ProductsShell>
     );
   }
 
   if (status === 'pending') {
     return (
-      <ProductsShellComp query={query}>
+      <ProductsShell query={query}>
         <LoaderComp />
-      </ProductsShellComp>
+      </ProductsShell>
     );
   }
 
   return (
-    <ProductsShellComp query={query}>
+    <ProductsShell query={query}>
       <List component="nav">
         {products.map((product) => (
           <ProductListItemCont key={product.id} product={product} />
         ))}
       </List>
-    </ProductsShellComp>
+    </ProductsShell>
   );
 }

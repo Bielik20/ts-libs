@@ -7,7 +7,7 @@ import { Product } from 'react-demo/products/models/product';
 import { ProductsStore } from 'react-demo/products/services/products.store';
 import { ProductsDeletingSet } from 'react-demo/products/services/products-deleting.set';
 import { ProductsUpdatingSet } from 'react-demo/products/services/products-updating.set';
-import { ProductComp } from 'react-demo/products/ui/product.comp';
+import { Product as ProductComponent } from 'react-demo/products/ui/product';
 import { ErrorComp } from 'react-demo/shared/error.comp';
 import { LoaderComp } from 'react-demo/shared/loader.comp';
 import { takeUntil } from 'rxjs/operators';
@@ -47,7 +47,7 @@ export default function ProductDetails() {
   }
 
   return (
-    <ProductComp
+    <ProductComponent
       product={product}
       deleting={deleting}
       updating={updating}

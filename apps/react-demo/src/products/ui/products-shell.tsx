@@ -11,7 +11,7 @@ type Props = {
   query: ProductsQuery;
 };
 
-export const ProductsShellComp: FunctionComponent<Props> = ({ query, children }) => {
+export const ProductsShell: FunctionComponent<Props> = ({ query, children }) => {
   const router = useRouter();
 
   return (

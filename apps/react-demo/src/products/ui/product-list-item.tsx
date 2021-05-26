@@ -11,7 +11,7 @@ type Props = {
   deleting?: boolean;
 };
 
-export const ProductListItemComp: FunctionComponent<Props> = ({
+export const ProductListItem: FunctionComponent<Props> = ({
   product,
   onDelete = () => null,
   deleting,
