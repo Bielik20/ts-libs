@@ -13,6 +13,11 @@ export function useStreamValue<T>(
     const stream$ = factory();
 
     subscription && subscription.unsubscribe();
+
+    if (!stream$) {
+      return undefined;
+    }
+
     setSubscription(
       stream$.subscribe(
         (v) => behaviorSubject$.next(v),
