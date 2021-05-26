@@ -1,44 +1,40 @@
 import { useDependency } from '@ns3/react-di';
-import { useStream, useUnsubscribe } from '@ns3/ts-utils';
+import { useStream, useStreamValue, useUnsubscribe } from '@ns3/ts-utils';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React from 'react';
 import { useProductQuery } from 'react-demo/products/hooks/use-product-query';
 import { Product } from 'react-demo/products/models/product';
-import { ProductsService } from 'react-demo/products/services/products.service';
+import { ProductsStore } from 'react-demo/products/services/products.store';
+import { ProductsDeletingSet } from 'react-demo/products/services/products-deleting.set';
+import { ProductsUpdatingSet } from 'react-demo/products/services/products-updating.set';
 import { ProductComp } from 'react-demo/products/ui/product.comp';
 import { ErrorComp } from 'react-demo/shared/error.comp';
 import { LoaderComp } from 'react-demo/shared/loader.comp';
 import { takeUntil } from 'rxjs/operators';
 
 export default function ProductDetails() {
-  const productsService = useDependency(ProductsService);
+  const productsStore = useDependency(ProductsStore);
+  const productsDeleting = useDependency(ProductsDeletingSet);
+  const productsUpdating = useDependency(ProductsUpdatingSet);
   const router = useRouter();
   const unsubscribe$ = useUnsubscribe([]);
   const productId = useProductQuery();
-  const [status, product, error] = useStream(() => productId && productsService.get(productId), [
+  const [status, product, error] = useStream(() => productId && productsStore.connect(productId), [
     productId,
   ]);
-  const [deleting, setDeleting] = useState(false);
-  const [updating, setUpdating] = useState(false);
+  const deleting = useStreamValue(() => productId && productsDeleting.has(productId), [productId]);
+  const updating = useStreamValue(() => productId && productsUpdating.has(productId), [productId]);
   const onDelete = () => {
-    setDeleting(true);
-    productsService
+    productsStore
       .delete(product.id)
       .pipe(takeUntil(unsubscribe$))
-      .subscribe(() => {
-        setDeleting(false);
-        router.push('.');
-      });
+      .subscribe(() => router.push('.'));
   };
   const onEdit = (newProduct: Product) => {
-    setUpdating(true);
-    productsService
-      .patch(newProduct.id, newProduct)
-      .pipe(takeUntil(unsubscribe$))
-      .subscribe(() => setUpdating(false));
+    productsStore.patch(newProduct.id, newProduct).subscribe();
   };
 
-  if (status === 'idle' || !productId) {
+  if (!productId) {
     return null;
   }
 
