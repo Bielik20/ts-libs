@@ -5,25 +5,26 @@ import React from 'react';
 import { useProductQuery } from 'react-demo/products/hooks/use-product-query';
 import { Product } from 'react-demo/products/models/product';
 import { ProductsStore } from 'react-demo/products/services/products.store';
-import { ProductsDeletingSet } from 'react-demo/products/services/products-deleting.set';
-import { ProductsUpdatingSet } from 'react-demo/products/services/products-updating.set';
 import { Product as ProductComponent } from 'react-demo/products/ui/product';
 import { ErrorComp } from 'react-demo/shared/error.comp';
 import { LoaderComp } from 'react-demo/shared/loader.comp';
+import { combineLatest } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 export default function ProductDetails() {
   const productsStore = useDependency(ProductsStore);
-  const productsDeleting = useDependency(ProductsDeletingSet);
-  const productsUpdating = useDependency(ProductsUpdatingSet);
   const router = useRouter();
   const unsubscribe$ = useUnsubscribe([]);
   const productId = useProductQuery();
   const [status, product, error] = useStream(() => productId && productsStore.connect(productId), [
     productId,
   ]);
-  const deleting = useStreamValue(() => productId && productsDeleting.has(productId), [productId]);
-  const updating = useStreamValue(() => productId && productsUpdating.has(productId), [productId]);
+  const [deleting, updating] = useStreamValue(
+    () =>
+      productId &&
+      combineLatest([productsStore.deleting.has(productId), productsStore.updating.has(productId)]),
+    [productId],
+  );
   const onDelete = () => {
     productsStore
       .delete(product.id)

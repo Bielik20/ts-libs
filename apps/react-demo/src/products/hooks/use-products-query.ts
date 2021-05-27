@@ -16,10 +16,10 @@ export function useProductsQuery(): ProductsQuery | false {
     if (typeof router.query.limit === 'undefined' || typeof router.query.skip === 'undefined') {
       router.replace({
         pathname: router.pathname,
-        query: store.selectedQuery$.value as any, // There is a problem with NextJS typing
+        query: store.query$.value as any, // There is a problem with NextJS typing
       });
 
-      return store.selectedQuery$.value;
+      return store.query$.value;
     }
 
     return {
