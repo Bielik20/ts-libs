@@ -23,7 +23,7 @@ export const AppLayout: React.FC = ({ children }) => {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" className={classes.title} component={Link} naked href="/">
-            Reactive Store
+            Reactive State
           </Typography>
           {examples.map((example) => (
             <Button key={example.title} color="inherit" component={Link} naked href={example.url}>

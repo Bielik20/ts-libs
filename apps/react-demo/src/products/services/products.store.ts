@@ -1,4 +1,4 @@
-import { RxConnectArrays, RxConnectMap, RxSet } from '@ns3/rx-store';
+import { RxConnectArrays, RxConnectMap, RxSet } from '@ns3/rx-state';
 import { omitUndefined } from '@ns3/ts-utils';
 import { Injectable } from '@wikia/dependency-injection';
 import { BehaviorSubject, Observable } from 'rxjs';

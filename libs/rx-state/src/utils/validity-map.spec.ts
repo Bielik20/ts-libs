@@ -18,7 +18,7 @@ describe('ValidityMap', () => {
   const oldValue = 50;
   const newValue = 100;
   let dateNowMock: jest.Mock;
-  let mockStore: RxMap<string, number>;
+  let mockRxMap: RxMap<string, number>;
   let factorySubject$: Subject<number>;
   let factoryMock: jest.Mock;
   let hooks: HooksMock;
@@ -27,14 +27,14 @@ describe('ValidityMap', () => {
   beforeEach(() => {
     dateNowMock = jest.fn().mockReturnValue(0);
     Date.now = dateNowMock;
-    mockStore = new RxMap<string, number>();
+    mockRxMap = new RxMap<string, number>();
     factorySubject$ = new Subject<number>();
     factoryMock = jest.fn(() => factorySubject$.asObservable());
     hooks = {
-      get: jest.fn((k) => mockStore.get$(k)),
+      get: jest.fn((k) => mockRxMap.get$(k)),
       set: jest.fn((k, v) => {
         validityMap.validate(k);
-        mockStore.set(k, v);
+        mockRxMap.set(k, v);
       }),
       connectingSet: {
         add: jest.fn(),
@@ -117,7 +117,7 @@ describe('ValidityMap', () => {
     it('should manually validate', () => {
       const results: number[] = [];
 
-      mockStore.set('a', newValue);
+      mockRxMap.set('a', newValue);
       validityMap.validate('a');
       validityMap.connect$('a', factoryMock).subscribe((v) => results.push(v));
       factorySubject$.next(oldValue);
@@ -230,9 +230,9 @@ describe('ValidityMap', () => {
       const results: number[] = [];
 
       validityMap.connect$('a', () => of(oldValue)).subscribe((v) => results.push(v));
-      mockStore.set('a', newValue);
-      mockStore.set('a', oldValue);
-      mockStore.set('a', newValue);
+      mockRxMap.set('a', newValue);
+      mockRxMap.set('a', oldValue);
+      mockRxMap.set('a', newValue);
 
       expect(results).toEqual([oldValue, newValue, oldValue, newValue]);
     });
@@ -250,7 +250,7 @@ describe('ValidityMap', () => {
       );
       factorySubject$.next(oldValue);
       factorySubject$.error(error);
-      mockStore.set('a', newValue);
+      mockRxMap.set('a', newValue);
 
       expect(results).toEqual([oldValue]);
       expect(errors).toEqual([error]);
