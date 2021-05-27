@@ -4,6 +4,7 @@ import { HttpInterceptors } from '@ns3/http-client';
 import { DiProvider, useDependencyInjection } from '@ns3/react-di';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import React from 'react';
 import { AppLayout } from 'react-demo/layout/app-layout';
 import { DelayInterceptor } from 'react-demo/shared/delay.interceptor';
@@ -11,6 +12,7 @@ import theme from '../src/theme';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const container = useDependencyInjection([HttpInterceptors.provide(DelayInterceptor)]);
+  const router = useRouter();
 
   React.useEffect(() => {
     // Remove the server-side injected CSS.
@@ -19,6 +21,10 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       jssStyles.parentElement.removeChild(jssStyles);
     }
   }, []);
+
+  if (!router.isReady) {
+    return null;
+  }
 
   return (
     <React.Fragment>

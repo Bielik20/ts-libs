@@ -1,11 +1,10 @@
 import { useRouter } from 'next/router';
+import { ProductQuery } from '../models/product-query';
 
-export function useProductQuery(): string | false {
+export function useProductQuery(): ProductQuery {
   const router = useRouter();
 
-  if (!router.isReady) {
-    return false;
-  }
-
-  return router.query.id as string;
+  return {
+    id: router.query.id as string,
+  };
 }
