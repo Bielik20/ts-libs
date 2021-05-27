@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { ConnectingSet } from '../models/connecting-set';
+import { ValidityMap, ValidityMapConfig } from '../utils/validity-map';
 import { RxMap } from './rx-map';
-import { ValidityMap, ValidityMapConfig } from './validity-map';
 
 interface RxConnectMapOptions<TKey> extends ValidityMapConfig {
   connectingSet?: ConnectingSet<TKey>;

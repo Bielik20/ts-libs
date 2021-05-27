@@ -1,6 +1,6 @@
 import { of, Subject } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { RxMap } from './rx-map';
+import { RxMap } from '../structures/rx-map';
 import { ValidityMap } from './validity-map';
 
 interface HooksMock {
