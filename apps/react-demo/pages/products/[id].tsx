@@ -15,15 +15,11 @@ export default function ProductDetails() {
   const productsStore = useDependency(ProductsStore);
   const router = useRouter();
   const unsubscribe$ = useUnsubscribe([]);
-  const productId = useProductQuery();
-  const [status, product, error] = useStream(() => productId && productsStore.connect(productId), [
-    productId,
-  ]);
+  const { id } = useProductQuery();
+  const [status, product, error] = useStream(() => productsStore.connect(id), [id]);
   const [deleting, updating] = useStreamValue(
-    () =>
-      productId &&
-      combineLatest([productsStore.deleting.has(productId), productsStore.updating.has(productId)]),
-    [productId],
+    () => combineLatest([productsStore.deleting.has(id), productsStore.updating.has(id)]),
+    [id],
   );
   const onDelete = () => {
     productsStore
@@ -34,10 +30,6 @@ export default function ProductDetails() {
   const onEdit = (newProduct: Product) => {
     productsStore.patch(newProduct.id, newProduct).subscribe();
   };
-
-  if (!productId) {
-    return null;
-  }
 
   if (status === 'error') {
     return <ErrorComp error={error} />;

@@ -4,15 +4,11 @@ import { useMemo } from 'react';
 import { ProductsQuery } from '../models/products-query';
 import { ProductsStore } from '../services/products.store';
 
-export function useProductsQuery(): ProductsQuery | false {
+export function useProductsQuery(): ProductsQuery {
   const store = useDependency(ProductsStore);
   const router = useRouter();
 
   return useMemo(() => {
-    if (!router.isReady) {
-      return false;
-    }
-
     if (typeof router.query.limit === 'undefined' || typeof router.query.skip === 'undefined') {
       router.replace({
         pathname: router.pathname,

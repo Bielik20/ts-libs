@@ -11,11 +11,7 @@ import { LoaderComp } from 'react-demo/shared/loader.comp';
 export default function Products() {
   const store = useDependency(ProductsStore);
   const query = useProductsQuery();
-  const [status, products, error] = useStream(() => query && store.connectQuery(query), [query]);
-
-  if (!query) {
-    return null;
-  }
+  const [status, products, error] = useStream(() => store.connectQuery(query), [query]);
 
   if (status === 'error') {
     return (
