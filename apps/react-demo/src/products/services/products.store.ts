@@ -45,10 +45,35 @@ export class ProductsStore {
     this.deleting.add(id);
 
     return this.service.delete(id).pipe(
-      tap(() => {
-        this.entities.delete(id);
-        this.deleting.delete(id);
-        this.queried.invalidateAll();
+      tap({
+        next: () => {
+          this.entities.delete(id);
+          this.deleting.delete(id);
+          this.queried.invalidateAll();
+        },
+        error: () => {
+          this.deleting.delete(id);
+        },
+      }),
+    );
+  }
+
+  deleteOptimistic(id: string): Observable<void> {
+    const oldValue = this.entities.get(id);
+
+    this.deleting.add(id);
+    this.entities.delete(id);
+
+    return this.service.delete(id).pipe(
+      tap({
+        next: () => {
+          this.deleting.delete(id);
+          this.queried.invalidateAll();
+        },
+        error: () => {
+          this.deleting.delete(id);
+          this.entities.set(id, oldValue);
+        },
       }),
     );
   }

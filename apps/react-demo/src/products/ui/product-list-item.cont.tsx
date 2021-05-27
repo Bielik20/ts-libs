@@ -15,6 +15,16 @@ export const ProductListItemCont: FunctionComponent<Props> = ({ product }) => {
   const onDelete = () => {
     productsStore.delete(product.id).subscribe();
   };
+  const onDeleteOptimistic = () => {
+    productsStore.deleteOptimistic(product.id).subscribe();
+  };
 
-  return <ProductListItem product={product} onDelete={onDelete} deleting={deleting} />;
+  return (
+    <ProductListItem
+      product={product}
+      onDelete={onDelete}
+      onDeleteOptimistic={onDeleteOptimistic}
+      deleting={deleting}
+    />
+  );
 };

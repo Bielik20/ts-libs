@@ -1,5 +1,5 @@
 import { IconButton, ListItem, ListItemSecondaryAction, ListItemText } from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
+import { Delete, DeleteForever } from '@material-ui/icons';
 import { useRouter } from 'next/router';
 import { FunctionComponent, MouseEventHandler } from 'react';
 import { Link } from 'react-demo/layout/link';
@@ -8,12 +8,14 @@ import { Product } from 'react-demo/products/models/product';
 type Props = {
   product: Product;
   onDelete?: MouseEventHandler;
+  onDeleteOptimistic?: MouseEventHandler;
   deleting?: boolean;
 };
 
 export const ProductListItem: FunctionComponent<Props> = ({
   product,
   onDelete = () => null,
+  onDeleteOptimistic = () => null,
   deleting,
 }) => {
   const router = useRouter();
@@ -24,7 +26,10 @@ export const ProductListItem: FunctionComponent<Props> = ({
       {deleting && <ListItemText secondary={'Deleting...'} />}
       <ListItemSecondaryAction>
         <IconButton onClick={onDelete} edge="end" aria-label="delete">
-          <DeleteIcon />
+          <Delete />
+        </IconButton>
+        <IconButton onClick={onDeleteOptimistic} edge="end" aria-label="delete-optimistic">
+          <DeleteForever />
         </IconButton>
       </ListItemSecondaryAction>
     </ListItem>
