@@ -1,10 +1,21 @@
 {
   "version": 2,
-  "cli": { "defaultCollection": "@nrwl/react" },
+  "cli": {
+    "defaultCollection": "@nrwl/react"
+  },
   "defaultProject": "react-demo",
   "generators": {
-    "@nrwl/react": { "application": { "babel": true } },
-    "@nrwl/next": { "application": { "style": "css", "linter": "eslint" } }
+    "@nrwl/react": {
+      "application": {
+        "babel": true
+      }
+    },
+    "@nrwl/next": {
+      "application": {
+        "style": "css",
+        "linter": "eslint"
+      }
+    }
   },
   "projects": {
     "react-demo": {
@@ -15,28 +26,46 @@
         "build": {
           "executor": "@nrwl/next:build",
           "outputs": ["{options.outputPath}"],
-          "options": { "root": "apps/react-demo", "outputPath": "dist/apps/react-demo" },
-          "configurations": { "production": {} }
+          "options": {
+            "root": "apps/react-demo",
+            "outputPath": "dist/apps/react-demo"
+          },
+          "configurations": {
+            "production": {}
+          }
         },
         "serve": {
           "executor": "@nrwl/next:server",
-          "options": { "buildTarget": "react-demo:build", "dev": true },
+          "options": {
+            "buildTarget": "react-demo:build",
+            "dev": true
+          },
           "configurations": {
-            "production": { "buildTarget": "react-demo:build:production", "dev": false }
+            "production": {
+              "buildTarget": "react-demo:build:production",
+              "dev": false
+            }
           }
         },
         "export": {
           "executor": "@nrwl/next:export",
-          "options": { "buildTarget": "react-demo:build:production" }
+          "options": {
+            "buildTarget": "react-demo:build:production"
+          }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/apps/react-demo"],
-          "options": { "jestConfig": "apps/react-demo/jest.config.js", "passWithNoTests": true }
+          "options": {
+            "jestConfig": "apps/react-demo/jest.config.js",
+            "passWithNoTests": true
+          }
         },
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "options": { "lintFilePatterns": ["apps/react-demo/**/*.{ts,tsx,js,jsx}"] }
+          "options": {
+            "lintFilePatterns": ["apps/react-demo/**/*.{ts,tsx,js,jsx}"]
+          }
         }
       }
     },
@@ -52,11 +81,17 @@
             "tsConfig": "apps/react-demo-e2e/tsconfig.e2e.json",
             "devServerTarget": "react-demo:serve"
           },
-          "configurations": { "production": { "devServerTarget": "react-demo:serve:production" } }
+          "configurations": {
+            "production": {
+              "devServerTarget": "react-demo:serve:production"
+            }
+          }
         },
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "options": { "lintFilePatterns": ["apps/react-demo-e2e/**/*.{js,ts}"] }
+          "options": {
+            "lintFilePatterns": ["apps/react-demo-e2e/**/*.{js,ts}"]
+          }
         }
       }
     },
@@ -75,20 +110,35 @@
             "entryFile": "libs/ts-utils/src/index.ts",
             "external": ["react", "react-dom"],
             "rollupConfig": "./tools/src/plugins/react-rollup-plugin",
-            "assets": [{ "glob": "libs/ts-utils/README.md", "input": ".", "output": "." }]
+            "assets": [
+              {
+                "glob": "libs/ts-utils/README.md",
+                "input": ".",
+                "output": "."
+              }
+            ]
           }
         },
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "options": { "lintFilePatterns": ["libs/ts-utils/**/*.{ts,tsx,js,jsx}"] }
+          "options": {
+            "lintFilePatterns": ["libs/ts-utils/**/*.{ts,tsx,js,jsx}"]
+          }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/ts-utils"],
-          "options": { "jestConfig": "libs/ts-utils/jest.config.js", "passWithNoTests": true }
+          "options": {
+            "jestConfig": "libs/ts-utils/jest.config.js",
+            "passWithNoTests": true
+          }
         },
-        "version": { "executor": "@ns3/nx-npm:version" },
-        "publish": { "executor": "@ns3/nx-npm:publish" }
+        "version": {
+          "executor": "@ns3/nx-npm:version"
+        },
+        "publish": {
+          "executor": "@ns3/nx-npm:publish"
+        }
       }
     },
     "redux-entity": {
@@ -106,20 +156,35 @@
             "entryFile": "libs/redux-entity/src/index.ts",
             "external": ["react", "react-dom"],
             "rollupConfig": "./tools/src/plugins/react-rollup-plugin",
-            "assets": [{ "glob": "libs/redux-entity/README.md", "input": ".", "output": "." }]
+            "assets": [
+              {
+                "glob": "libs/redux-entity/README.md",
+                "input": ".",
+                "output": "."
+              }
+            ]
           }
         },
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "options": { "lintFilePatterns": ["libs/redux-entity/**/*.{ts,tsx,js,jsx}"] }
+          "options": {
+            "lintFilePatterns": ["libs/redux-entity/**/*.{ts,tsx,js,jsx}"]
+          }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/redux-entity"],
-          "options": { "jestConfig": "libs/redux-entity/jest.config.js", "passWithNoTests": true }
+          "options": {
+            "jestConfig": "libs/redux-entity/jest.config.js",
+            "passWithNoTests": true
+          }
         },
-        "version": { "executor": "@ns3/nx-npm:version" },
-        "publish": { "executor": "@ns3/nx-npm:publish" }
+        "version": {
+          "executor": "@ns3/nx-npm:version"
+        },
+        "publish": {
+          "executor": "@ns3/nx-npm:publish"
+        }
       }
     },
     "http-client": {
@@ -137,20 +202,35 @@
             "entryFile": "libs/http-client/src/index.ts",
             "external": ["react", "react-dom"],
             "rollupConfig": "./tools/src/plugins/react-rollup-plugin",
-            "assets": [{ "glob": "libs/http-client/README.md", "input": ".", "output": "." }]
+            "assets": [
+              {
+                "glob": "libs/http-client/README.md",
+                "input": ".",
+                "output": "."
+              }
+            ]
           }
         },
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "options": { "lintFilePatterns": ["libs/http-client/**/*.{ts,tsx,js,jsx}"] }
+          "options": {
+            "lintFilePatterns": ["libs/http-client/**/*.{ts,tsx,js,jsx}"]
+          }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/http-client"],
-          "options": { "jestConfig": "libs/http-client/jest.config.js", "passWithNoTests": true }
+          "options": {
+            "jestConfig": "libs/http-client/jest.config.js",
+            "passWithNoTests": true
+          }
         },
-        "version": { "executor": "@ns3/nx-npm:version" },
-        "publish": { "executor": "@ns3/nx-npm:publish" }
+        "version": {
+          "executor": "@ns3/nx-npm:version"
+        },
+        "publish": {
+          "executor": "@ns3/nx-npm:publish"
+        }
       }
     },
     "react-di": {
@@ -168,51 +248,81 @@
             "entryFile": "libs/react-di/src/index.ts",
             "external": ["react", "react-dom"],
             "rollupConfig": "./tools/src/plugins/react-rollup-plugin",
-            "assets": [{ "glob": "libs/react-di/README.md", "input": ".", "output": "." }]
+            "assets": [
+              {
+                "glob": "libs/react-di/README.md",
+                "input": ".",
+                "output": "."
+              }
+            ]
           }
         },
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "options": { "lintFilePatterns": ["libs/react-di/**/*.{ts,tsx,js,jsx}"] }
+          "options": {
+            "lintFilePatterns": ["libs/react-di/**/*.{ts,tsx,js,jsx}"]
+          }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/react-di"],
-          "options": { "jestConfig": "libs/react-di/jest.config.js", "passWithNoTests": true }
+          "options": {
+            "jestConfig": "libs/react-di/jest.config.js",
+            "passWithNoTests": true
+          }
         },
-        "version": { "executor": "@ns3/nx-npm:version" },
-        "publish": { "executor": "@ns3/nx-npm:publish" }
+        "version": {
+          "executor": "@ns3/nx-npm:version"
+        },
+        "publish": {
+          "executor": "@ns3/nx-npm:publish"
+        }
       }
     },
-    "rx-store": {
-      "root": "libs/rx-store",
-      "sourceRoot": "libs/rx-store/src",
+    "rx-state": {
+      "root": "libs/rx-state",
+      "sourceRoot": "libs/rx-state/src",
       "projectType": "library",
       "targets": {
         "build": {
           "executor": "@nrwl/web:package",
           "outputs": ["{options.outputPath}"],
           "options": {
-            "outputPath": "dist/libs/rx-store",
-            "tsConfig": "libs/rx-store/tsconfig.lib.json",
-            "project": "libs/rx-store/package.json",
-            "entryFile": "libs/rx-store/src/index.ts",
+            "outputPath": "dist/libs/rx-state",
+            "tsConfig": "libs/rx-state/tsconfig.lib.json",
+            "project": "libs/rx-state/package.json",
+            "entryFile": "libs/rx-state/src/index.ts",
             "external": ["react", "react-dom"],
             "rollupConfig": "./tools/src/plugins/react-rollup-plugin",
-            "assets": [{ "glob": "libs/rx-store/README.md", "input": ".", "output": "." }]
+            "assets": [
+              {
+                "glob": "libs/rx-state/README.md",
+                "input": ".",
+                "output": "."
+              }
+            ]
           }
         },
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "options": { "lintFilePatterns": ["libs/rx-store/**/*.{ts,tsx,js,jsx}"] }
+          "options": {
+            "lintFilePatterns": ["libs/rx-state/**/*.{ts,tsx,js,jsx}"]
+          }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/rx-store"],
-          "options": { "jestConfig": "libs/rx-store/jest.config.js", "passWithNoTests": true }
+          "outputs": ["coverage/libs/rx-state"],
+          "options": {
+            "jestConfig": "libs/rx-state/jest.config.js",
+            "passWithNoTests": true
+          }
         },
-        "version": { "executor": "@ns3/nx-npm:version" },
-        "publish": { "executor": "@ns3/nx-npm:publish" }
+        "version": {
+          "executor": "@ns3/nx-npm:version"
+        },
+        "publish": {
+          "executor": "@ns3/nx-npm:publish"
+        }
       }
     }
   }

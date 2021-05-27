@@ -1,5 +1,5 @@
 {
-  "name": "@ns3/rx-store",
+  "name": "@ns3/rx-state",
   "version": "0.0.1",
   "repository": {
     "type": "git",

@@ -11,10 +11,10 @@ export default function Index() {
     <Container maxWidth="md">
       <Box my={4}>
         <Typography variant="h1" component="h1">
-          Reactive Store
+          Reactive State
         </Typography>
         <Typography variant="h6" component="h2" gutterBottom>
-          Recipes of different complexity how to use Reactive Store utilities.
+          Recipes of different complexity how to use Reactive State utilities.
         </Typography>
       </Box>
       <Grid container spacing={5}>

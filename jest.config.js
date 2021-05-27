@@ -5,6 +5,6 @@ module.exports = {
     '<rootDir>/libs/http-client',
     '<rootDir>/libs/react-di',
     '<rootDir>/apps/react-demo',
-    '<rootDir>/libs/rx-store',
+    '<rootDir>/libs/rx-state',
   ],
 };
