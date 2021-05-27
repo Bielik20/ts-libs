@@ -1,9 +1,16 @@
-import { IconButton, ListItem, ListItemSecondaryAction, ListItemText } from '@material-ui/core';
+import {
+  IconButton,
+  ListItem,
+  ListItemAvatar,
+  ListItemSecondaryAction,
+  ListItemText,
+} from '@material-ui/core';
 import { Delete, DeleteForever } from '@material-ui/icons';
 import { useRouter } from 'next/router';
 import { FunctionComponent, MouseEventHandler } from 'react';
 import { Link } from 'react-demo/layout/link';
 import { Product } from 'react-demo/products/models/product';
+import { ProductAvatar } from './product-avatar';
 
 type Props = {
   product: Product;
@@ -22,6 +29,9 @@ export const ProductListItem: FunctionComponent<Props> = ({
 
   return (
     <ListItem button key={product.id} component={Link} href={`${router.pathname}/${product.id}`}>
+      <ListItemAvatar>
+        <ProductAvatar product={product} />
+      </ListItemAvatar>
       <ListItemText primary={product.name} secondary={product.price} />
       {deleting && <ListItemText secondary={'Deleting...'} />}
       <ListItemSecondaryAction>

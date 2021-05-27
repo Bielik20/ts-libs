@@ -18,6 +18,7 @@ async function getProduct(req: NextApiRequest, res: NextApiResponse) {
   if (!product) {
     res.status(404).send('Not Found');
   }
+
   return res.send(product);
 }
 

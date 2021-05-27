@@ -1,7 +1,8 @@
-import { Button, Card, CardActions, CardContent } from '@material-ui/core';
+import { Button, Card, CardActions, CardContent, CardHeader } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import { FunctionComponent, MouseEventHandler } from 'react';
 import { Product } from 'react-demo/products/models/product';
+import { ProductAvatar } from './product-avatar';
 
 type Props = {
   product: Product;
@@ -11,13 +12,12 @@ type Props = {
 export const ProductCard: FunctionComponent<Props> = ({ product, onDelete = () => null }) => {
   return (
     <Card>
+      <CardHeader
+        avatar={<ProductAvatar product={product} />}
+        title={<Typography variant="h5">{product.name}</Typography>}
+        subheader={product.id}
+      />
       <CardContent>
-        <Typography variant="h5" component="h2" gutterBottom>
-          {product.name}
-        </Typography>
-        <Typography variant="body2" component="p" gutterBottom>
-          Id: {product.id}
-        </Typography>
         <Typography variant="body1" component="p">
           Price: {product.price}
         </Typography>
