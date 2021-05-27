@@ -3,7 +3,6 @@ import { useStreamValue } from '@ns3/ts-utils';
 import { FunctionComponent } from 'react';
 import { Product } from 'react-demo/products/models/product';
 import { ProductsStore } from '../services/products.store';
-import { ProductsDeletingSet } from '../services/products-deleting.set';
 import { ProductListItem } from './product-list-item';
 
 type Props = {
@@ -12,8 +11,7 @@ type Props = {
 
 export const ProductListItemCont: FunctionComponent<Props> = ({ product }) => {
   const productsStore = useDependency(ProductsStore);
-  const productsDeleting = useDependency(ProductsDeletingSet);
-  const deleting = useStreamValue(() => productsDeleting.has(product.id), [product.id]);
+  const deleting = useStreamValue(() => productsStore.deleting.has(product.id), [product.id]);
   const onDelete = () => {
     productsStore.delete(product.id).subscribe();
   };
