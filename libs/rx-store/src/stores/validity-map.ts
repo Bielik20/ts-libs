@@ -25,7 +25,7 @@ export class ValidityMap<TKey, TValue> {
     this.connectingSet = hooks.connectingSet || noopConnectingSet;
   }
 
-  connect(key: TKey, factory: () => Observable<TValue>): Observable<TValue | undefined> {
+  connect$(key: TKey, factory: () => Observable<TValue>): Observable<TValue | undefined> {
     const expiresAt = this.expiresAtMap.get(key);
 
     if (expiresAt === undefined) {

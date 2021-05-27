@@ -11,7 +11,7 @@ type Props = {
 
 export const ProductListItemCont: FunctionComponent<Props> = ({ product }) => {
   const productsStore = useDependency(ProductsStore);
-  const deleting = useStreamValue(() => productsStore.deleting.has(product.id), [product.id]);
+  const deleting = useStreamValue(() => productsStore.deleting.has$(product.id), [product.id]);
   const onDelete = () => {
     productsStore.delete(product.id).subscribe();
   };

@@ -22,14 +22,24 @@ export class RxArrays<
     this.keyMapper = keyMapper;
   }
 
-  get(key: TKey): Observable<Array<TItemValue> | undefined> {
+  get$(key: TKey): Observable<Array<TItemValue> | undefined> {
     return this.ensure(key).pipe(mapKeysToValues(this.itemsMap));
+  }
+
+  get(key: TKey): Array<TItemValue> | undefined {
+    const itemKeys = this.ensure(key).value;
+
+    if (!key) {
+      return undefined;
+    }
+
+    return itemKeys.map((itemKey) => this.itemsMap.get(itemKey));
   }
 
   set(key: TKey, itemsToSet: ReadonlyArray<TItemValue>): void {
     const [itemKeys, itemsEntries] = this.mapKeysAndEntries(itemsToSet);
 
-    this.itemsMap.setMany(itemsEntries);
+    this.itemsMap.setEntries(itemsEntries);
     this.updateValue(key, itemKeys);
   }
 
@@ -37,7 +47,7 @@ export class RxArrays<
     const [itemKeys, itemsEntries] = this.mapKeysAndEntries(itemsToAppend);
     const currentItemsKeys = this.ensure(key).value || [];
 
-    this.itemsMap.setMany(itemsEntries);
+    this.itemsMap.setEntries(itemsEntries);
     this.updateValue(key, [...currentItemsKeys, ...itemKeys]);
   }
 
@@ -45,7 +55,7 @@ export class RxArrays<
     const [itemKeys, itemsEntries] = this.mapKeysAndEntries(itemsToPrepend);
     const currentItemsKeys = this.ensure(key).value || [];
 
-    this.itemsMap.setMany(itemsEntries);
+    this.itemsMap.setEntries(itemsEntries);
     this.updateValue(key, [...itemKeys, ...currentItemsKeys]);
   }
 

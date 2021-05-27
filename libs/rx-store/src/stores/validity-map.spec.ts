@@ -31,7 +31,7 @@ describe('ValidityMap', () => {
     factorySubject$ = new Subject<number>();
     factoryMock = jest.fn(() => factorySubject$.asObservable());
     hooks = {
-      get: jest.fn((k) => mockStore.get(k)),
+      get: jest.fn((k) => mockStore.get$(k)),
       set: jest.fn((k, v) => {
         validityMap.validate(k);
         mockStore.set(k, v);
@@ -119,7 +119,7 @@ describe('ValidityMap', () => {
 
       mockStore.set('a', newValue);
       validityMap.validate('a');
-      validityMap.connect('a', factoryMock).subscribe((v) => results.push(v));
+      validityMap.connect$('a', factoryMock).subscribe((v) => results.push(v));
       factorySubject$.next(oldValue);
 
       expect(results).toEqual([newValue]);
@@ -130,13 +130,13 @@ describe('ValidityMap', () => {
       const results: number[] = [];
 
       validityMap
-        .connect('a', factoryMock)
+        .connect$('a', factoryMock)
         .pipe(take(1))
         .subscribe((v) => results.push(v));
       factorySubject$.next(oldValue);
       validityMap.invalidate('a');
       validityMap
-        .connect('a', factoryMock)
+        .connect$('a', factoryMock)
         .pipe(take(1))
         .subscribe((v) => results.push(v));
       factorySubject$.next(newValue);
@@ -150,20 +150,20 @@ describe('ValidityMap', () => {
       const bResults: number[] = [];
 
       validityMap
-        .connect('a', () => of(oldValue))
+        .connect$('a', () => of(oldValue))
         .pipe(take(1))
         .subscribe((v) => aResults.push(v));
       validityMap
-        .connect('b', () => of(oldValue))
+        .connect$('b', () => of(oldValue))
         .pipe(take(1))
         .subscribe((v) => bResults.push(v));
       validityMap.invalidateAll();
       validityMap
-        .connect('a', factoryMock)
+        .connect$('a', factoryMock)
         .pipe(take(1))
         .subscribe((v) => aResults.push(v));
       validityMap
-        .connect('b', factoryMock)
+        .connect$('b', factoryMock)
         .pipe(take(1))
         .subscribe((v) => bResults.push(v));
       factorySubject$.next(newValue);
@@ -178,10 +178,10 @@ describe('ValidityMap', () => {
     it('should not connect if valid', () => {
       const results: number[] = [];
 
-      validityMap.connect('a', () => of(oldValue)).subscribe();
+      validityMap.connect$('a', () => of(oldValue)).subscribe();
       hooks.connectingSet.add.mockClear();
       hooks.connectingSet.delete.mockClear();
-      validityMap.connect('a', factoryMock).subscribe((v) => results.push(v));
+      validityMap.connect$('a', factoryMock).subscribe((v) => results.push(v));
       factorySubject$.next(newValue);
 
       expect(results).toEqual([oldValue]);
@@ -195,7 +195,7 @@ describe('ValidityMap', () => {
     it('should connect eagerly first call', () => {
       const results: number[] = [];
 
-      validityMap.connect('a', factoryMock).subscribe((v) => results.push(v));
+      validityMap.connect$('a', factoryMock).subscribe((v) => results.push(v));
       factorySubject$.next(newValue);
 
       expect(results).toEqual([newValue]);
@@ -212,7 +212,7 @@ describe('ValidityMap', () => {
     it('should emit multiple from connect', () => {
       const results: number[] = [];
 
-      validityMap.connect('a', factoryMock).subscribe((v) => results.push(v));
+      validityMap.connect$('a', factoryMock).subscribe((v) => results.push(v));
       factorySubject$.next(oldValue);
       factorySubject$.next(newValue);
       factorySubject$.next(oldValue);
@@ -229,7 +229,7 @@ describe('ValidityMap', () => {
     it('should emit multiple from get hook', () => {
       const results: number[] = [];
 
-      validityMap.connect('a', () => of(oldValue)).subscribe((v) => results.push(v));
+      validityMap.connect$('a', () => of(oldValue)).subscribe((v) => results.push(v));
       mockStore.set('a', newValue);
       mockStore.set('a', oldValue);
       mockStore.set('a', newValue);
@@ -244,7 +244,7 @@ describe('ValidityMap', () => {
       const errors: Error[] = [];
       const error = new Error('Test Error');
 
-      validityMap.connect('a', factoryMock).subscribe(
+      validityMap.connect$('a', factoryMock).subscribe(
         (v) => results.push(v),
         (error) => errors.push(error),
       );
@@ -264,11 +264,11 @@ describe('ValidityMap', () => {
   function connectAfterInvalid(): number[] {
     const results: number[] = [];
 
-    validityMap.connect('a', () => of(oldValue)).subscribe();
+    validityMap.connect$('a', () => of(oldValue)).subscribe();
     hooks.connectingSet.add.mockClear();
     hooks.connectingSet.delete.mockClear();
     advanceTime(moreThanTimeout);
-    validityMap.connect('a', factoryMock).subscribe((v) => results.push(v));
+    validityMap.connect$('a', factoryMock).subscribe((v) => results.push(v));
     factorySubject$.next(newValue);
 
     expect(hooks.connectingSet.add).toHaveBeenCalledWith('a');
@@ -287,11 +287,11 @@ describe('ValidityMap', () => {
     const firstResults: number[] = [];
     const secondResults: number[] = [];
 
-    validityMap.connect('a', () => of(oldValue)).subscribe();
+    validityMap.connect$('a', () => of(oldValue)).subscribe();
     advanceTime(moreThanTimeout);
-    validityMap.connect('b', () => of(oldValue)).subscribe();
-    validityMap.connect('a', factoryMock).subscribe((v) => firstResults.push(v));
-    validityMap.connect('b', factoryMock).subscribe((v) => secondResults.push(v));
+    validityMap.connect$('b', () => of(oldValue)).subscribe();
+    validityMap.connect$('a', factoryMock).subscribe((v) => firstResults.push(v));
+    validityMap.connect$('b', factoryMock).subscribe((v) => secondResults.push(v));
     factorySubject$.next(newValue);
 
     return { firstResults, secondResults };

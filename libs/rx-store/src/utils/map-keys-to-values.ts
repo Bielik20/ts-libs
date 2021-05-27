@@ -14,7 +14,7 @@ export function mapKeysToValues<TKey, TValue>(itemsMap: RxMap<TKey, TValue>) {
         }
         return of(itemsKeys).pipe(
           switchMap((itemsKeys) =>
-            combineLatest(itemsKeys.map((itemKey) => itemsMap.get(itemKey))),
+            combineLatest(itemsKeys.map((itemKey) => itemsMap.get$(itemKey))),
           ),
           map((values) => values.filter(isNotUndefined)),
         );

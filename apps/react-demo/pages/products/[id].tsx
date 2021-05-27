@@ -16,9 +16,9 @@ export default function ProductDetails() {
   const router = useRouter();
   const unsubscribe$ = useUnsubscribe([]);
   const { id } = useProductQuery();
-  const [status, product, error] = useStream(() => productsStore.connect(id), [id]);
+  const [status, product, error] = useStream(() => productsStore.connect$(id), [id]);
   const [deleting, updating] = useStreamValue(
-    () => combineLatest([productsStore.deleting.has(id), productsStore.updating.has(id)]),
+    () => combineLatest([productsStore.deleting.has$(id), productsStore.updating.has$(id)]),
     [id],
   );
   const onDelete = () => {
