@@ -7,10 +7,17 @@ export class ProductsRepository {
   private data = generateProducts();
 
   async get(id: string): Promise<Product> {
-    return this.data.find((x) => x.id === id);
+    const product = this.data.find((x) => x.id === id);
+
+    if (product.shouldFail) {
+      throw new Error('Should Fail');
+    }
+
+    return product;
   }
 
   async delete(id: string): Promise<void> {
+    await this.get(id);
     this.data = this.data.filter((x) => x.id !== id);
   }
 
@@ -27,7 +34,7 @@ export class ProductsRepository {
   }
 
   async patch(id: string, value: Partial<Product>): Promise<Product> {
-    const current = this.data.find((x) => x.id === id);
+    const current = await this.get(id);
     const toUpdate = {
       ...current,
       ...value,

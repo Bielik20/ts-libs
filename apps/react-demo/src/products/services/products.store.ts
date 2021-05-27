@@ -88,9 +88,14 @@ export class ProductsStore {
     this.updating.add(id);
 
     return this.service.patch(id, value).pipe(
-      tap((product) => {
-        this.entities.set(product.id, product);
-        this.updating.delete(id);
+      tap({
+        next: (product) => {
+          this.updating.delete(id);
+          this.entities.set(product.id, product);
+        },
+        error: () => {
+          this.updating.delete(id);
+        },
       }),
     );
   }

@@ -28,7 +28,9 @@ export default function ProductDetails() {
       .subscribe(() => router.push('.'));
   };
   const onEdit = (newProduct: Product) => {
-    productsStore.patch(newProduct.id, newProduct).subscribe();
+    productsStore
+      .patch(newProduct.id, newProduct)
+      .subscribe({ error: (error) => alert(error.message) });
   };
 
   if (status === 'error') {

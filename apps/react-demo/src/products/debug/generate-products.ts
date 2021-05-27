@@ -8,9 +8,12 @@ export function generateProducts(): Product[] {
 }
 
 function generateProduct(): Product {
+  const shouldFail = faker.datatype.boolean();
+
   return {
     id: faker.datatype.uuid(),
     name: faker.vehicle.vehicle(),
     price: +faker.finance.amount(10, 10000, 0),
+    shouldFail,
   };
 }
