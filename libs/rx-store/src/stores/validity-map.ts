@@ -1,5 +1,5 @@
-import { EMPTY, merge, Observable, throwError } from 'rxjs';
-import { catchError, exhaustMap, switchMap, tap } from 'rxjs/operators';
+import { EMPTY, merge, Observable } from 'rxjs';
+import { exhaustMap, switchMap, tap } from 'rxjs/operators';
 import { ConnectingSet, noopConnectingSet } from '../models/connecting-set';
 
 export interface ValidityMapConfig {
@@ -68,13 +68,12 @@ export class ValidityMap<TKey, TValue> {
     this.connectingSet.add(key);
 
     return factory().pipe(
-      tap((value) => {
-        this.connectingSet.delete(key);
-        this.hooks.set(key, value);
-      }),
-      catchError((err) => {
-        this.connectingSet.delete(key);
-        return throwError(err);
+      tap({
+        next: (value) => {
+          this.connectingSet.delete(key);
+          this.hooks.set(key, value);
+        },
+        error: () => this.connectingSet.delete(key),
       }),
     );
   }
