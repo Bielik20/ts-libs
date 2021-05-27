@@ -7,7 +7,7 @@ export class RxObject<T extends object> extends BehaviorSubject<T> {
     super(initialValue);
   }
 
-  fragment<TKey extends keyof T>(
+  fragment$<TKey extends keyof T>(
     key: TKey,
     compare?: (x: T[TKey], y: T[TKey]) => boolean,
   ): Observable<T[TKey]> {

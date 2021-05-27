@@ -11,8 +11,8 @@ describe('RxSet', () => {
     const aValues: boolean[] = [];
     const sizeValues: number[] = [];
 
-    rxSet.has('a').subscribe((v) => aValues.push(v));
-    rxSet.size().subscribe((v) => sizeValues.push(v));
+    rxSet.has$('a').subscribe((v) => aValues.push(v));
+    rxSet.size$.subscribe((v) => sizeValues.push(v));
 
     expect(aValues).toEqual([false]);
     expect(sizeValues).toEqual([0]);
@@ -22,7 +22,7 @@ describe('RxSet', () => {
     it('should should only emit on change value', () => {
       const aValues: boolean[] = [];
 
-      rxSet.has('a').subscribe((v) => aValues.push(v));
+      rxSet.has$('a').subscribe((v) => aValues.push(v));
 
       rxSet.delete('a');
       rxSet.delete('a');
@@ -48,10 +48,10 @@ describe('RxSet', () => {
       const sizeValues: number[] = [];
       const keysValues: string[][] = [];
 
-      rxSet.has('a').subscribe((v) => aValues.push(v));
-      rxSet.has('b').subscribe((v) => bValues.push(v));
-      rxSet.size().subscribe((v) => sizeValues.push(v));
-      rxSet.keys().subscribe((v) => keysValues.push(v));
+      rxSet.has$('a').subscribe((v) => aValues.push(v));
+      rxSet.has$('b').subscribe((v) => bValues.push(v));
+      rxSet.size$.subscribe((v) => sizeValues.push(v));
+      rxSet.keys$().subscribe((v) => keysValues.push(v));
 
       rxSet.add('a');
 
@@ -89,9 +89,9 @@ describe('RxSet', () => {
 
       rxSet.add('a');
 
-      rxSet.has('a').subscribe((v) => aValues.push(v));
-      rxSet.size().subscribe((v) => sizeValues.push(v));
-      rxSet.keys().subscribe((v) => keysValues.push(v));
+      rxSet.has$('a').subscribe((v) => aValues.push(v));
+      rxSet.size$.subscribe((v) => sizeValues.push(v));
+      rxSet.keys$().subscribe((v) => keysValues.push(v));
 
       expect(aValues).toEqual([true]);
       expect(sizeValues).toEqual([1]);
@@ -107,7 +107,7 @@ describe('RxSet', () => {
 
       const sizeValues: number[] = [];
 
-      rxSet.size().subscribe((v) => sizeValues.push(v));
+      rxSet.size$.subscribe((v) => sizeValues.push(v));
 
       rxSet.clear();
 

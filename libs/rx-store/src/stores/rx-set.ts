@@ -6,16 +6,28 @@ export class RxSet<TKey> {
   protected set$ = new BehaviorSubject<void>(undefined);
   protected map = new Map<TKey, BehaviorSubject<boolean>>();
 
-  size(): Observable<number> {
-    return this.set$.pipe(map(() => this.set.size));
+  get size$(): Observable<number> {
+    return this.set$.pipe(map(() => this.size));
   }
 
-  keys(): Observable<TKey[]> {
-    return this.set$.pipe(map(() => Array.from(this.set.keys())));
+  get size(): number {
+    return this.set.size;
   }
 
-  has(key: TKey): Observable<boolean> {
+  keys$(): Observable<TKey[]> {
+    return this.set$.pipe(map(() => this.keys()));
+  }
+
+  keys(): TKey[] {
+    return Array.from(this.set.keys());
+  }
+
+  has$(key: TKey): Observable<boolean> {
     return this.ensure(key);
+  }
+
+  has(key: TKey): boolean {
+    return this.ensure(key).value;
   }
 
   add(key: TKey): void {

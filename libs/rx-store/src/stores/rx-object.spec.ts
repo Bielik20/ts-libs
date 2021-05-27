@@ -60,7 +60,7 @@ describe('RxObject', () => {
         second: 'new',
       };
 
-      rxObject$.fragment('wrap').subscribe((v) => results.push(v));
+      rxObject$.fragment$('wrap').subscribe((v) => results.push(v));
       rxObject$.patch({ foo: 'new' });
       rxObject$.reset();
 

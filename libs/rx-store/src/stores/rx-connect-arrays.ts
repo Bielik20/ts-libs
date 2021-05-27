@@ -22,16 +22,16 @@ export class RxConnectArrays<
     super(options);
     this.validityMap = new ValidityMap(options, {
       connectingSet: options.connectingSet,
-      get: (key) => this.get(key),
+      get: (key) => this.get$(key),
       set: (key, value) => this.set(key, value),
     });
   }
 
-  connect(
+  connect$(
     key: TKey,
     factory: () => Observable<ReadonlyArray<TItemValue>>,
   ): Observable<ReadonlyArray<TItemValue> | undefined> {
-    return this.validityMap.connect(key, factory);
+    return this.validityMap.connect$(key, factory);
   }
 
   invalidate(key: TKey): void {

@@ -11,22 +11,36 @@ export class RxMap<TKey, TValue> {
   protected changeSubject$ = new Subject<Change<TKey, TValue>>();
   readonly change$ = this.changeSubject$.asObservable();
 
-  keys(): Observable<TKey[]> {
-    return this.map$.pipe(
-      map(() => Array.from(this.map.keys()).filter((key) => this.ensure(key).value !== undefined)),
-    );
+  keys$(): Observable<TKey[]> {
+    return this.map$.pipe(map(() => this.keys()));
   }
 
-  values(): Observable<TValue[]> {
-    return this.keys().pipe(map((keys) => keys.map((key) => this.ensure(key).value)));
+  keys(): TKey[] {
+    return Array.from(this.map.keys()).filter((key) => this.ensure(key).value !== undefined);
   }
 
-  entries(): Observable<[key: TKey, value: TValue][]> {
-    return this.keys().pipe(map((keys) => keys.map((key) => [key, this.ensure(key).value])));
+  values$(): Observable<TValue[]> {
+    return this.map$.pipe(map(() => this.values()));
   }
 
-  get(key: TKey): Observable<TValue | undefined> {
+  values(): TValue[] {
+    return this.keys().map((key) => this.ensure(key).value);
+  }
+
+  entries$(): Observable<[key: TKey, value: TValue][]> {
+    return this.map$.pipe(map(() => this.entries()));
+  }
+
+  entries(): [key: TKey, value: TValue][] {
+    return this.keys().map((key) => [key, this.ensure(key).value]);
+  }
+
+  get$(key: TKey): Observable<TValue | undefined> {
     return this.ensure(key).asObservable();
+  }
+
+  get(key: TKey): TValue | undefined {
+    return this.ensure(key).value;
   }
 
   set(key: TKey, value: TValue): void {
@@ -37,7 +51,7 @@ export class RxMap<TKey, TValue> {
     }
   }
 
-  setMany(entries: ReadonlyArray<[key: TKey, value: TValue]>): void {
+  setEntries(entries: ReadonlyArray<[key: TKey, value: TValue]>): void {
     let changed = false;
 
     for (const [key, value] of entries) {

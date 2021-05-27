@@ -10,9 +10,9 @@ export const ProductsFlagsCont: FunctionComponent = () => {
   const [connectingKeys, deletingKeys, updatingKeys] = useStreamValue(
     () =>
       combineLatest([
-        productsStore.fetching.keys(),
-        productsStore.deleting.keys(),
-        productsStore.updating.keys(),
+        productsStore.fetching.keys$(),
+        productsStore.deleting.keys$(),
+        productsStore.updating.keys$(),
       ]),
     [],
   );

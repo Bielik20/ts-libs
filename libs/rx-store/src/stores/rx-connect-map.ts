@@ -14,13 +14,13 @@ export class RxConnectMap<TKey, TValue> extends RxMap<TKey, TValue> {
     super();
     this.validityMap = new ValidityMap(options, {
       connectingSet: options.connectingSet,
-      get: (key) => this.get(key),
+      get: (key) => this.get$(key),
       set: (key, value) => this.set(key, value),
     });
   }
 
-  connect(key: TKey, factory: () => Observable<TValue>): Observable<TValue | undefined> {
-    return this.validityMap.connect(key, factory);
+  connect$(key: TKey, factory: () => Observable<TValue>): Observable<TValue | undefined> {
+    return this.validityMap.connect$(key, factory);
   }
 
   invalidate(key: TKey): void {
