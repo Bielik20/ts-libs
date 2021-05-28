@@ -54,6 +54,7 @@ describe('ValidityMap', () => {
       shouldEmitMultipleFromConnect();
       shouldEmitMultipleFromGetHook();
       shouldBeAbleToThrowError();
+      shouldSetConnectingAfterSubscribe();
 
       it('should connect if invalid and receive only new value', () => {
         const results = connectAfterInvalid();
@@ -73,6 +74,7 @@ describe('ValidityMap', () => {
       shouldEmitMultipleFromConnect();
       shouldEmitMultipleFromGetHook();
       shouldBeAbleToThrowError();
+      shouldSetConnectingAfterSubscribe();
 
       it('should connect if invalid and receive old and new value', () => {
         const results = connectAfterInvalid();
@@ -258,6 +260,18 @@ describe('ValidityMap', () => {
       expect(hooks.connectingSet.add).toHaveBeenCalledTimes(1);
       expect(hooks.connectingSet.delete).toHaveBeenCalledWith('a');
       expect(hooks.connectingSet.delete).toHaveBeenCalledTimes(2);
+    });
+  }
+
+  function shouldSetConnectingAfterSubscribe() {
+    it('should set connecting after subscribe', () => {
+      const stream$ = validityMap.connect$('a', factoryMock);
+
+      expect(hooks.connectingSet.add).not.toHaveBeenCalled();
+
+      stream$.subscribe();
+
+      expect(hooks.connectingSet.add).toHaveBeenCalled();
     });
   }
 
