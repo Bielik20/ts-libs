@@ -85,10 +85,12 @@ export class ValidityMap<TKey, TValue> {
   }
 
   invalidate(key: TKey): void {
-    this.expiresAtMap.delete(key);
+    this.expiresAtMap.set(key, 0);
   }
 
   invalidateAll(): void {
-    this.expiresAtMap.clear();
+    for (const key of this.expiresAtMap.keys()) {
+      this.invalidate(key);
+    }
   }
 }

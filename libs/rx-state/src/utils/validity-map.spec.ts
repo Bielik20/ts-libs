@@ -55,6 +55,19 @@ describe('ValidityMap', () => {
       shouldEmitMultipleFromGetHook();
       shouldBeAbleToThrowError();
       shouldSetConnectingAfterSubscribe();
+      shouldManuallyValidate();
+
+      it('should manually invalidate', () => {
+        const results = invalidate();
+        expect(results).toEqual([oldValue, newValue]);
+      });
+
+      it('should manually invalidate all', () => {
+        const { aResults, bResults } = invalidateAll();
+
+        expect(aResults).toEqual([oldValue, newValue]);
+        expect(bResults).toEqual([oldValue, newValue]);
+      });
 
       it('should connect if invalid and receive only new value', () => {
         const results = connectAfterInvalid();
@@ -75,6 +88,19 @@ describe('ValidityMap', () => {
       shouldEmitMultipleFromGetHook();
       shouldBeAbleToThrowError();
       shouldSetConnectingAfterSubscribe();
+      shouldManuallyValidate();
+
+      it('should manually invalidate', () => {
+        const results = invalidate();
+        expect(results).toEqual([oldValue, oldValue, newValue]);
+      });
+
+      it('should manually invalidate all', () => {
+        const { aResults, bResults } = invalidateAll();
+
+        expect(aResults).toEqual([oldValue, oldValue, newValue]);
+        expect(bResults).toEqual([oldValue, oldValue, newValue]);
+      });
 
       it('should connect if invalid and receive old and new value', () => {
         const results = connectAfterInvalid();
@@ -108,71 +134,6 @@ describe('ValidityMap', () => {
         expect(firstResults).toEqual([newValue]);
         expect(secondResults).toEqual([newValue]);
       });
-    });
-  });
-
-  describe('validate, invalidate, invalidateAll', () => {
-    beforeEach(() => {
-      makeValidityMap('eager', 'single');
-    });
-
-    it('should manually validate', () => {
-      const results: number[] = [];
-
-      mockRxMap.set('a', newValue);
-      validityMap.validate('a');
-      validityMap.connect$('a', factoryMock).subscribe((v) => results.push(v));
-      factorySubject$.next(oldValue);
-
-      expect(results).toEqual([newValue]);
-      expect(factoryMock).not.toHaveBeenCalled();
-    });
-
-    it('should manually invalidate', () => {
-      const results: number[] = [];
-
-      validityMap
-        .connect$('a', factoryMock)
-        .pipe(take(1))
-        .subscribe((v) => results.push(v));
-      factorySubject$.next(oldValue);
-      validityMap.invalidate('a');
-      validityMap
-        .connect$('a', factoryMock)
-        .pipe(take(1))
-        .subscribe((v) => results.push(v));
-      factorySubject$.next(newValue);
-
-      expect(results).toEqual([oldValue, newValue]);
-      expect(factoryMock).toHaveBeenCalledTimes(2);
-    });
-
-    it('should manually invalidate all', () => {
-      const aResults: number[] = [];
-      const bResults: number[] = [];
-
-      validityMap
-        .connect$('a', () => of(oldValue))
-        .pipe(take(1))
-        .subscribe((v) => aResults.push(v));
-      validityMap
-        .connect$('b', () => of(oldValue))
-        .pipe(take(1))
-        .subscribe((v) => bResults.push(v));
-      validityMap.invalidateAll();
-      validityMap
-        .connect$('a', factoryMock)
-        .pipe(take(1))
-        .subscribe((v) => aResults.push(v));
-      validityMap
-        .connect$('b', factoryMock)
-        .pipe(take(1))
-        .subscribe((v) => bResults.push(v));
-      factorySubject$.next(newValue);
-
-      expect(aResults).toEqual([oldValue, newValue]);
-      expect(bResults).toEqual([oldValue, newValue]);
-      expect(factoryMock).toHaveBeenCalledTimes(2);
     });
   });
 
@@ -273,6 +234,59 @@ describe('ValidityMap', () => {
 
       expect(hooks.connectingSet.add).toHaveBeenCalled();
     });
+  }
+
+  function shouldManuallyValidate() {
+    it('should manually validate', () => {
+      const results: number[] = [];
+
+      mockRxMap.set('a', newValue);
+      validityMap.validate('a');
+      validityMap.connect$('a', factoryMock).subscribe((v) => results.push(v));
+      factorySubject$.next(oldValue);
+
+      expect(results).toEqual([newValue]);
+      expect(factoryMock).not.toHaveBeenCalled();
+    });
+  }
+
+  function invalidate(): number[] {
+    const results: number[] = [];
+
+    validityMap
+      .connect$('a', factoryMock)
+      .pipe(take(1))
+      .subscribe((v) => results.push(v));
+    factorySubject$.next(oldValue);
+    validityMap.invalidate('a');
+    validityMap.connect$('a', factoryMock).subscribe((v) => results.push(v));
+    factorySubject$.next(newValue);
+
+    expect(factoryMock).toHaveBeenCalledTimes(2);
+
+    return results;
+  }
+
+  function invalidateAll(): { aResults: number[]; bResults: number[] } {
+    const aResults: number[] = [];
+    const bResults: number[] = [];
+
+    validityMap
+      .connect$('a', () => of(oldValue))
+      .pipe(take(1))
+      .subscribe((v) => aResults.push(v));
+    validityMap
+      .connect$('b', () => of(oldValue))
+      .pipe(take(1))
+      .subscribe((v) => bResults.push(v));
+    validityMap.invalidateAll();
+    validityMap.connect$('a', factoryMock).subscribe((v) => aResults.push(v));
+    validityMap.connect$('b', factoryMock).subscribe((v) => bResults.push(v));
+    factorySubject$.next(newValue);
+
+    expect(factoryMock).toHaveBeenCalledTimes(2);
+
+    return { aResults, bResults };
   }
 
   function connectAfterInvalid(): number[] {
