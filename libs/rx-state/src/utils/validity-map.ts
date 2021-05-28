@@ -1,4 +1,4 @@
-import { EMPTY, merge, Observable } from 'rxjs';
+import { defer, EMPTY, merge, Observable } from 'rxjs';
 import { exhaustMap, switchMap, tap } from 'rxjs/operators';
 import { ConnectingSet, noopConnectingSet } from '../models/connecting-set';
 
@@ -26,25 +26,27 @@ export class ValidityMap<TKey, TValue> {
   }
 
   connect$(key: TKey, factory: () => Observable<TValue>): Observable<TValue | undefined> {
-    const expiresAt = this.expiresAtMap.get(key);
+    return defer(() => {
+      const expiresAt = this.expiresAtMap.get(key);
 
-    if (expiresAt === undefined) {
-      return this.connectEagerly(key, factory);
-    }
+      if (expiresAt === undefined) {
+        return this.connectEagerly(key, factory);
+      }
 
-    if (Date.now() < expiresAt) {
-      return this.hooks.get(key);
-    }
+      if (Date.now() < expiresAt) {
+        return this.hooks.get(key);
+      }
 
-    if (this.config.scope === 'all') {
-      this.invalidateAll();
-    }
+      if (this.config.scope === 'all') {
+        this.invalidateAll();
+      }
 
-    if (this.config.strategy === 'eager') {
-      return this.connectEagerly(key, factory);
-    }
+      if (this.config.strategy === 'eager') {
+        return this.connectEagerly(key, factory);
+      }
 
-    return this.connectLazily(key, factory);
+      return this.connectLazily(key, factory);
+    });
   }
 
   protected connectEagerly(
