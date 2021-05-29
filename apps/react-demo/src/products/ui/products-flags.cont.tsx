@@ -8,12 +8,11 @@ import { ProductsFlagsCard } from './products-flags-card';
 export const ProductsFlagsCont: FunctionComponent = () => {
   const productsStore = useDependency(ProductsStore);
   const [connectingKeys, deletingKeys, updatingKeys] = useStreamValue(
-    () =>
-      combineLatest([
-        productsStore.fetching.keys$(),
-        productsStore.deleting.keys$(),
-        productsStore.updating.keys$(),
-      ]),
+    combineLatest([
+      productsStore.fetching.keys$(),
+      productsStore.deleting.keys$(),
+      productsStore.updating.keys$(),
+    ]),
     [],
   );
 
