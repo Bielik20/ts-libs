@@ -17,11 +17,10 @@ export const ProductCont: FunctionComponent<Props> = ({ product }) => {
   const router = useRouter();
   const unsubscribe$ = useUnsubscribe([]);
   const [deleting, updating] = useStreamValue(
-    () =>
-      combineLatest([
-        productsStore.deleting.has$(product.id),
-        productsStore.updating.has$(product.id),
-      ]),
+    combineLatest([
+      productsStore.deleting.has$(product.id),
+      productsStore.updating.has$(product.id),
+    ]),
     [product.id],
   );
   const onDelete = () => {
