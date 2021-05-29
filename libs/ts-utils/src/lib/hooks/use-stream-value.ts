@@ -1,21 +1,23 @@
 import { DependencyList, useMemo, useState } from 'react';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { FactoryOrValue, unpackFactoryOrValue } from '../utils/factory-or-value';
+import { Falsy } from '../utils/falsy';
 import { useBehaviorSubjectValue } from './use-behavior-subject-value';
 
 export function useStreamValue<T>(
-  factory: () => Observable<T>,
+  factory: FactoryOrValue<Falsy | Observable<T>>,
   deps?: DependencyList,
 ): T | undefined {
   const [subscription, setSubscription] = useState<Subscription | undefined>(undefined);
   const behaviorSubject$ = useMemo(() => new BehaviorSubject<T | undefined>(undefined), []);
 
   useMemo(() => {
-    const stream$ = factory();
+    const stream$ = unpackFactoryOrValue(factory);
 
     subscription && subscription.unsubscribe();
 
     if (!stream$) {
-      return undefined;
+      return behaviorSubject$.next(undefined);
     }
 
     setSubscription(

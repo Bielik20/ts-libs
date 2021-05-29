@@ -1,4 +1,6 @@
 import { DependencyList, useEffect, useState } from 'react';
+import { FactoryOrValue, unpackFactoryOrValue } from '../utils/factory-or-value';
+import { Falsy } from '../utils/falsy';
 import {
   ErrorResult,
   makeErrorResult,
@@ -10,14 +12,23 @@ import {
 
 export type PromiseResult<T> = PendingResult | SuccessResult<T> | ErrorResult;
 
-export function usePromise<T>(factory: () => Promise<T>, deps?: DependencyList): PromiseResult<T> {
+export function usePromise<T>(
+  factory: FactoryOrValue<Falsy | Promise<T>>,
+  deps?: DependencyList,
+): PromiseResult<T> {
   const [value, setValue] = useState<PromiseResult<T>>(PENDING_RESULT);
 
   useEffect(() => {
     let ended = false;
     const expression = async () => {
       try {
-        const value = await factory();
+        const promise = unpackFactoryOrValue(factory);
+
+        if (!promise) {
+          return;
+        }
+
+        const value = await promise;
 
         if (!ended) {
           setValue(makeSuccessResult(value));
