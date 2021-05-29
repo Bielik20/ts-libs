@@ -10,17 +10,14 @@ import {
 
 export type PromiseResult<T> = PendingResult | SuccessResult<T> | ErrorResult;
 
-export function usePromise<T>(
-  promiseFactory: () => Promise<T>,
-  deps?: DependencyList,
-): PromiseResult<T> {
+export function usePromise<T>(factory: () => Promise<T>, deps?: DependencyList): PromiseResult<T> {
   const [value, setValue] = useState<PromiseResult<T>>(PENDING_RESULT);
 
   useEffect(() => {
     let ended = false;
     const expression = async () => {
       try {
-        const value = await promiseFactory();
+        const value = await factory();
 
         if (!ended) {
           setValue(makeSuccessResult(value));
