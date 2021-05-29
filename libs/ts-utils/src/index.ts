@@ -6,5 +6,6 @@ export * from './lib/hooks/use-stream-value';
 export * from './lib/hooks/use-unsubscribe';
 export * from './lib/rxjs/omit-undefined';
 export * from './lib/rxjs/tap-once';
+export * from './lib/utils/factory-or-value';
 export * from './lib/utils/falsy';
 export * from './lib/utils/is-not-undefined';
