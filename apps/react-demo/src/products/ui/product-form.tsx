@@ -16,7 +16,7 @@ export const ProductForm: FunctionComponent<Props> = ({ product, onSubmit = () =
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          onSubmit({ id: product.id, name, price });
+          onSubmit({ ...product, name, price });
         }}
       >
         <TextField
