@@ -43,6 +43,9 @@
     },
     "rx-state": {
       "tags": []
+    },
+    "react-utils": {
+      "tags": []
     }
   }
 }

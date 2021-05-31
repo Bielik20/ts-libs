@@ -6,5 +6,6 @@ module.exports = {
     '<rootDir>/libs/react-di',
     '<rootDir>/apps/react-demo',
     '<rootDir>/libs/rx-state',
+    '<rootDir>/libs/react-utils',
   ],
 };
