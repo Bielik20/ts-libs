@@ -1,10 +1,11 @@
 import { useDependency } from '@ns3/react-di';
-import { useCombineLatestValue, useUnsubscribe } from '@ns3/react-utils';
+import { useStreamValue, useUnsubscribe } from '@ns3/react-utils';
 import { useRouter } from 'next/router';
 import React, { FunctionComponent } from 'react';
 import { Product, Product as ProductModel } from 'react-demo/products/models/product';
 import { ProductsStore } from 'react-demo/products/services/products.store';
 import { Product as ProductComponent } from 'react-demo/products/ui/product';
+import { combineLatest } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 type Props = {
@@ -15,8 +16,11 @@ export const ProductCont: FunctionComponent<Props> = ({ product }) => {
   const productsStore = useDependency(ProductsStore);
   const router = useRouter();
   const unsubscribe$ = useUnsubscribe([]);
-  const [deleting, updating] = useCombineLatestValue(
-    [productsStore.deleting.has$(product.id), productsStore.updating.has$(product.id)],
+  const [deleting, updating] = useStreamValue(
+    combineLatest([
+      productsStore.deleting.has$(product.id),
+      productsStore.updating.has$(product.id),
+    ]),
     [product.id],
   );
   const onDelete = () => {

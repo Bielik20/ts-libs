@@ -1,17 +1,18 @@
 import { useDependency } from '@ns3/react-di';
-import { useCombineLatestValue } from '@ns3/react-utils';
+import { useStreamValue } from '@ns3/react-utils';
 import { FunctionComponent } from 'react';
+import { combineLatest } from 'rxjs';
 import { ProductsStore } from '../services/products.store';
 import { ProductsFlagsCard } from './products-flags-card';
 
 export const ProductsFlagsCont: FunctionComponent = () => {
   const productsStore = useDependency(ProductsStore);
-  const [connectingKeys, deletingKeys, updatingKeys] = useCombineLatestValue(
-    [
+  const [connectingKeys, deletingKeys, updatingKeys] = useStreamValue(
+    combineLatest([
       productsStore.fetching.keys$(),
       productsStore.deleting.keys$(),
       productsStore.updating.keys$(),
-    ],
+    ]),
     [],
   );
 
