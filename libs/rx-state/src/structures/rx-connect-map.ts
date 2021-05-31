@@ -10,11 +10,13 @@ interface RxConnectMapOptions<TKey> extends ValidityMapConfig {
 export class RxConnectMap<TKey, TValue> extends RxMap<TKey, TValue> {
   protected readonly validityMap: ValidityMap<TKey, TValue>;
 
-  constructor(protected options: RxConnectMapOptions<TKey>) {
+  constructor({ connectingSet, ...options }: RxConnectMapOptions<TKey>) {
     super();
     this.validityMap = new ValidityMap(options, {
-      connectingSet: options.connectingSet,
-      get: (key) => this.get$(key),
+      connecting: connectingSet && ((key) => connectingSet.add(key)),
+      connected: connectingSet && ((key) => connectingSet.delete(key)),
+      has: (key) => this.get(key) !== undefined,
+      get$: (key) => this.get$(key),
       set: (key, value) => this.set(key, value),
     });
   }
@@ -32,7 +34,7 @@ export class RxConnectMap<TKey, TValue> extends RxMap<TKey, TValue> {
   }
 
   protected updateValue(key: TKey, value: TValue | undefined): boolean {
-    value === undefined ? this.validityMap.invalidate(key) : this.validityMap.validate(key);
+    this.validityMap.validate(key);
 
     return super.updateValue(key, value);
   }

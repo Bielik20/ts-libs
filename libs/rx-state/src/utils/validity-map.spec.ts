@@ -5,11 +5,10 @@ import { ValidityMap } from './validity-map';
 
 interface HooksMock {
   set: jest.Mock;
-  get: jest.Mock;
-  connectingSet: {
-    add: jest.Mock;
-    delete: jest.Mock;
-  };
+  has: jest.Mock;
+  get$: jest.Mock;
+  connecting: jest.Mock;
+  connected: jest.Mock;
 }
 
 describe('ValidityMap', () => {
@@ -31,15 +30,14 @@ describe('ValidityMap', () => {
     factorySubject$ = new Subject<number>();
     factoryMock = jest.fn(() => factorySubject$.asObservable());
     hooks = {
-      get: jest.fn((k) => mockRxMap.get$(k)),
+      get$: jest.fn((k) => mockRxMap.get$(k)),
+      has: jest.fn((k) => mockRxMap.get(k) !== undefined),
       set: jest.fn((k, v) => {
         validityMap.validate(k);
         mockRxMap.set(k, v);
       }),
-      connectingSet: {
-        add: jest.fn(),
-        delete: jest.fn(),
-      },
+      connecting: jest.fn(),
+      connected: jest.fn(),
     };
   });
 
@@ -142,15 +140,15 @@ describe('ValidityMap', () => {
       const results: number[] = [];
 
       validityMap.connect$('a', () => of(oldValue)).subscribe();
-      hooks.connectingSet.add.mockClear();
-      hooks.connectingSet.delete.mockClear();
+      hooks.connecting.mockClear();
+      hooks.connected.mockClear();
       validityMap.connect$('a', factoryMock).subscribe((v) => results.push(v));
       factorySubject$.next(newValue);
 
       expect(results).toEqual([oldValue]);
       expect(factoryMock).not.toHaveBeenCalled();
-      expect(hooks.connectingSet.add).not.toHaveBeenCalled();
-      expect(hooks.connectingSet.delete).not.toHaveBeenCalled();
+      expect(hooks.connecting).not.toHaveBeenCalled();
+      expect(hooks.connected).not.toHaveBeenCalled();
     });
   }
 
@@ -163,10 +161,10 @@ describe('ValidityMap', () => {
 
       expect(results).toEqual([newValue]);
       expect(factoryMock).toHaveBeenCalled();
-      expect(hooks.connectingSet.add).toHaveBeenCalledWith('a');
-      expect(hooks.connectingSet.delete).toHaveBeenCalledWith('a');
-      expect(hooks.connectingSet.add.mock.invocationCallOrder[0]).toBeLessThan(
-        hooks.connectingSet.delete.mock.invocationCallOrder[0],
+      expect(hooks.connecting).toHaveBeenCalledWith('a');
+      expect(hooks.connected).toHaveBeenCalledWith('a');
+      expect(hooks.connecting.mock.invocationCallOrder[0]).toBeLessThan(
+        hooks.connected.mock.invocationCallOrder[0],
       );
     });
   }
@@ -181,10 +179,10 @@ describe('ValidityMap', () => {
       factorySubject$.next(oldValue);
 
       expect(results).toEqual([oldValue, newValue, oldValue]);
-      expect(hooks.connectingSet.add).toHaveBeenCalledWith('a');
-      expect(hooks.connectingSet.add).toHaveBeenCalledTimes(1);
-      expect(hooks.connectingSet.delete).toHaveBeenCalledWith('a');
-      expect(hooks.connectingSet.delete).toHaveBeenCalledTimes(3);
+      expect(hooks.connecting).toHaveBeenCalledWith('a');
+      expect(hooks.connecting).toHaveBeenCalledTimes(1);
+      expect(hooks.connected).toHaveBeenCalledWith('a');
+      expect(hooks.connected).toHaveBeenCalledTimes(3);
     });
   }
 
@@ -217,10 +215,10 @@ describe('ValidityMap', () => {
 
       expect(results).toEqual([oldValue]);
       expect(errors).toEqual([error]);
-      expect(hooks.connectingSet.add).toHaveBeenCalledWith('a');
-      expect(hooks.connectingSet.add).toHaveBeenCalledTimes(1);
-      expect(hooks.connectingSet.delete).toHaveBeenCalledWith('a');
-      expect(hooks.connectingSet.delete).toHaveBeenCalledTimes(2);
+      expect(hooks.connecting).toHaveBeenCalledWith('a');
+      expect(hooks.connecting).toHaveBeenCalledTimes(1);
+      expect(hooks.connected).toHaveBeenCalledWith('a');
+      expect(hooks.connected).toHaveBeenCalledTimes(2);
     });
   }
 
@@ -228,11 +226,11 @@ describe('ValidityMap', () => {
     it('should set connecting after subscribe', () => {
       const stream$ = validityMap.connect$('a', factoryMock);
 
-      expect(hooks.connectingSet.add).not.toHaveBeenCalled();
+      expect(hooks.connecting).not.toHaveBeenCalled();
 
       stream$.subscribe();
 
-      expect(hooks.connectingSet.add).toHaveBeenCalled();
+      expect(hooks.connecting).toHaveBeenCalled();
     });
   }
 
@@ -293,16 +291,16 @@ describe('ValidityMap', () => {
     const results: number[] = [];
 
     validityMap.connect$('a', () => of(oldValue)).subscribe();
-    hooks.connectingSet.add.mockClear();
-    hooks.connectingSet.delete.mockClear();
+    hooks.connecting.mockClear();
+    hooks.connected.mockClear();
     advanceTime(moreThanTimeout);
     validityMap.connect$('a', factoryMock).subscribe((v) => results.push(v));
     factorySubject$.next(newValue);
 
-    expect(hooks.connectingSet.add).toHaveBeenCalledWith('a');
-    expect(hooks.connectingSet.delete).toHaveBeenCalledWith('a');
-    expect(hooks.connectingSet.add.mock.invocationCallOrder[0]).toBeLessThan(
-      hooks.connectingSet.delete.mock.invocationCallOrder[0],
+    expect(hooks.connecting).toHaveBeenCalledWith('a');
+    expect(hooks.connected).toHaveBeenCalledWith('a');
+    expect(hooks.connecting.mock.invocationCallOrder[0]).toBeLessThan(
+      hooks.connected.mock.invocationCallOrder[0],
     );
 
     return results;

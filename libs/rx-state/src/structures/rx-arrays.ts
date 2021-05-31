@@ -29,7 +29,7 @@ export class RxArrays<
   get(key: TKey): Array<TItemValue> | undefined {
     const itemKeys = this.ensure(key).value;
 
-    if (!key) {
+    if (!itemKeys) {
       return undefined;
     }
 
