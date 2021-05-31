@@ -108,7 +108,7 @@
             "tsConfig": "libs/ts-utils/tsconfig.lib.json",
             "project": "libs/ts-utils/package.json",
             "entryFile": "libs/ts-utils/src/index.ts",
-            "external": ["react", "react-dom"],
+            "external": ["react", "react-dom", "tslib"],
             "rollupConfig": "./tools/src/plugins/react-rollup-plugin",
             "assets": [
               {
@@ -154,7 +154,7 @@
             "tsConfig": "libs/redux-entity/tsconfig.lib.json",
             "project": "libs/redux-entity/package.json",
             "entryFile": "libs/redux-entity/src/index.ts",
-            "external": ["react", "react-dom"],
+            "external": ["react", "react-dom", "tslib"],
             "rollupConfig": "./tools/src/plugins/react-rollup-plugin",
             "assets": [
               {
@@ -200,7 +200,7 @@
             "tsConfig": "libs/http-client/tsconfig.lib.json",
             "project": "libs/http-client/package.json",
             "entryFile": "libs/http-client/src/index.ts",
-            "external": ["react", "react-dom"],
+            "external": ["react", "react-dom", "tslib"],
             "rollupConfig": "./tools/src/plugins/react-rollup-plugin",
             "assets": [
               {
@@ -246,7 +246,7 @@
             "tsConfig": "libs/react-di/tsconfig.lib.json",
             "project": "libs/react-di/package.json",
             "entryFile": "libs/react-di/src/index.ts",
-            "external": ["react", "react-dom"],
+            "external": ["react", "react-dom", "tslib"],
             "rollupConfig": "./tools/src/plugins/react-rollup-plugin",
             "assets": [
               {
@@ -292,7 +292,7 @@
             "tsConfig": "libs/rx-state/tsconfig.lib.json",
             "project": "libs/rx-state/package.json",
             "entryFile": "libs/rx-state/src/index.ts",
-            "external": ["react", "react-dom"],
+            "external": ["react", "react-dom", "tslib"],
             "rollupConfig": "./tools/src/plugins/react-rollup-plugin",
             "assets": [
               {
