@@ -6,11 +6,11 @@ export class RxSet<TKey> {
   protected set$ = new BehaviorSubject<void>(undefined);
   protected map = new Map<TKey, BehaviorSubject<boolean>>();
 
-  get size$(): Observable<number> {
-    return this.set$.pipe(map(() => this.size));
+  size$(): Observable<number> {
+    return this.set$.pipe(map(() => this.size()));
   }
 
-  get size(): number {
+  size(): number {
     return this.set.size;
   }
 
@@ -49,11 +49,11 @@ export class RxSet<TKey> {
   clear(): void {
     let changed = false;
 
-    for (const key of this.set.keys()) {
+    Array.from(this.set.keys()).map((key) => {
       const result = this.updateValue(key, false);
 
       changed = changed || result;
-    }
+    });
 
     if (changed) {
       this.set$.next();
