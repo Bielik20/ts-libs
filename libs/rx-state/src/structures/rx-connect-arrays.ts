@@ -16,11 +16,11 @@ export class RxConnectArrays<
   TItemKey = RxMapKey<TItemsMap>,
   TItemValue = RxMapValue<TItemsMap>
 > extends RxArrays<TKey, TItemsMap, TItemKey, TItemValue> {
-  protected readonly manager: ConnectionsManager<TKey, ReadonlyArray<TItemValue>>;
+  protected readonly connectionsManager: ConnectionsManager<TKey, ReadonlyArray<TItemValue>>;
 
   constructor({ connectingSet, ...options }: RxConnectArraysOptions<TKey, TItemKey, TItemValue>) {
     super(options);
-    this.manager = new ConnectionsManager(options, {
+    this.connectionsManager = new ConnectionsManager(options, {
       connecting: connectingSet && ((key) => connectingSet.add(key)),
       connected: connectingSet && ((key) => connectingSet.delete(key)),
       has: (key) => this.get(key) !== undefined,
@@ -32,20 +32,20 @@ export class RxConnectArrays<
   connect$(
     key: TKey,
     factory: () => Observable<ReadonlyArray<TItemValue>>,
-  ): Observable<ReadonlyArray<TItemValue> | undefined> {
-    return this.manager.connect$(key, factory);
+  ): Observable<ReadonlyArray<TItemValue>> {
+    return this.connectionsManager.connect$(key, factory);
   }
 
   invalidate(key: TKey): void {
-    return this.manager.invalidate(key);
+    return this.connectionsManager.invalidate(key);
   }
 
   invalidateAll(): void {
-    return this.manager.invalidateAll();
+    return this.connectionsManager.invalidateAll();
   }
 
   protected updateValue(key: TKey, value: Array<TItemKey> | undefined): void {
-    this.manager.validate(key);
+    this.connectionsManager.validate(key);
 
     return super.updateValue(key, value);
   }

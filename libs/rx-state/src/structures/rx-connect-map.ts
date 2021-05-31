@@ -8,11 +8,11 @@ interface RxConnectMapOptions<TKey> extends ConnectionsManagerConfig {
 }
 
 export class RxConnectMap<TKey, TValue> extends RxMap<TKey, TValue> {
-  protected readonly manager: ConnectionsManager<TKey, TValue>;
+  protected readonly connectionsManager: ConnectionsManager<TKey, TValue>;
 
   constructor({ connectingSet, ...options }: RxConnectMapOptions<TKey>) {
     super();
-    this.manager = new ConnectionsManager(options, {
+    this.connectionsManager = new ConnectionsManager(options, {
       connecting: connectingSet && ((key) => connectingSet.add(key)),
       connected: connectingSet && ((key) => connectingSet.delete(key)),
       has: (key) => this.get(key) !== undefined,
@@ -21,20 +21,20 @@ export class RxConnectMap<TKey, TValue> extends RxMap<TKey, TValue> {
     });
   }
 
-  connect$(key: TKey, factory: () => Observable<TValue>): Observable<TValue | undefined> {
-    return this.manager.connect$(key, factory);
+  connect$(key: TKey, factory: () => Observable<TValue>): Observable<TValue> {
+    return this.connectionsManager.connect$(key, factory);
   }
 
   invalidate(key: TKey): void {
-    return this.manager.invalidate(key);
+    return this.connectionsManager.invalidate(key);
   }
 
   invalidateAll(): void {
-    return this.manager.invalidateAll();
+    return this.connectionsManager.invalidateAll();
   }
 
   protected updateValue(key: TKey, value: TValue | undefined): boolean {
-    this.manager.validate(key);
+    this.connectionsManager.validate(key);
 
     return super.updateValue(key, value);
   }
