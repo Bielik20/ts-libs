@@ -1,6 +1,5 @@
 import { defer, EMPTY, merge, Observable } from 'rxjs';
 import { exhaustMap, switchMap, tap } from 'rxjs/operators';
-import { ConnectingSet, noopConnectingSet } from '../models/connecting-set';
 
 export interface ValidityMapConfig {
   timeout: number;
@@ -9,32 +8,39 @@ export interface ValidityMapConfig {
 }
 
 export interface ValidityMapHooks<TKey, TValue> {
-  connectingSet?: ConnectingSet<TKey>;
-  get: (key: TKey) => Observable<TValue | undefined>;
+  connecting?: (key: TKey) => void;
+  connected?: (key: TKey) => void;
+  has: (key: TKey) => boolean;
+  get$: (key: TKey) => Observable<TValue>;
   set: (key: TKey, value: TValue) => void;
 }
 
 export class ValidityMap<TKey, TValue> {
   protected readonly expiresAtMap = new Map<TKey, number>();
-  protected readonly connectingSet: ConnectingSet<TKey>;
+  protected readonly connecting?: (key: TKey) => void;
+  protected readonly connected?: (key: TKey) => void;
+  protected readonly has: (key: TKey) => boolean;
+  protected readonly get$: (key: TKey) => Observable<TValue>;
+  protected readonly set: (key: TKey, value: TValue) => void;
 
-  constructor(
-    protected readonly config: ValidityMapConfig,
-    protected readonly hooks: ValidityMapHooks<TKey, TValue>,
-  ) {
-    this.connectingSet = hooks.connectingSet || noopConnectingSet;
+  constructor(protected readonly config: ValidityMapConfig, hooks: ValidityMapHooks<TKey, TValue>) {
+    this.connecting = hooks.connecting || (() => null);
+    this.connected = hooks.connected || (() => null);
+    this.has = hooks.has;
+    this.get$ = hooks.get$;
+    this.set = hooks.set;
   }
 
-  connect$(key: TKey, factory: () => Observable<TValue>): Observable<TValue | undefined> {
+  connect$(key: TKey, factory: () => Observable<TValue>): Observable<TValue> {
     return defer(() => {
       const expiresAt = this.expiresAtMap.get(key);
 
-      if (expiresAt === undefined) {
+      if (!this.has(key)) {
         return this.connectEagerly(key, factory);
       }
 
       if (Date.now() < expiresAt) {
-        return this.hooks.get(key);
+        return this.get$(key);
       }
 
       if (this.config.scope === 'all') {
@@ -53,29 +59,26 @@ export class ValidityMap<TKey, TValue> {
     key: TKey,
     factory: () => Observable<TValue>,
   ): Observable<TValue | undefined> {
-    return this.executeFactory(key, factory).pipe(exhaustMap(() => this.hooks.get(key)));
+    return this.executeFactory(key, factory).pipe(exhaustMap(() => this.get$(key)));
   }
 
   protected connectLazily(
     key: TKey,
     factory: () => Observable<TValue>,
   ): Observable<TValue | undefined> {
-    return merge(
-      this.hooks.get(key),
-      this.executeFactory(key, factory).pipe(switchMap(() => EMPTY)),
-    );
+    return merge(this.get$(key), this.executeFactory(key, factory).pipe(switchMap(() => EMPTY)));
   }
 
   protected executeFactory(key: TKey, factory: () => Observable<TValue>): Observable<TValue> {
-    this.connectingSet.add(key);
+    this.connecting(key);
 
     return factory().pipe(
       tap({
         next: (value) => {
-          this.connectingSet.delete(key);
-          this.hooks.set(key, value);
+          this.connected(key);
+          this.set(key, value);
         },
-        error: () => this.connectingSet.delete(key),
+        error: () => this.connected(key),
       }),
     );
   }
@@ -85,12 +88,10 @@ export class ValidityMap<TKey, TValue> {
   }
 
   invalidate(key: TKey): void {
-    this.expiresAtMap.set(key, 0);
+    this.expiresAtMap.delete(key);
   }
 
   invalidateAll(): void {
-    for (const key of this.expiresAtMap.keys()) {
-      this.invalidate(key);
-    }
+    this.expiresAtMap.clear();
   }
 }

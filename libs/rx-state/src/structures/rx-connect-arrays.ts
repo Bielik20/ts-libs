@@ -18,11 +18,13 @@ export class RxConnectArrays<
 > extends RxArrays<TKey, TItemsMap, TItemKey, TItemValue> {
   protected readonly validityMap: ValidityMap<TKey, ReadonlyArray<TItemValue>>;
 
-  constructor(options: RxConnectArraysOptions<TKey, TItemKey, TItemValue>) {
+  constructor({ connectingSet, ...options }: RxConnectArraysOptions<TKey, TItemKey, TItemValue>) {
     super(options);
     this.validityMap = new ValidityMap(options, {
-      connectingSet: options.connectingSet,
-      get: (key) => this.get$(key),
+      connecting: connectingSet && ((key) => connectingSet.add(key)),
+      connected: connectingSet && ((key) => connectingSet.delete(key)),
+      has: (key) => this.get(key) !== undefined,
+      get$: (key) => this.get$(key),
       set: (key, value) => this.set(key, value),
     });
   }
@@ -43,7 +45,7 @@ export class RxConnectArrays<
   }
 
   protected updateValue(key: TKey, value: Array<TItemKey> | undefined): void {
-    value === undefined ? this.validityMap.invalidate(key) : this.validityMap.validate(key);
+    this.validityMap.validate(key);
 
     return super.updateValue(key, value);
   }
