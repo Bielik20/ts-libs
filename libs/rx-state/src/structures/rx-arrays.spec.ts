@@ -88,7 +88,7 @@ describe('RxArrays', () => {
     });
   });
 
-  describe('remove', () => {
+  describe('removeItems', () => {
     it('should add values to the beginning of array', () => {
       const aValues: Item[][] = [];
 
@@ -98,7 +98,7 @@ describe('RxArrays', () => {
         { id: 'c', value: 3 },
       ]);
       rxArrays.get$('default').subscribe((v) => aValues.push(v));
-      rxArrays.remove('default', 'a', 'c');
+      rxArrays.removeItems('default', ['a', 'c']);
 
       expect(aValues).toEqual([
         [

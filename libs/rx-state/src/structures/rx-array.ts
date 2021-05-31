@@ -32,8 +32,8 @@ export class RxArray<
     return this.rxArrays.prepend('only', itemsToPrepend);
   }
 
-  remove(...itemKeysToRemove: ReadonlyArray<TItemKey>): void {
-    return this.rxArrays.remove('only', ...itemKeysToRemove);
+  removeItems(itemKeysToRemove: ReadonlyArray<TItemKey>): void {
+    return this.rxArrays.removeItems('only', itemKeysToRemove);
   }
 
   delete(): void {
