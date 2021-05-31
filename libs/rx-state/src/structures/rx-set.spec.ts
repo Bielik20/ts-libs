@@ -12,7 +12,7 @@ describe('RxSet', () => {
     const sizeValues: number[] = [];
 
     rxSet.has$('a').subscribe((v) => aValues.push(v));
-    rxSet.size$.subscribe((v) => sizeValues.push(v));
+    rxSet.size$().subscribe((v) => sizeValues.push(v));
 
     expect(aValues).toEqual([false]);
     expect(sizeValues).toEqual([0]);
@@ -50,7 +50,7 @@ describe('RxSet', () => {
 
       rxSet.has$('a').subscribe((v) => aValues.push(v));
       rxSet.has$('b').subscribe((v) => bValues.push(v));
-      rxSet.size$.subscribe((v) => sizeValues.push(v));
+      rxSet.size$().subscribe((v) => sizeValues.push(v));
       rxSet.keys$().subscribe((v) => keysValues.push(v));
 
       rxSet.add('a');
@@ -90,7 +90,7 @@ describe('RxSet', () => {
       rxSet.add('a');
 
       rxSet.has$('a').subscribe((v) => aValues.push(v));
-      rxSet.size$.subscribe((v) => sizeValues.push(v));
+      rxSet.size$().subscribe((v) => sizeValues.push(v));
       rxSet.keys$().subscribe((v) => keysValues.push(v));
 
       expect(aValues).toEqual([true]);
@@ -107,7 +107,7 @@ describe('RxSet', () => {
 
       const sizeValues: number[] = [];
 
-      rxSet.size$.subscribe((v) => sizeValues.push(v));
+      rxSet.size$().subscribe((v) => sizeValues.push(v));
 
       rxSet.clear();
 

@@ -1,5 +1,6 @@
-import { ConnectionManager, ConnectionManagerConfig, RxArray } from '@ns3/rx-state';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { ConnectionManager, ConnectionManagerConfig } from '../utils/connection-manager';
+import { RxArray } from './rx-array';
 import { RxArraysOptions } from './rx-arrays';
 import { RxMap, RxMapKey, RxMapValue } from './rx-map';
 

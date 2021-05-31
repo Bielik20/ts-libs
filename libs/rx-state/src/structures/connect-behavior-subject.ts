@@ -1,5 +1,5 @@
-import { ConnectionManager, ConnectionManagerConfig } from '@ns3/rx-state';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { ConnectionManager, ConnectionManagerConfig } from '../utils/connection-manager';
 
 interface ConnectBehaviorSubjectOptions extends ConnectionManagerConfig {
   connecting$?: BehaviorSubject<boolean>;

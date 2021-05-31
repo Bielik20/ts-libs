@@ -76,11 +76,11 @@ export class RxMap<TKey, TValue> {
   clear(): void {
     let changed = false;
 
-    for (const key of this.map.keys()) {
+    Array.from(this.map.keys()).map((key) => {
       const result = this.updateValue(key, undefined);
 
       changed = changed || result;
-    }
+    });
 
     if (changed) {
       this.map$.next();

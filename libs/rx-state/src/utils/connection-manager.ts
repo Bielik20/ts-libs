@@ -1,5 +1,5 @@
-import { ConnectionsManager } from '@ns3/rx-state';
 import { Observable } from 'rxjs';
+import { ConnectionsManager } from './connections-manager';
 
 export interface ConnectionManagerConfig {
   timeout: number;

@@ -1,5 +1,6 @@
-import { RxArrays, RxArraysOptions, RxMap, RxMapKey, RxMapValue } from '@ns3/rx-state';
 import { Observable } from 'rxjs';
+import { RxArrays, RxArraysOptions } from './rx-arrays';
+import { RxMap, RxMapKey, RxMapValue } from './rx-map';
 
 export class RxArray<
   TItemsMap extends RxMap<unknown, unknown>,
