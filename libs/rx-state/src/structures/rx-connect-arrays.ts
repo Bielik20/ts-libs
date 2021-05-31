@@ -44,9 +44,9 @@ export class RxConnectArrays<
     return super.prepend(key, itemsToPrepend);
   }
 
-  remove(key: TKey, ...itemKeysToRemove: ReadonlyArray<TItemKey>): void {
+  removeItems(key: TKey, itemKeysToRemove: ReadonlyArray<TItemKey>): void {
     this.connectionsManager.validate(key);
-    return super.remove(key, ...itemKeysToRemove);
+    return super.removeItems(key, itemKeysToRemove);
   }
 
   connect$(

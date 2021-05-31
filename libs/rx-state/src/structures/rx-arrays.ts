@@ -59,7 +59,7 @@ export class RxArrays<
     this.updateValue(key, [...itemKeys, ...currentItemsKeys]);
   }
 
-  remove(key: TKey, ...itemKeysToRemove: ReadonlyArray<TItemKey>): void {
+  removeItems(key: TKey, itemKeysToRemove: ReadonlyArray<TItemKey>): void {
     const currentItemKeys = this.ensure(key).value || [];
     const updatedItemKeys = currentItemKeys.filter(
       (itemKey) => !itemKeysToRemove.includes(itemKey),
