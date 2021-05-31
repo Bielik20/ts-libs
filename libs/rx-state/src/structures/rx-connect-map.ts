@@ -1,18 +1,18 @@
 import { Observable } from 'rxjs';
-import { ConnectingSet } from '../models/connecting-set';
-import { ValidityMap, ValidityMapConfig } from '../utils/validity-map';
+import { ConnectionsManager, ConnectionsManagerConfig } from '../utils/connections-manager';
 import { RxMap } from './rx-map';
+import { RxSet } from './rx-set';
 
-interface RxConnectMapOptions<TKey> extends ValidityMapConfig {
-  connectingSet?: ConnectingSet<TKey>;
+interface RxConnectMapOptions<TKey> extends ConnectionsManagerConfig {
+  connectingSet?: RxSet<TKey>;
 }
 
 export class RxConnectMap<TKey, TValue> extends RxMap<TKey, TValue> {
-  protected readonly validityMap: ValidityMap<TKey, TValue>;
+  protected readonly manager: ConnectionsManager<TKey, TValue>;
 
   constructor({ connectingSet, ...options }: RxConnectMapOptions<TKey>) {
     super();
-    this.validityMap = new ValidityMap(options, {
+    this.manager = new ConnectionsManager(options, {
       connecting: connectingSet && ((key) => connectingSet.add(key)),
       connected: connectingSet && ((key) => connectingSet.delete(key)),
       has: (key) => this.get(key) !== undefined,
@@ -22,19 +22,19 @@ export class RxConnectMap<TKey, TValue> extends RxMap<TKey, TValue> {
   }
 
   connect$(key: TKey, factory: () => Observable<TValue>): Observable<TValue | undefined> {
-    return this.validityMap.connect$(key, factory);
+    return this.manager.connect$(key, factory);
   }
 
   invalidate(key: TKey): void {
-    return this.validityMap.invalidate(key);
+    return this.manager.invalidate(key);
   }
 
   invalidateAll(): void {
-    return this.validityMap.invalidateAll();
+    return this.manager.invalidateAll();
   }
 
   protected updateValue(key: TKey, value: TValue | undefined): boolean {
-    this.validityMap.validate(key);
+    this.manager.validate(key);
 
     return super.updateValue(key, value);
   }

@@ -1,7 +1,7 @@
 import { of, Subject } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { RxMap } from '../structures/rx-map';
-import { ValidityMap } from './validity-map';
+import { ConnectionsManager } from './connections-manager';
 
 interface HooksMock {
   set: jest.Mock;
@@ -11,7 +11,7 @@ interface HooksMock {
   connected: jest.Mock;
 }
 
-describe('ValidityMap', () => {
+describe('ConnectionsManager', () => {
   const timeout = 1000;
   const moreThanTimeout = timeout + 1;
   const oldValue = 50;
@@ -21,7 +21,7 @@ describe('ValidityMap', () => {
   let factorySubject$: Subject<number>;
   let factoryMock: jest.Mock;
   let hooks: HooksMock;
-  let validityMap: ValidityMap<string, number>;
+  let connectionsManager: ConnectionsManager<string, number>;
 
   beforeEach(() => {
     dateNowMock = jest.fn().mockReturnValue(0);
@@ -33,7 +33,7 @@ describe('ValidityMap', () => {
       get$: jest.fn((k) => mockRxMap.get$(k)),
       has: jest.fn((k) => mockRxMap.get(k) !== undefined),
       set: jest.fn((k, v) => {
-        validityMap.validate(k);
+        connectionsManager.validate(k);
         mockRxMap.set(k, v);
       }),
       connecting: jest.fn(),
@@ -44,7 +44,7 @@ describe('ValidityMap', () => {
   describe('connect', () => {
     describe('strategy: eager', () => {
       beforeEach(() => {
-        makeValidityMap('eager', 'single');
+        makeConnectionsManager('eager', 'single');
       });
 
       shouldConnectEagerlyFirstCall();
@@ -77,7 +77,7 @@ describe('ValidityMap', () => {
 
     describe('strategy: lazy', () => {
       beforeEach(() => {
-        makeValidityMap('lazy', 'single');
+        makeConnectionsManager('lazy', 'single');
       });
 
       shouldConnectEagerlyFirstCall();
@@ -110,7 +110,7 @@ describe('ValidityMap', () => {
 
     describe('scope: single', () => {
       beforeEach(() => {
-        makeValidityMap('eager', 'single');
+        makeConnectionsManager('eager', 'single');
       });
 
       it('should invalidate single value', () => {
@@ -123,7 +123,7 @@ describe('ValidityMap', () => {
 
     describe('scope: all', () => {
       beforeEach(() => {
-        makeValidityMap('eager', 'all');
+        makeConnectionsManager('eager', 'all');
       });
 
       it('should invalidate all values', () => {
@@ -139,10 +139,10 @@ describe('ValidityMap', () => {
     it('should not connect if valid', () => {
       const results: number[] = [];
 
-      validityMap.connect$('a', () => of(oldValue)).subscribe();
+      connectionsManager.connect$('a', () => of(oldValue)).subscribe();
       hooks.connecting.mockClear();
       hooks.connected.mockClear();
-      validityMap.connect$('a', factoryMock).subscribe((v) => results.push(v));
+      connectionsManager.connect$('a', factoryMock).subscribe((v) => results.push(v));
       factorySubject$.next(newValue);
 
       expect(results).toEqual([oldValue]);
@@ -156,7 +156,7 @@ describe('ValidityMap', () => {
     it('should connect eagerly first call', () => {
       const results: number[] = [];
 
-      validityMap.connect$('a', factoryMock).subscribe((v) => results.push(v));
+      connectionsManager.connect$('a', factoryMock).subscribe((v) => results.push(v));
       factorySubject$.next(newValue);
 
       expect(results).toEqual([newValue]);
@@ -173,7 +173,7 @@ describe('ValidityMap', () => {
     it('should emit multiple from connect', () => {
       const results: number[] = [];
 
-      validityMap.connect$('a', factoryMock).subscribe((v) => results.push(v));
+      connectionsManager.connect$('a', factoryMock).subscribe((v) => results.push(v));
       factorySubject$.next(oldValue);
       factorySubject$.next(newValue);
       factorySubject$.next(oldValue);
@@ -190,7 +190,7 @@ describe('ValidityMap', () => {
     it('should emit multiple from get hook', () => {
       const results: number[] = [];
 
-      validityMap.connect$('a', () => of(oldValue)).subscribe((v) => results.push(v));
+      connectionsManager.connect$('a', () => of(oldValue)).subscribe((v) => results.push(v));
       mockRxMap.set('a', newValue);
       mockRxMap.set('a', oldValue);
       mockRxMap.set('a', newValue);
@@ -205,7 +205,7 @@ describe('ValidityMap', () => {
       const errors: Error[] = [];
       const error = new Error('Test Error');
 
-      validityMap.connect$('a', factoryMock).subscribe(
+      connectionsManager.connect$('a', factoryMock).subscribe(
         (v) => results.push(v),
         (error) => errors.push(error),
       );
@@ -224,7 +224,7 @@ describe('ValidityMap', () => {
 
   function shouldSetConnectingAfterSubscribe() {
     it('should set connecting after subscribe', () => {
-      const stream$ = validityMap.connect$('a', factoryMock);
+      const stream$ = connectionsManager.connect$('a', factoryMock);
 
       expect(hooks.connecting).not.toHaveBeenCalled();
 
@@ -239,8 +239,8 @@ describe('ValidityMap', () => {
       const results: number[] = [];
 
       mockRxMap.set('a', newValue);
-      validityMap.validate('a');
-      validityMap.connect$('a', factoryMock).subscribe((v) => results.push(v));
+      connectionsManager.validate('a');
+      connectionsManager.connect$('a', factoryMock).subscribe((v) => results.push(v));
       factorySubject$.next(oldValue);
 
       expect(results).toEqual([newValue]);
@@ -251,13 +251,13 @@ describe('ValidityMap', () => {
   function invalidate(): number[] {
     const results: number[] = [];
 
-    validityMap
+    connectionsManager
       .connect$('a', factoryMock)
       .pipe(take(1))
       .subscribe((v) => results.push(v));
     factorySubject$.next(oldValue);
-    validityMap.invalidate('a');
-    validityMap.connect$('a', factoryMock).subscribe((v) => results.push(v));
+    connectionsManager.invalidate('a');
+    connectionsManager.connect$('a', factoryMock).subscribe((v) => results.push(v));
     factorySubject$.next(newValue);
 
     expect(factoryMock).toHaveBeenCalledTimes(2);
@@ -269,17 +269,17 @@ describe('ValidityMap', () => {
     const aResults: number[] = [];
     const bResults: number[] = [];
 
-    validityMap
+    connectionsManager
       .connect$('a', () => of(oldValue))
       .pipe(take(1))
       .subscribe((v) => aResults.push(v));
-    validityMap
+    connectionsManager
       .connect$('b', () => of(oldValue))
       .pipe(take(1))
       .subscribe((v) => bResults.push(v));
-    validityMap.invalidateAll();
-    validityMap.connect$('a', factoryMock).subscribe((v) => aResults.push(v));
-    validityMap.connect$('b', factoryMock).subscribe((v) => bResults.push(v));
+    connectionsManager.invalidateAll();
+    connectionsManager.connect$('a', factoryMock).subscribe((v) => aResults.push(v));
+    connectionsManager.connect$('b', factoryMock).subscribe((v) => bResults.push(v));
     factorySubject$.next(newValue);
 
     expect(factoryMock).toHaveBeenCalledTimes(2);
@@ -290,11 +290,11 @@ describe('ValidityMap', () => {
   function connectAfterInvalid(): number[] {
     const results: number[] = [];
 
-    validityMap.connect$('a', () => of(oldValue)).subscribe();
+    connectionsManager.connect$('a', () => of(oldValue)).subscribe();
     hooks.connecting.mockClear();
     hooks.connected.mockClear();
     advanceTime(moreThanTimeout);
-    validityMap.connect$('a', factoryMock).subscribe((v) => results.push(v));
+    connectionsManager.connect$('a', factoryMock).subscribe((v) => results.push(v));
     factorySubject$.next(newValue);
 
     expect(hooks.connecting).toHaveBeenCalledWith('a');
@@ -313,11 +313,11 @@ describe('ValidityMap', () => {
     const firstResults: number[] = [];
     const secondResults: number[] = [];
 
-    validityMap.connect$('a', () => of(oldValue)).subscribe();
+    connectionsManager.connect$('a', () => of(oldValue)).subscribe();
     advanceTime(moreThanTimeout);
-    validityMap.connect$('b', () => of(oldValue)).subscribe();
-    validityMap.connect$('a', factoryMock).subscribe((v) => firstResults.push(v));
-    validityMap.connect$('b', factoryMock).subscribe((v) => secondResults.push(v));
+    connectionsManager.connect$('b', () => of(oldValue)).subscribe();
+    connectionsManager.connect$('a', factoryMock).subscribe((v) => firstResults.push(v));
+    connectionsManager.connect$('b', factoryMock).subscribe((v) => secondResults.push(v));
     factorySubject$.next(newValue);
 
     return { firstResults, secondResults };
@@ -327,7 +327,10 @@ describe('ValidityMap', () => {
     dateNowMock.mockReturnValue(dateNowMock() + time);
   }
 
-  function makeValidityMap(strategy: 'eager' | 'lazy', scope: 'single' | 'all'): void {
-    validityMap = new ValidityMap<string, number>({ timeout, scope, strategy }, hooks);
+  function makeConnectionsManager(strategy: 'eager' | 'lazy', scope: 'single' | 'all'): void {
+    connectionsManager = new ConnectionsManager<string, number>(
+      { timeout, scope, strategy },
+      hooks,
+    );
   }
 });

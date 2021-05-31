@@ -4,4 +4,4 @@ export * from './structures/rx-connect-arrays';
 export * from './structures/rx-connect-map';
 export * from './structures/rx-map';
 export * from './structures/rx-set';
-export * from './utils/validity-map';
+export * from './utils/connections-manager';
