@@ -29,6 +29,26 @@ export class RxConnectArrays<
     });
   }
 
+  set(key: TKey, itemsToSet: ReadonlyArray<TItemValue>): void {
+    this.connectionsManager.validate(key);
+    return super.set(key, itemsToSet);
+  }
+
+  append(key: TKey, itemsToAppend: ReadonlyArray<TItemValue>): void {
+    this.connectionsManager.validate(key);
+    return super.append(key, itemsToAppend);
+  }
+
+  prepend(key: TKey, itemsToPrepend: ReadonlyArray<TItemValue>): void {
+    this.connectionsManager.validate(key);
+    return super.prepend(key, itemsToPrepend);
+  }
+
+  remove(key: TKey, ...itemKeysToRemove: ReadonlyArray<TItemKey>): void {
+    this.connectionsManager.validate(key);
+    return super.remove(key, ...itemKeysToRemove);
+  }
+
   connect$(
     key: TKey,
     factory: () => Observable<ReadonlyArray<TItemValue>>,
@@ -42,11 +62,5 @@ export class RxConnectArrays<
 
   invalidateAll(): void {
     return this.connectionsManager.invalidateAll();
-  }
-
-  protected updateValue(key: TKey, value: Array<TItemKey> | undefined): void {
-    this.connectionsManager.validate(key);
-
-    return super.updateValue(key, value);
   }
 }
