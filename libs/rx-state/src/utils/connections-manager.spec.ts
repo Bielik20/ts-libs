@@ -1,4 +1,4 @@
-import { of, Subject } from 'rxjs';
+import { of, Subject, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { RxMap } from '../structures/rx-map';
 import { ConnectionsManager } from './connections-manager';
@@ -63,7 +63,7 @@ describe('ConnectionsManager', () => {
       it('should manually invalidate all', () => {
         const { aResults, bResults } = invalidateAll();
 
-        expect(aResults).toEqual([oldValue, newValue]);
+        expect(aResults).toEqual([oldValue, newValue, newValue]);
         expect(bResults).toEqual([oldValue, newValue]);
       });
 
@@ -96,7 +96,7 @@ describe('ConnectionsManager', () => {
       it('should manually invalidate all', () => {
         const { aResults, bResults } = invalidateAll();
 
-        expect(aResults).toEqual([oldValue, oldValue, newValue]);
+        expect(aResults).toEqual([oldValue, oldValue, newValue, newValue]);
         expect(bResults).toEqual([oldValue, oldValue, newValue]);
       });
 
@@ -131,6 +131,13 @@ describe('ConnectionsManager', () => {
 
         expect(firstResults).toEqual([newValue]);
         expect(secondResults).toEqual([newValue]);
+      });
+
+      it('should manually invalidate all', () => {
+        const { aResults, bResults } = invalidateAll();
+
+        expect(aResults).toEqual([oldValue, newValue, newValue]);
+        expect(bResults).toEqual([oldValue, newValue]);
       });
     });
   });
@@ -266,21 +273,35 @@ describe('ConnectionsManager', () => {
   }
 
   function invalidateAll(): { aResults: number[]; bResults: number[] } {
+    let subscription: Subscription;
     const aResults: number[] = [];
     const bResults: number[] = [];
 
-    connectionsManager
+    subscription = connectionsManager
       .connect$('a', () => of(oldValue))
-      .pipe(take(1))
       .subscribe((v) => aResults.push(v));
-    connectionsManager
+    subscription.unsubscribe();
+
+    subscription = connectionsManager
       .connect$('b', () => of(oldValue))
-      .pipe(take(1))
       .subscribe((v) => bResults.push(v));
+    subscription.unsubscribe();
+
     connectionsManager.invalidateAll();
-    connectionsManager.connect$('a', factoryMock).subscribe((v) => aResults.push(v));
-    connectionsManager.connect$('b', factoryMock).subscribe((v) => bResults.push(v));
+
+    subscription = connectionsManager.connect$('a', factoryMock).subscribe((v) => aResults.push(v));
     factorySubject$.next(newValue);
+    subscription.unsubscribe();
+
+    subscription = connectionsManager.connect$('b', factoryMock).subscribe((v) => bResults.push(v));
+    factorySubject$.next(newValue);
+    subscription.unsubscribe();
+
+    subscription = connectionsManager
+      .connect$('a', factoryMock) // should not be called
+      .subscribe((v) => aResults.push(v));
+    factorySubject$.next(oldValue);
+    subscription.unsubscribe();
 
     expect(factoryMock).toHaveBeenCalledTimes(2);
 

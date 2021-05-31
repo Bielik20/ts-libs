@@ -46,7 +46,8 @@ export class ConnectionsManager<TKey, TValue> {
         return this.get$(key);
       }
 
-      if (this.config.scope === 'all') {
+      const wasManuallyInvalidated = expiresAt === undefined;
+      if (this.config.scope === 'all' && !wasManuallyInvalidated) {
         this.invalidateAll();
       }
 
