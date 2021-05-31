@@ -1,6 +1,6 @@
 import { List } from '@material-ui/core';
 import { useDependency } from '@ns3/react-di';
-import { useStream } from '@ns3/ts-utils';
+import { useStream } from '@ns3/react-utils';
 import { useProductsQuery } from 'react-demo/products/hooks/use-products-query';
 import { ProductsStore } from 'react-demo/products/services/products.store';
 import { ProductListItemCont } from 'react-demo/products/ui/product-list-item.cont';

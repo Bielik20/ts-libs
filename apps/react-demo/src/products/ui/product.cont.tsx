@@ -1,5 +1,5 @@
 import { useDependency } from '@ns3/react-di';
-import { useCombineLatestValue, useUnsubscribe } from '@ns3/ts-utils';
+import { useCombineLatestValue, useUnsubscribe } from '@ns3/react-utils';
 import { useRouter } from 'next/router';
 import React, { FunctionComponent } from 'react';
 import { Product, Product as ProductModel } from 'react-demo/products/models/product';

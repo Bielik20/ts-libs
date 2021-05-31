@@ -1,8 +1,7 @@
+import { FactoryOrValue, Falsy, unpackFactoryOrValue } from '@ns3/ts-utils';
 import { DependencyList, useMemo } from 'react';
 import { combineLatest } from 'rxjs';
 import { ObservableInput, ObservedValueOf } from 'rxjs/src/internal/types';
-import { FactoryOrValue, unpackFactoryOrValue } from '../utils/factory-or-value';
-import { Falsy } from '../utils/falsy';
 import { useStreamValue } from './use-stream-value';
 
 export function useCombineLatestValue<O1 extends ObservableInput<any>>(

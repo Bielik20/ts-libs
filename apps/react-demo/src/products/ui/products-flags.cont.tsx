@@ -1,5 +1,5 @@
 import { useDependency } from '@ns3/react-di';
-import { useCombineLatestValue } from '@ns3/ts-utils';
+import { useCombineLatestValue } from '@ns3/react-utils';
 import { FunctionComponent } from 'react';
 import { ProductsStore } from '../services/products.store';
 import { ProductsFlagsCard } from './products-flags-card';
