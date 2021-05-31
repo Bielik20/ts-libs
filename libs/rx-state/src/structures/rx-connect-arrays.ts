@@ -1,13 +1,13 @@
 import { Observable } from 'rxjs';
-import { ConnectingSet } from '../models/connecting-set';
-import { ValidityMap, ValidityMapConfig } from '../utils/validity-map';
+import { ConnectionsManager, ConnectionsManagerConfig } from '../utils/connections-manager';
 import { RxArrays, RxArraysOptions } from './rx-arrays';
 import { RxMap, RxMapKey, RxMapValue } from './rx-map';
+import { RxSet } from './rx-set';
 
 interface RxConnectArraysOptions<TKey, TMapKey, TMapValue>
-  extends ValidityMapConfig,
+  extends ConnectionsManagerConfig,
     RxArraysOptions<TMapKey, TMapValue> {
-  connectingSet?: ConnectingSet<TKey>;
+  connectingSet?: RxSet<TKey>;
 }
 
 export class RxConnectArrays<
@@ -16,11 +16,11 @@ export class RxConnectArrays<
   TItemKey = RxMapKey<TItemsMap>,
   TItemValue = RxMapValue<TItemsMap>
 > extends RxArrays<TKey, TItemsMap, TItemKey, TItemValue> {
-  protected readonly validityMap: ValidityMap<TKey, ReadonlyArray<TItemValue>>;
+  protected readonly manager: ConnectionsManager<TKey, ReadonlyArray<TItemValue>>;
 
   constructor({ connectingSet, ...options }: RxConnectArraysOptions<TKey, TItemKey, TItemValue>) {
     super(options);
-    this.validityMap = new ValidityMap(options, {
+    this.manager = new ConnectionsManager(options, {
       connecting: connectingSet && ((key) => connectingSet.add(key)),
       connected: connectingSet && ((key) => connectingSet.delete(key)),
       has: (key) => this.get(key) !== undefined,
@@ -33,19 +33,19 @@ export class RxConnectArrays<
     key: TKey,
     factory: () => Observable<ReadonlyArray<TItemValue>>,
   ): Observable<ReadonlyArray<TItemValue> | undefined> {
-    return this.validityMap.connect$(key, factory);
+    return this.manager.connect$(key, factory);
   }
 
   invalidate(key: TKey): void {
-    return this.validityMap.invalidate(key);
+    return this.manager.invalidate(key);
   }
 
   invalidateAll(): void {
-    return this.validityMap.invalidateAll();
+    return this.manager.invalidateAll();
   }
 
   protected updateValue(key: TKey, value: Array<TItemKey> | undefined): void {
-    this.validityMap.validate(key);
+    this.manager.validate(key);
 
     return super.updateValue(key, value);
   }

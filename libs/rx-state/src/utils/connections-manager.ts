@@ -1,13 +1,13 @@
 import { defer, EMPTY, merge, Observable } from 'rxjs';
 import { exhaustMap, switchMap, tap } from 'rxjs/operators';
 
-export interface ValidityMapConfig {
+export interface ConnectionsManagerConfig {
   timeout: number;
   scope: 'single' | 'all';
   strategy: 'eager' | 'lazy';
 }
 
-export interface ValidityMapHooks<TKey, TValue> {
+export interface ConnectionsManagerHooks<TKey, TValue> {
   connecting?: (key: TKey) => void;
   connected?: (key: TKey) => void;
   has: (key: TKey) => boolean;
@@ -15,7 +15,7 @@ export interface ValidityMapHooks<TKey, TValue> {
   set: (key: TKey, value: TValue) => void;
 }
 
-export class ValidityMap<TKey, TValue> {
+export class ConnectionsManager<TKey, TValue> {
   protected readonly expiresAtMap = new Map<TKey, number>();
   protected readonly connecting?: (key: TKey) => void;
   protected readonly connected?: (key: TKey) => void;
@@ -23,7 +23,10 @@ export class ValidityMap<TKey, TValue> {
   protected readonly get$: (key: TKey) => Observable<TValue>;
   protected readonly set: (key: TKey, value: TValue) => void;
 
-  constructor(protected readonly config: ValidityMapConfig, hooks: ValidityMapHooks<TKey, TValue>) {
+  constructor(
+    protected readonly config: ConnectionsManagerConfig,
+    hooks: ConnectionsManagerHooks<TKey, TValue>,
+  ) {
     this.connecting = hooks.connecting || (() => null);
     this.connected = hooks.connected || (() => null);
     this.has = hooks.has;
