@@ -1,7 +1,6 @@
+import { FactoryOrValue, Falsy, unpackFactoryOrValue } from '@ns3/ts-utils';
 import { DependencyList, useMemo, useState } from 'react';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { FactoryOrValue, unpackFactoryOrValue } from '../utils/factory-or-value';
-import { Falsy } from '../utils/falsy';
 import {
   ErrorResult,
   makeErrorResult,
