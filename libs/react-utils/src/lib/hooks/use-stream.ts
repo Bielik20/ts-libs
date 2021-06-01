@@ -17,32 +17,22 @@ export function useStream<T>(
   factory: FactoryOrValue<Falsy | Observable<T>>,
   deps?: DependencyList,
 ): StreamResult<T> {
-  const sub = useRef<Subscription>({ unsubscribe: () => null } as Subscription);
-  const behaviorSubject$ = useMemo(() => new BehaviorSubject<StreamResult<T>>(PENDING_RESULT), []);
+  const sub = useRef<Pick<Subscription, 'unsubscribe'>>({ unsubscribe: () => null });
 
-  useMemo(() => {
+  const behaviorSubject$ = useMemo(() => {
+    const behaviorSubject$ = new BehaviorSubject<StreamResult<T>>(PENDING_RESULT);
     const stream$ = unpackFactoryOrValue(factory);
 
     sub.current.unsubscribe();
 
-    if (!stream$) {
-      return behaviorSubject$.next(PENDING_RESULT);
+    if (stream$) {
+      sub.current = stream$.subscribe({
+        next: (v) => behaviorSubject$.next(makeSuccessResult(v)),
+        error: (e) => behaviorSubject$.next(makeErrorResult(e)),
+      });
     }
 
-    let immediate = false;
-
-    sub.current = stream$.subscribe({
-      next: (v) => {
-        immediate = true;
-        behaviorSubject$.next(makeSuccessResult(v));
-      },
-      error: (e) => {
-        immediate = true;
-        behaviorSubject$.next(makeErrorResult(e));
-      },
-    });
-
-    !immediate && behaviorSubject$.next(PENDING_RESULT);
+    return behaviorSubject$;
   }, deps);
 
   return useBehaviorSubjectValue(behaviorSubject$);

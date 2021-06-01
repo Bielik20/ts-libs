@@ -7,22 +7,22 @@ export function useStreamValue<T>(
   factory: FactoryOrValue<Falsy | Observable<T>>,
   deps?: DependencyList,
 ): T | undefined {
-  const sub = useRef<Subscription>({ unsubscribe: () => null } as Subscription);
-  const behaviorSubject$ = useMemo(() => new BehaviorSubject<T | undefined>(undefined), []);
+  const sub = useRef<Pick<Subscription, 'unsubscribe'>>({ unsubscribe: () => null });
 
-  useMemo(() => {
+  const behaviorSubject$ = useMemo(() => {
+    const behaviorSubject$ = new BehaviorSubject<T | undefined>(undefined);
     const stream$ = unpackFactoryOrValue(factory);
 
     sub.current.unsubscribe();
 
-    if (!stream$) {
-      return behaviorSubject$.next(undefined);
+    if (stream$) {
+      sub.current = stream$.subscribe({
+        next: (v) => behaviorSubject$.next(v),
+        error: () => behaviorSubject$.next(undefined),
+      });
     }
 
-    sub.current = stream$.subscribe({
-      next: (v) => behaviorSubject$.next(v),
-      error: () => behaviorSubject$.next(undefined),
-    });
+    return behaviorSubject$;
   }, deps);
 
   return useBehaviorSubjectValue(behaviorSubject$);
