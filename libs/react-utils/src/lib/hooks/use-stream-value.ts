@@ -1,5 +1,5 @@
 import { FactoryOrValue, Falsy, unpackFactoryOrValue } from '@ns3/ts-utils';
-import { DependencyList, useMemo, useRef } from 'react';
+import { DependencyList, useEffect, useMemo, useRef } from 'react';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { useBehaviorSubjectValue } from './use-behavior-subject-value';
 
@@ -24,6 +24,10 @@ export function useStreamValue<T>(
 
     return behaviorSubject$;
   }, deps);
+
+  useEffect(() => {
+    return () => sub.current.unsubscribe();
+  }, []);
 
   return useBehaviorSubjectValue(behaviorSubject$);
 }
