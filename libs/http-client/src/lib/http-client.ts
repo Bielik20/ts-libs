@@ -15,39 +15,42 @@ export class HttpClient {
 
   constructor(private interceptors: HttpInterceptors) {}
 
-  get<T = unknown>(url: string, headers?: Record<string, any>): Observable<AjaxResponse<T>> {
-    return this.makeRequest<T>({ method: 'GET', url, headers });
+  get<T = unknown>(
+    url: string,
+    config: Omit<AjaxConfig, 'url' | 'method'> = {},
+  ): Observable<AjaxResponse<T>> {
+    return this.makeRequest<T>({ ...config, method: 'GET', url });
   }
 
   patch<T = unknown>(
     url: string,
     body?: unknown,
-    headers?: Readonly<Record<string, any>>,
+    config: Omit<AjaxConfig, 'url' | 'body' | 'method'> = {},
   ): Observable<AjaxResponse<T>> {
-    return this.makeRequest<T>({ method: 'PATCH', url, headers, body });
+    return this.makeRequest<T>({ ...config, method: 'PATCH', url, body });
   }
 
   post<T = unknown>(
     url: string,
     body?: unknown,
-    headers?: Readonly<Record<string, any>>,
+    config: Omit<AjaxConfig, 'url' | 'body' | 'method'> = {},
   ): Observable<AjaxResponse<T>> {
-    return this.makeRequest<T>({ method: 'POST', url, headers, body });
+    return this.makeRequest<T>({ ...config, method: 'POST', url, body });
   }
 
   put<T = unknown>(
     url: string,
     body?: unknown,
-    headers?: Readonly<Record<string, any>>,
+    config: Omit<AjaxConfig, 'url' | 'body' | 'method'> = {},
   ): Observable<AjaxResponse<T>> {
-    return this.makeRequest<T>({ method: 'PUT', url, headers, body });
+    return this.makeRequest<T>({ ...config, method: 'PUT', url, body });
   }
 
   delete<T = unknown>(
     url: string,
-    headers?: Readonly<Record<string, any>>,
+    config: Omit<AjaxConfig, 'url' | 'method'> = {},
   ): Observable<AjaxResponse<T>> {
-    return this.makeRequest<T>({ method: 'DELETE', url, headers });
+    return this.makeRequest<T>({ ...config, method: 'DELETE', url });
   }
 
   private makeRequest<T>(req: AjaxConfig): Observable<AjaxResponse<T>> {
