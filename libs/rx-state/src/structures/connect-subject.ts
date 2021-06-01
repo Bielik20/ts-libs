@@ -1,14 +1,14 @@
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ConnectionManager, ConnectionManagerConfig } from '../utils/connection-manager';
 
-interface ConnectBehaviorSubjectOptions extends ConnectionManagerConfig {
+interface ConnectSubjectOptions extends ConnectionManagerConfig {
   connecting$?: BehaviorSubject<boolean>;
 }
 
-export class ConnectBehaviorSubject<T> extends BehaviorSubject<T | undefined> {
+export class ConnectSubject<T> extends BehaviorSubject<T | undefined> {
   protected readonly connectionManager: ConnectionManager<T>;
 
-  constructor({ connecting$, ...options }: ConnectBehaviorSubjectOptions) {
+  constructor({ connecting$, ...options }: ConnectSubjectOptions) {
     super(undefined);
     this.connectionManager = new ConnectionManager<T>(options, {
       connecting: connecting$ && (() => connecting$.value !== true && connecting$.next(true)),
