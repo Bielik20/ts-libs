@@ -6,9 +6,11 @@ export function useBehaviorSubjectValue<T>(behaviorSubject$: BehaviorSubject<T>)
   const [value, setValue] = useState<T>(behaviorSubject$.value);
 
   useEffect(() => {
-    behaviorSubject$.pipe(debounce(() => Promise.resolve())).subscribe(setValue);
+    const subscription = behaviorSubject$
+      .pipe(debounce(() => Promise.resolve()))
+      .subscribe(setValue);
 
-    return () => behaviorSubject$.complete();
+    return () => subscription.unsubscribe();
   }, [behaviorSubject$]);
 
   return value;
