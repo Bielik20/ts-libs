@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - master
+      - develop
       - 'alpha/*'
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

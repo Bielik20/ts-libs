@@ -3,6 +3,7 @@ on:
   push:
     branches-ignore:
       - master
+      - develop
       - 'alpha/*'
 
 jobs:
