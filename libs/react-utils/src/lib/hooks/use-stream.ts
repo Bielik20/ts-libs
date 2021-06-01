@@ -1,5 +1,5 @@
 import { FactoryOrValue, Falsy, unpackFactoryOrValue } from '@ns3/ts-utils';
-import { DependencyList, useMemo, useState } from 'react';
+import { DependencyList, useMemo, useRef } from 'react';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import {
   ErrorResult,
@@ -17,13 +17,13 @@ export function useStream<T>(
   factory: FactoryOrValue<Falsy | Observable<T>>,
   deps?: DependencyList,
 ): StreamResult<T> {
-  const [subscription, setSubscription] = useState<Subscription | undefined>(undefined);
+  const sub = useRef<Subscription>({ unsubscribe: () => null } as Subscription);
   const behaviorSubject$ = useMemo(() => new BehaviorSubject<StreamResult<T>>(PENDING_RESULT), []);
 
   useMemo(() => {
     const stream$ = unpackFactoryOrValue(factory);
 
-    subscription && subscription.unsubscribe();
+    sub.current.unsubscribe();
 
     if (!stream$) {
       return behaviorSubject$.next(PENDING_RESULT);
@@ -31,18 +31,17 @@ export function useStream<T>(
 
     let immediate = false;
 
-    setSubscription(
-      stream$.subscribe(
-        (v) => {
-          immediate = true;
-          behaviorSubject$.next(makeSuccessResult(v));
-        },
-        (e) => {
-          immediate = true;
-          behaviorSubject$.next(makeErrorResult(e));
-        },
-      ),
-    );
+    sub.current = stream$.subscribe({
+      next: (v) => {
+        immediate = true;
+        behaviorSubject$.next(makeSuccessResult(v));
+      },
+      error: (e) => {
+        immediate = true;
+        behaviorSubject$.next(makeErrorResult(e));
+      },
+    });
+
     !immediate && behaviorSubject$.next(PENDING_RESULT);
   }, deps);
 
