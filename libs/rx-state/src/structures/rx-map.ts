@@ -6,9 +6,9 @@ export type RxMapKey<Type> = Type extends RxMap<infer X, unknown> ? X : never;
 export type RxMapValue<Type> = Type extends RxMap<unknown, infer X> ? X : never;
 
 export class RxMap<TKey, TValue> {
-  protected map = new Map<TKey, BehaviorSubject<TValue | undefined>>();
-  protected map$ = new BehaviorSubject<void>(undefined);
-  protected changeSubject$ = new Subject<Change<TKey, TValue>>();
+  protected readonly map = new Map<TKey, BehaviorSubject<TValue | undefined>>();
+  protected readonly map$ = new BehaviorSubject<void>(undefined);
+  protected readonly changeSubject$ = new Subject<Change<TKey, TValue>>();
   readonly change$ = this.changeSubject$.asObservable();
 
   keys$(): Observable<TKey[]> {
