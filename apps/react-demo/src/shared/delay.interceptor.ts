@@ -1,11 +1,12 @@
-import { HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@ns3/http-client';
+import { HttpHandler, HttpInterceptor } from '@ns3/http-client';
 import { Observable, of, throwError } from 'rxjs';
+import { AjaxConfig, AjaxResponse } from 'rxjs/ajax';
 import { catchError, delay, mergeMap } from 'rxjs/operators';
 
 export class DelayInterceptor implements HttpInterceptor {
   private readonly delay = 1000;
 
-  intercept(req: HttpRequest, next: HttpHandler): Observable<HttpResponse> {
+  intercept<T>(req: AjaxConfig, next: HttpHandler<T>): Observable<AjaxResponse<T>> {
     return next(req).pipe(
       delay(this.delay),
       catchError((err) =>

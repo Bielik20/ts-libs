@@ -1,5 +1,4 @@
 import { Observable } from 'rxjs';
-import { HttpRequest } from './http-request';
-import { HttpResponse } from './http-response';
+import { AjaxConfig, AjaxResponse } from 'rxjs/ajax';
 
-export type HttpHandler = (req: HttpRequest) => Observable<HttpResponse>;
+export type HttpHandler<T = unknown> = (req: AjaxConfig) => Observable<AjaxResponse<T>>;

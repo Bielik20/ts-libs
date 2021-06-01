@@ -1,13 +1,11 @@
 import { Container, Inject, Injectable } from '@wikia/dependency-injection';
 import { Observable, of } from 'rxjs';
-import { ajax } from 'rxjs/ajax';
+import { ajax, AjaxConfig, AjaxResponse } from 'rxjs/ajax';
 import { map, tap } from 'rxjs/operators';
 import { HttpClient } from './http-client';
 import { HttpInterceptors } from './http-interceptors';
 import { HttpHandler } from './models/http-handler';
 import { HttpInterceptor } from './models/http-interceptor';
-import { HttpRequest } from './models/http-request';
-import { HttpResponse } from './models/http-response';
 
 const SPY = Symbol('spy');
 
@@ -15,7 +13,7 @@ const SPY = Symbol('spy');
 class FirstInterceptor implements HttpInterceptor {
   constructor(@Inject(SPY) private spy: jest.Mock) {}
 
-  intercept(req: HttpRequest, next: HttpHandler): Observable<HttpResponse> {
+  intercept<T>(req: AjaxConfig, next: HttpHandler<T>): Observable<AjaxResponse<T>> {
     this.spy('first req', req);
 
     return next({
@@ -32,7 +30,7 @@ class FirstInterceptor implements HttpInterceptor {
 class SecondInterceptor implements HttpInterceptor {
   constructor(@Inject(SPY) private spy: jest.Mock) {}
 
-  intercept(req: HttpRequest, next: HttpHandler): Observable<HttpResponse> {
+  intercept<T>(req: AjaxConfig, next: HttpHandler<T>): Observable<AjaxResponse<T>> {
     this.spy('second req', req);
 
     return next({
@@ -49,7 +47,7 @@ class SecondInterceptor implements HttpInterceptor {
 class InterceptorWithHttpClient implements HttpInterceptor {
   constructor(@Inject(SPY) private spy: jest.Mock, private client: HttpClient) {}
 
-  intercept(req: HttpRequest, next: HttpHandler): Observable<HttpResponse> {
+  intercept<T>(req: AjaxConfig, next: HttpHandler<T>): Observable<AjaxResponse<T>> {
     this.spy(this.client);
 
     return next(req).pipe(map((res) => ({ ...res, withClient: 'works' })));

@@ -1,8 +1,7 @@
 import { Observable } from 'rxjs';
+import { AjaxConfig, AjaxResponse } from 'rxjs/ajax';
 import { HttpHandler } from './http-handler';
-import { HttpRequest } from './http-request';
-import { HttpResponse } from './http-response';
 
 export interface HttpInterceptor {
-  intercept(req: HttpRequest, next: HttpHandler): Observable<HttpResponse>;
+  intercept<T>(req: AjaxConfig, next: HttpHandler<T>): Observable<AjaxResponse<T>>;
 }
