@@ -1,6 +1,7 @@
 {
   "name": "@ns3/redux-entity",
   "version": "0.0.1",
+  "sideEffects": false,
   "repository": {
     "type": "git",
     "url": "https://github.com/Bielik20/ts-libs"
