@@ -2,9 +2,9 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 export class RxSet<TKey> {
-  protected set = new Set<TKey>();
-  protected set$ = new BehaviorSubject<void>(undefined);
-  protected map = new Map<TKey, BehaviorSubject<boolean>>();
+  protected readonly set = new Set<TKey>();
+  protected readonly set$ = new BehaviorSubject<void>(undefined);
+  protected readonly map = new Map<TKey, BehaviorSubject<boolean>>();
 
   size$(): Observable<number> {
     return this.set$.pipe(map(() => this.size()));
@@ -23,7 +23,7 @@ export class RxSet<TKey> {
   }
 
   has$(key: TKey): Observable<boolean> {
-    return this.ensure(key);
+    return this.ensure(key).asObservable();
   }
 
   has(key: TKey): boolean {
