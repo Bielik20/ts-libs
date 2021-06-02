@@ -1,5 +1,5 @@
 import { FactoryOrValue, Falsy, unpackFactoryOrValue } from '@ns3/ts-utils';
-import { DependencyList, useEffect, useState } from 'react';
+import { DependencyList, useDebugValue, useEffect, useState } from 'react';
 import {
   ErrorResult,
   makeErrorResult,
@@ -46,6 +46,8 @@ export function usePromise<T>(
       setValue(PENDING_RESULT);
     };
   }, deps);
+
+  useDebugValue(value);
 
   return value;
 }
