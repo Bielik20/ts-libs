@@ -80,9 +80,9 @@ export class RxSet<TKey> {
 
   protected ensure(key: TKey): BehaviorSubject<boolean> {
     if (!this.map.has(key)) {
-      this.map.set(key, new BehaviorSubject(false));
+      this.map.set(key, new BehaviorSubject<boolean>(false));
     }
 
-    return this.map.get(key);
+    return this.map.get(key)!;
   }
 }

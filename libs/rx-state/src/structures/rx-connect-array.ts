@@ -15,15 +15,15 @@ export class RxConnectArray<
   TItemKey = RxMapKey<TItemsMap>,
   TItemValue = RxMapValue<TItemsMap>
 > extends RxArray<TItemsMap, TItemKey, TItemValue> {
-  protected readonly connectionManager: ConnectionManager<ReadonlyArray<TItemValue>>;
+  protected readonly connectionManager: ConnectionManager<Array<TItemValue>>;
 
   constructor({ connecting$, ...options }: RxConnectArrayOptions<TItemKey, TItemValue>) {
     super(options);
     this.connectionManager = new ConnectionManager(options, {
-      connecting: connecting$ && (() => connecting$.value !== true && connecting$.next(true)),
-      connected: connecting$ && (() => connecting$.value !== false && connecting$.next(false)),
+      connecting: connecting$ && (() => !connecting$.value && connecting$.next(true)),
+      connected: connecting$ && (() => connecting$.value && connecting$.next(false)),
       has: () => this.get() !== undefined,
-      get$: () => this.get$(),
+      get$: () => this.get$() as Observable<Array<TItemValue>>,
       set: (value) => this.set(value),
     });
   }
@@ -48,9 +48,7 @@ export class RxConnectArray<
     return super.removeItems(itemKeysToRemove);
   }
 
-  connect$(
-    factory: () => Observable<ReadonlyArray<TItemValue>>,
-  ): Observable<ReadonlyArray<TItemValue>> {
+  connect$(factory: () => Observable<Array<TItemValue>>): Observable<ReadonlyArray<TItemValue>> {
     return this.connectionManager.connect$(factory);
   }
 

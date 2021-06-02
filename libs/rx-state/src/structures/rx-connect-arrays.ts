@@ -24,7 +24,7 @@ export class RxConnectArrays<
       connecting: connectingSet && ((key) => connectingSet.add(key)),
       connected: connectingSet && ((key) => connectingSet.delete(key)),
       has: (key) => this.get(key) !== undefined,
-      get$: (key) => this.get$(key),
+      get$: (key) => this.get$(key) as Observable<Array<TItemValue>>,
       set: (key, value) => this.set(key, value),
     });
   }

@@ -16,7 +16,7 @@ export class RxConnectMap<TKey, TValue> extends RxMap<TKey, TValue> {
       connecting: connectingSet && ((key) => connectingSet.add(key)),
       connected: connectingSet && ((key) => connectingSet.delete(key)),
       has: (key) => this.get(key) !== undefined,
-      get$: (key) => this.get$(key),
+      get$: (key) => this.get$(key) as Observable<TValue>,
       set: (key, value) => this.set(key, value),
     });
   }

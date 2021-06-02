@@ -17,8 +17,8 @@ export interface ConnectionsManagerHooks<TKey, TValue> {
 
 export class ConnectionsManager<TKey, TValue> {
   protected readonly expiresAtMap = new Map<TKey, number>();
-  protected readonly connecting?: (key: TKey) => void;
-  protected readonly connected?: (key: TKey) => void;
+  protected readonly connecting: (key: TKey) => void;
+  protected readonly connected: (key: TKey) => void;
   protected readonly has: (key: TKey) => boolean;
   protected readonly get$: (key: TKey) => Observable<TValue>;
   protected readonly set: (key: TKey, value: TValue) => void;
@@ -42,7 +42,7 @@ export class ConnectionsManager<TKey, TValue> {
         return this.connectEagerly(key, factory);
       }
 
-      if (Date.now() < expiresAt) {
+      if (Date.now() < expiresAt!) {
         return this.get$(key);
       }
 
@@ -59,17 +59,11 @@ export class ConnectionsManager<TKey, TValue> {
     });
   }
 
-  protected connectEagerly(
-    key: TKey,
-    factory: () => Observable<TValue>,
-  ): Observable<TValue | undefined> {
+  protected connectEagerly(key: TKey, factory: () => Observable<TValue>): Observable<TValue> {
     return this.executeFactory(key, factory).pipe(exhaustMap(() => this.get$(key)));
   }
 
-  protected connectLazily(
-    key: TKey,
-    factory: () => Observable<TValue>,
-  ): Observable<TValue | undefined> {
+  protected connectLazily(key: TKey, factory: () => Observable<TValue>): Observable<TValue> {
     return merge(this.get$(key), this.executeFactory(key, factory).pipe(switchMap(() => EMPTY)));
   }
 
