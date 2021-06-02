@@ -11,17 +11,17 @@ import { LoaderComp } from 'react-demo/shared/loader.comp';
 export default function Products() {
   const store = useDependency(ProductsStore);
   const query = useProductsQuery();
-  const [status, products, error] = useStream(() => store.connectQuery$(query), [query]);
+  const products = useStream(() => store.connectQuery$(query), [query]);
 
-  if (status === 'error') {
+  if (products.status === 'error') {
     return (
       <ProductsShell query={query}>
-        <ErrorComp error={error} />
+        <ErrorComp error={products.error} />
       </ProductsShell>
     );
   }
 
-  if (status === 'pending') {
+  if (products.status === 'pending') {
     return (
       <ProductsShell query={query}>
         <LoaderComp />
@@ -32,7 +32,7 @@ export default function Products() {
   return (
     <ProductsShell query={query}>
       <List component="nav">
-        {products.map((product) => (
+        {products.value.map((product) => (
           <ProductListItemCont key={product.id} product={product} />
         ))}
       </List>

@@ -10,15 +10,15 @@ import { LoaderComp } from 'react-demo/shared/loader.comp';
 export default function ProductDetails() {
   const productsStore = useDependency(ProductsStore);
   const { id } = useProductQuery();
-  const [status, product, error] = useStream(() => productsStore.connect$(id), [id]);
+  const product = useStream(() => productsStore.connect$(id), [id]);
 
-  if (status === 'error') {
-    return <ErrorComp error={error} />;
+  if (product.status === 'error') {
+    return <ErrorComp error={product.error} />;
   }
 
-  if (status === 'pending') {
+  if (product.status === 'pending') {
     return <LoaderComp />;
   }
 
-  return <ProductCont product={product} />;
+  return <ProductCont product={product.value} />;
 }
