@@ -11,10 +11,10 @@ export class ConnectSubject<T> extends BehaviorSubject<T | undefined> {
   constructor({ connecting$, ...options }: ConnectSubjectOptions) {
     super(undefined);
     this.connectionManager = new ConnectionManager<T>(options, {
-      connecting: connecting$ && (() => connecting$.value !== true && connecting$.next(true)),
-      connected: connecting$ && (() => connecting$.value !== false && connecting$.next(false)),
+      connecting: connecting$ && (() => !connecting$.value && connecting$.next(true)),
+      connected: connecting$ && (() => connecting$.value && connecting$.next(false)),
       has: () => this.value !== undefined,
-      get$: () => this.asObservable(),
+      get$: () => this.asObservable() as Observable<T>,
       set: (value) => this.next(value),
     });
   }

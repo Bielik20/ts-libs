@@ -1,3 +1,4 @@
+import { isNotUndefined } from '@ns3/ts-utils';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { mapKeysToValues } from '../utils/map-keys-to-values';
 import { RxMap, RxMapKey, RxMapValue } from './rx-map';
@@ -33,7 +34,7 @@ export class RxArrays<
       return undefined;
     }
 
-    return itemKeys.map((itemKey) => this.itemsMap.get(itemKey));
+    return itemKeys.map((itemKey) => this.itemsMap.get(itemKey)).filter(isNotUndefined);
   }
 
   set(key: TKey, itemsToSet: ReadonlyArray<TItemValue>): void {
@@ -101,6 +102,6 @@ export class RxArrays<
       this.map.set(key, new BehaviorSubject<Array<TItemKey> | undefined>(undefined));
     }
 
-    return this.map.get(key);
+    return this.map.get(key)!;
   }
 }

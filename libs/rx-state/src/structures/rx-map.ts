@@ -24,7 +24,7 @@ export class RxMap<TKey, TValue> {
   }
 
   values(): TValue[] {
-    return this.keys().map((key) => this.ensure(key).value);
+    return this.keys().map((key) => this.ensure(key).value!);
   }
 
   entries$(): Observable<[key: TKey, value: TValue][]> {
@@ -32,7 +32,7 @@ export class RxMap<TKey, TValue> {
   }
 
   entries(): [key: TKey, value: TValue][] {
-    return this.keys().map((key) => [key, this.ensure(key).value]);
+    return this.keys().map((key) => [key, this.ensure(key).value!]);
   }
 
   get$(key: TKey): Observable<TValue | undefined> {
@@ -106,6 +106,6 @@ export class RxMap<TKey, TValue> {
       this.map.set(key, new BehaviorSubject<TValue | undefined>(undefined));
     }
 
-    return this.map.get(key);
+    return this.map.get(key)!;
   }
 }
