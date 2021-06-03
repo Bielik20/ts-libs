@@ -1,7 +1,3 @@
-# ts-utils
+# @ns3/ts-utils
 
-This library was generated with [Nx](https://nx.dev).
-
-## Running unit tests
-
-Run `nx test ts-utils` to execute the unit tests via [Jest](https://jestjs.io).
+Library to keep custom hooks and utility code unrelated to any specific framework.
