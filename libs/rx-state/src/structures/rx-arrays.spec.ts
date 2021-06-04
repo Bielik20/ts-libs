@@ -14,7 +14,7 @@ describe('RxArrays', () => {
     itemsMap = new RxMap<string, Item>();
     rxArrays = new RxArrays<string, RxMap<string, Item>>({
       itemsMap,
-      keyMapper: (item) => item.id,
+      itemKey: (item) => item.id,
     });
   });
 

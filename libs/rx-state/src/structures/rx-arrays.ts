@@ -5,7 +5,7 @@ import { RxMap, RxMapKey, RxMapValue } from './rx-map';
 
 export interface RxArraysOptions<TMapKey, TMapValue> {
   itemsMap: RxMap<TMapKey, TMapValue>;
-  keyMapper: (value: TMapValue) => TMapKey;
+  itemKey: (value: TMapValue) => TMapKey;
 }
 
 export class RxArrays<
@@ -15,12 +15,12 @@ export class RxArrays<
   TItemValue = RxMapValue<TItemsMap>
 > {
   protected readonly itemsMap: RxMap<TItemKey, TItemValue>;
-  protected readonly keyMapper: (value: TItemValue) => TItemKey;
+  protected readonly itemKey: (value: TItemValue) => TItemKey;
   protected readonly map = new Map<TKey, BehaviorSubject<Array<TItemKey> | undefined>>();
 
-  constructor({ itemsMap, keyMapper }: RxArraysOptions<TItemKey, TItemValue>) {
+  constructor({ itemsMap, itemKey }: RxArraysOptions<TItemKey, TItemValue>) {
     this.itemsMap = itemsMap;
-    this.keyMapper = keyMapper;
+    this.itemKey = itemKey;
   }
 
   get$(key: TKey): Observable<Array<TItemValue> | undefined> {
@@ -84,7 +84,7 @@ export class RxArrays<
     const entries: [TItemKey, TItemValue][] = [];
 
     for (const value of items) {
-      const key = this.keyMapper(value);
+      const key = this.itemKey(value);
 
       keys.push(key);
       entries.push([key, value]);
