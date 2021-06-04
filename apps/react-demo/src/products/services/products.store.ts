@@ -21,7 +21,7 @@ export class ProductsStore {
   });
   public readonly queried = new RxConnectArrays({
     itemsMap: this.entities,
-    keyMapper: (value) => value.id,
+    itemKey: (value) => value.id,
     connectingSet: this.fetching,
     timeout: 5 * 60 * 1000, // 5 minutes
     scope: 'all',
