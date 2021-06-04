@@ -2,6 +2,10 @@
 
 Reactive State is a platform agnostic solution for state management built as an extension on [RxJs](https://rxjs.dev/). The goal of this solution is to provide standard data structures but with reactive capabilities, as well as configurable way to cache data with minimal effort.
 
+Watch this video the get an idea what Reactive State is about:
+
+[![Reactive State](https://img.youtube.com/vi/ey2G5vQiuGI/0.jpg)](https://www.youtube.com/watch?v=ey2G5vQiuGI-Y "Reactive State")
+
 ## Data Structures
 
 ### BehaviorSubject
