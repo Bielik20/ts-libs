@@ -34,19 +34,9 @@ export class RxConnectArrays<
     return super.set(key, itemsToSet);
   }
 
-  append(key: TKey, itemsToAppend: ReadonlyArray<TItemValue>): void {
+  modify(key: TKey, func: (current: Array<TItemValue>) => ReadonlyArray<TItemValue>): void {
     this.connectionsManager.validate(key);
-    return super.append(key, itemsToAppend);
-  }
-
-  prepend(key: TKey, itemsToPrepend: ReadonlyArray<TItemValue>): void {
-    this.connectionsManager.validate(key);
-    return super.prepend(key, itemsToPrepend);
-  }
-
-  removeItems(key: TKey, itemKeysToRemove: ReadonlyArray<TItemKey>): void {
-    this.connectionsManager.validate(key);
-    return super.removeItems(key, itemKeysToRemove);
+    return super.modify(key, func);
   }
 
   connect$(

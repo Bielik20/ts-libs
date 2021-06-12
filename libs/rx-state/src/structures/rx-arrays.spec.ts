@@ -50,7 +50,8 @@ describe('RxArrays', () => {
 
       rxArrays.set('default', [{ id: 'start', value: 1 }]);
       rxArrays.get$('default').subscribe((v) => aValues.push(v));
-      rxArrays.append('default', [
+      rxArrays.modify('default', (current) => [
+        ...current,
         { id: 'a', value: 2 },
         { id: 'b', value: 2 },
       ]);
@@ -72,9 +73,10 @@ describe('RxArrays', () => {
 
       rxArrays.set('default', [{ id: 'start', value: 1 }]);
       rxArrays.get$('default').subscribe((v) => aValues.push(v));
-      rxArrays.prepend('default', [
+      rxArrays.modify('default', (current) => [
         { id: 'a', value: 2 },
         { id: 'b', value: 2 },
+        ...current,
       ]);
 
       expect(aValues).toEqual([
@@ -98,7 +100,9 @@ describe('RxArrays', () => {
         { id: 'c', value: 3 },
       ]);
       rxArrays.get$('default').subscribe((v) => aValues.push(v));
-      rxArrays.removeItems('default', ['a', 'c']);
+      rxArrays.modify('default', (current) =>
+        current.filter((item) => !['a', 'c'].includes(item.id)),
+      );
 
       expect(aValues).toEqual([
         [

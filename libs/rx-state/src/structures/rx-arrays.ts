@@ -44,29 +44,11 @@ export class RxArrays<
     this.updateValue(key, itemKeys);
   }
 
-  append(key: TKey, itemsToAppend: ReadonlyArray<TItemValue>): void {
-    const [itemKeys, itemsEntries] = this.mapKeysAndEntries(itemsToAppend);
-    const currentItemsKeys = this.ensure(key).value || [];
+  modify(key: TKey, func: (current: Array<TItemValue>) => ReadonlyArray<TItemValue>): void {
+    const current = this.get(key) || [];
+    const updated = func(current);
 
-    this.itemsMap.setEntries(itemsEntries);
-    this.updateValue(key, [...currentItemsKeys, ...itemKeys]);
-  }
-
-  prepend(key: TKey, itemsToPrepend: ReadonlyArray<TItemValue>): void {
-    const [itemKeys, itemsEntries] = this.mapKeysAndEntries(itemsToPrepend);
-    const currentItemsKeys = this.ensure(key).value || [];
-
-    this.itemsMap.setEntries(itemsEntries);
-    this.updateValue(key, [...itemKeys, ...currentItemsKeys]);
-  }
-
-  removeItems(key: TKey, itemKeysToRemove: ReadonlyArray<TItemKey>): void {
-    const currentItemKeys = this.ensure(key).value || [];
-    const updatedItemKeys = currentItemKeys.filter(
-      (itemKey) => !itemKeysToRemove.includes(itemKey),
-    );
-
-    this.updateValue(key, updatedItemKeys);
+    return this.set(key, updated);
   }
 
   delete(key: TKey): void {
