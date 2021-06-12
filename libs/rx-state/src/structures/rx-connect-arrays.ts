@@ -31,16 +31,6 @@ export class RxConnectArrays<
     });
   }
 
-  set(key: TKey, itemsToSet: ReadonlyArray<TItemValue>): void {
-    this.connectionsManager.validate(key);
-    return super.set(key, itemsToSet);
-  }
-
-  modify(key: TKey, func: (current: Array<TItemValue>) => ReadonlyArray<TItemValue>): void {
-    this.connectionsManager.validate(key);
-    return super.modify(key, func);
-  }
-
   connect$(
     key: TKey,
     factory: () => Observable<ReadonlyArray<TItemValue>>,
@@ -54,5 +44,10 @@ export class RxConnectArrays<
 
   invalidateAll(): void {
     return this.connectionsManager.invalidateAll();
+  }
+
+  protected updateValue(key: TKey, updatedItemKeys: Array<TItemKey> | undefined): void {
+    this.connectionsManager.validate(key);
+    super.updateValue(key, updatedItemKeys);
   }
 }
