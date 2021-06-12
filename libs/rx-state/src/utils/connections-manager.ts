@@ -1,18 +1,15 @@
 import { defer, EMPTY, merge, Observable } from 'rxjs';
 import { exhaustMap, switchMap, tap } from 'rxjs/operators';
 
-export interface ConnectionsManagerConfig {
+export interface ConnectionsManagerConfig<TKey, TValue> {
   timeout?: number;
   scope: 'single' | 'all';
   strategy: 'eager' | 'lazy';
-}
-
-export interface ConnectionsManagerHooks<TKey, TValue> {
-  connecting?: (key: TKey) => void;
-  connected?: (key: TKey) => void;
   has: (key: TKey) => boolean;
   get$: (key: TKey) => Observable<TValue>;
   set: (key: TKey, value: TValue) => void;
+  connecting?: (key: TKey) => void;
+  connected?: (key: TKey) => void;
 }
 
 /**
@@ -31,12 +28,12 @@ export class ConnectionsManager<TKey, TValue> {
   protected readonly scope: 'single' | 'all';
   protected readonly strategy: 'eager' | 'lazy';
 
-  constructor(config: ConnectionsManagerConfig, hooks: ConnectionsManagerHooks<TKey, TValue>) {
-    this.connecting = hooks.connecting || (() => null);
-    this.connected = hooks.connected || (() => null);
-    this.has = hooks.has;
-    this.get$ = hooks.get$;
-    this.set = hooks.set;
+  constructor(config: ConnectionsManagerConfig<TKey, TValue>) {
+    this.connecting = config.connecting || (() => null);
+    this.connected = config.connected || (() => null);
+    this.has = config.has;
+    this.get$ = config.get$;
+    this.set = config.set;
     this.timeout = config.timeout ?? WEEK;
     this.scope = config.scope;
     this.strategy = config.strategy;

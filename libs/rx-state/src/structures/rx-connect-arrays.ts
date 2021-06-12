@@ -1,14 +1,16 @@
 import { Observable } from 'rxjs';
-import { ConnectionsManager, ConnectionsManagerConfig } from '../utils/connections-manager';
+import { ConnectionsManager } from '../utils/connections-manager';
+import {
+  ConnectionsHooks,
+  ConnectionsOptions,
+  normalizeConnectionsHooks,
+} from '../utils/connections-options';
 import { RxArrays, RxArraysOptions } from './rx-arrays';
 import { RxMap, RxMapKey, RxMapValue } from './rx-map';
-import { RxSet } from './rx-set';
 
-interface RxConnectArraysOptions<TKey, TMapKey, TMapValue>
-  extends ConnectionsManagerConfig,
-    RxArraysOptions<TMapKey, TMapValue> {
-  connectingSet?: RxSet<TKey>;
-}
+type RxConnectArraysOptions<TKey, TMapKey, TMapValue> = RxArraysOptions<TMapKey, TMapValue> &
+  ConnectionsOptions<TKey> &
+  ConnectionsHooks<TKey>;
 
 export class RxConnectArrays<
   TKey,
@@ -18,11 +20,11 @@ export class RxConnectArrays<
 > extends RxArrays<TKey, TItemsMap, TItemKey, TItemValue> {
   protected readonly connectionsManager: ConnectionsManager<TKey, ReadonlyArray<TItemValue>>;
 
-  constructor({ connectingSet, ...options }: RxConnectArraysOptions<TKey, TItemKey, TItemValue>) {
+  constructor(options: RxConnectArraysOptions<TKey, TItemKey, TItemValue>) {
     super(options);
-    this.connectionsManager = new ConnectionsManager(options, {
-      connecting: connectingSet && ((key) => connectingSet.add(key)),
-      connected: connectingSet && ((key) => connectingSet.delete(key)),
+    this.connectionsManager = new ConnectionsManager({
+      ...options,
+      ...normalizeConnectionsHooks(options),
       has: (key) => this.get(key) !== undefined,
       get$: (key) => this.get$(key) as Observable<Array<TItemValue>>,
       set: (key, value) => this.set(key, value),
