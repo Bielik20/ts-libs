@@ -33,19 +33,9 @@ export class RxConnectArray<
     return super.set(itemsToSet);
   }
 
-  append(itemsToAppend: ReadonlyArray<TItemValue>): void {
+  modify(func: (current: Array<TItemValue>) => ReadonlyArray<TItemValue>): void {
     this.connectionManager.validate();
-    return super.append(itemsToAppend);
-  }
-
-  prepend(itemsToPrepend: ReadonlyArray<TItemValue>): void {
-    this.connectionManager.validate();
-    return super.prepend(itemsToPrepend);
-  }
-
-  removeItems(itemKeysToRemove: ReadonlyArray<TItemKey>): void {
-    this.connectionManager.validate();
-    return super.removeItems(itemKeysToRemove);
+    return super.modify(func);
   }
 
   connect$(factory: () => Observable<Array<TItemValue>>): Observable<ReadonlyArray<TItemValue>> {

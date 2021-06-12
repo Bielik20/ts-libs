@@ -25,16 +25,8 @@ export class RxArray<
     return this.rxArrays.set('only', itemsToSet);
   }
 
-  append(itemsToAppend: ReadonlyArray<TItemValue>): void {
-    return this.rxArrays.append('only', itemsToAppend);
-  }
-
-  prepend(itemsToPrepend: ReadonlyArray<TItemValue>): void {
-    return this.rxArrays.prepend('only', itemsToPrepend);
-  }
-
-  removeItems(itemKeysToRemove: ReadonlyArray<TItemKey>): void {
-    return this.rxArrays.removeItems('only', itemKeysToRemove);
+  modify(func: (current: Array<TItemValue>) => ReadonlyArray<TItemValue>): void {
+    return this.rxArrays.modify('only', func);
   }
 
   delete(): void {
