@@ -2,7 +2,7 @@ import { Observable } from 'rxjs';
 import { ConnectionsManager } from './connections-manager';
 
 export interface ConnectionManagerConfig {
-  timeout: number;
+  timeout?: number;
   strategy: 'eager' | 'lazy';
 }
 
