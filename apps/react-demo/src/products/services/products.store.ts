@@ -1,5 +1,4 @@
 import { RxConnectArrays, RxConnectMap, RxSet } from '@ns3/rx-state';
-import { omitUndefined } from '@ns3/ts-utils';
 import { Injectable } from '@wikia/dependency-injection';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -31,14 +30,14 @@ export class ProductsStore {
   constructor(private readonly service: ProductsService) {}
 
   connect$(id: string): Observable<Product> {
-    return this.entities.connect$(id, () => this.service.get(id)).pipe(omitUndefined());
+    return this.entities.connect$(id, () => this.service.get(id));
   }
 
   connectQuery$(query: ProductsQuery): Observable<ReadonlyArray<Product>> {
     const key = `${query.limit}|${query.skip}`;
     this.query$.next(query);
 
-    return this.queried.connect$(key, () => this.service.query(query)).pipe(omitUndefined());
+    return this.queried.connect$(key, () => this.service.query(query));
   }
 
   delete(id: string): Observable<void> {
