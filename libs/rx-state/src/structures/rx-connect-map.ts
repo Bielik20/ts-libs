@@ -23,16 +23,6 @@ export class RxConnectMap<TKey, TValue> extends RxMap<TKey, TValue> {
     });
   }
 
-  set(key: TKey, value: TValue): void {
-    this.connectionsManager.validate(key);
-    return super.set(key, value);
-  }
-
-  setEntries(entries: ReadonlyArray<[key: TKey, value: TValue]>): void {
-    entries.forEach(([key]) => this.connectionsManager.validate(key));
-    return super.setEntries(entries);
-  }
-
   connect$(key: TKey, factory: () => Observable<TValue>): Observable<TValue> {
     return this.connectionsManager.connect$(key, factory);
   }
@@ -43,5 +33,10 @@ export class RxConnectMap<TKey, TValue> extends RxMap<TKey, TValue> {
 
   invalidateAll(): void {
     return this.connectionsManager.invalidateAll();
+  }
+
+  protected updateValue(key: TKey, value: TValue | undefined): boolean {
+    this.connectionsManager.validate(key);
+    return super.updateValue(key, value);
   }
 }
