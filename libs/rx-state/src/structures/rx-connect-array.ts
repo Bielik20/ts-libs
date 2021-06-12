@@ -1,14 +1,17 @@
-import { BehaviorSubject, Observable } from 'rxjs';
-import { ConnectionManager, ConnectionManagerConfig } from '../utils/connection-manager';
+import { Observable } from 'rxjs';
+import { ConnectionManager } from '../utils/connection-manager';
+import {
+  ConnectionHooks,
+  ConnectionOptions,
+  normalizeConnectionHooks,
+} from '../utils/connection-options';
 import { RxArray } from './rx-array';
 import { RxArraysOptions } from './rx-arrays';
 import { RxMap, RxMapKey, RxMapValue } from './rx-map';
 
-interface RxConnectArrayOptions<TMapKey, TMapValue>
-  extends ConnectionManagerConfig,
-    RxArraysOptions<TMapKey, TMapValue> {
-  connecting$?: BehaviorSubject<boolean>;
-}
+type RxConnectArrayOptions<TMapKey, TMapValue> = RxArraysOptions<TMapKey, TMapValue> &
+  ConnectionOptions &
+  ConnectionHooks;
 
 export class RxConnectArray<
   TItemsMap extends RxMap<unknown, unknown>,
@@ -17,11 +20,11 @@ export class RxConnectArray<
 > extends RxArray<TItemsMap, TItemKey, TItemValue> {
   protected readonly connectionManager: ConnectionManager<Array<TItemValue>>;
 
-  constructor({ connecting$, ...options }: RxConnectArrayOptions<TItemKey, TItemValue>) {
+  constructor(options: RxConnectArrayOptions<TItemKey, TItemValue>) {
     super(options);
-    this.connectionManager = new ConnectionManager(options, {
-      connecting: connecting$ && (() => !connecting$.value && connecting$.next(true)),
-      connected: connecting$ && (() => connecting$.value && connecting$.next(false)),
+    this.connectionManager = new ConnectionManager({
+      ...options,
+      ...normalizeConnectionHooks(options),
       has: () => this.get() !== undefined,
       get$: () => this.get$() as Observable<Array<TItemValue>>,
       set: (value) => this.set(value),

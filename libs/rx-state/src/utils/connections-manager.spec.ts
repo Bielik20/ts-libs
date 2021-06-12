@@ -349,9 +349,11 @@ describe('ConnectionsManager', () => {
   }
 
   function makeConnectionsManager(strategy: 'eager' | 'lazy', scope: 'single' | 'all'): void {
-    connectionsManager = new ConnectionsManager<string, number>(
-      { timeout, scope, strategy },
-      hooks,
-    );
+    connectionsManager = new ConnectionsManager<string, number>({
+      ...hooks,
+      timeout,
+      scope,
+      strategy,
+    });
   }
 });

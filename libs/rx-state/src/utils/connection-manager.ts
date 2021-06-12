@@ -1,12 +1,8 @@
 import { Observable } from 'rxjs';
-import { ConnectionsManager } from './connections-manager';
+import { ConnectionsManager, ConnectionsManagerConfig } from './connections-manager';
 
-export interface ConnectionManagerConfig {
-  timeout?: number;
-  strategy: 'eager' | 'lazy';
-}
-
-export interface ConnectionManagerHooks<TValue> {
+export interface ConnectionManagerConfig<TValue>
+  extends Omit<ConnectionsManagerConfig<'only', TValue>, 'scope' | 'set'> {
   connecting?: () => void;
   connected?: () => void;
   has: () => boolean;
@@ -17,11 +13,12 @@ export interface ConnectionManagerHooks<TValue> {
 export class ConnectionManager<TValue> {
   private connectionsManager: ConnectionsManager<'only', TValue>;
 
-  constructor(config: ConnectionManagerConfig, hooks: ConnectionManagerHooks<TValue>) {
-    this.connectionsManager = new ConnectionsManager<'only', TValue>(
-      { ...config, scope: 'single' },
-      { ...hooks, set: (key, value) => hooks.set(value) },
-    );
+  constructor(config: ConnectionManagerConfig<TValue>) {
+    this.connectionsManager = new ConnectionsManager<'only', TValue>({
+      ...config,
+      scope: 'single',
+      set: (key, value) => config.set(value),
+    });
   }
 
   connect$(factory: () => Observable<TValue>): Observable<TValue> {
