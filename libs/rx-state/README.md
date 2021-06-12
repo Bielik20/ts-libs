@@ -215,13 +215,15 @@ The base `connect$` options consist of:
 
 ```ts
 interface Options {
-  timeout: number;
+  timeout?: number;
   strategy: 'eager' | 'lazy';
   scope: 'single' | 'all'; // only in multiple connections
 }
 ```
 
 * `timeout` - For how long (in milliseconds) data should be considered valid. After this time calling `connect$` method will cause *ConnectionManager* to use provided function to retrieve data. Before that it serves data from cache (state).
+  * Defaults to never, meaning that data will always remain valid. Note that technically I am setting timeout to "week" (604800000), which should be more than enough. If, for some reason, you need more than week you need to set it manually.
+  * Setting `0` will make data always invalid.
 * `strategy` - Invalidation strategy, meaning how eagerly *ConnectionManager* invalidates data.
   * `eager` - Calling `connect$` method on invalid data will cause *ConnectionManager* to NOT return any data and wait for the provided function to retrieve data.
   * `lazy` - Calling `connect$` method on invalid data will cause *ConnectionManager* to return outdated data immediately and use provided function to retrieve data in the background.
