@@ -2,12 +2,12 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 export class RxSet<TKey> {
+  protected readonly $$ = new BehaviorSubject<void>(undefined);
   protected readonly set = new Set<TKey>();
-  protected readonly set$ = new BehaviorSubject<void>(undefined);
   protected readonly map = new Map<TKey, BehaviorSubject<boolean>>();
 
   size$(): Observable<number> {
-    return this.set$.pipe(map(() => this.size()));
+    return this.$$.pipe(map(() => this.size()));
   }
 
   size(): number {
@@ -15,7 +15,7 @@ export class RxSet<TKey> {
   }
 
   keys$(): Observable<TKey[]> {
-    return this.set$.pipe(map(() => this.keys()));
+    return this.$$.pipe(map(() => this.keys()));
   }
 
   keys(): TKey[] {
@@ -34,7 +34,7 @@ export class RxSet<TKey> {
     const changed = this.updateValue(key, true);
 
     if (changed) {
-      this.set$.next();
+      this.$$.next();
     }
   }
 
@@ -42,21 +42,21 @@ export class RxSet<TKey> {
     const changed = this.updateValue(key, false);
 
     if (changed) {
-      this.set$.next();
+      this.$$.next();
     }
   }
 
   clear(): void {
     let changed = false;
 
-    Array.from(this.set.keys()).map((key) => {
+    this.map.forEach((value, key) => {
       const result = this.updateValue(key, false);
 
       changed = changed || result;
     });
 
     if (changed) {
-      this.set$.next();
+      this.$$.next();
     }
   }
 

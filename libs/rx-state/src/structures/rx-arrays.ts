@@ -14,6 +14,7 @@ export class RxArrays<
   TItemKey = RxMapKey<TItemsMap>,
   TItemValue = RxMapValue<TItemsMap>
 > {
+  protected readonly $$ = new BehaviorSubject<void>(undefined);
   protected readonly itemsMap: RxMap<TItemKey, TItemValue>;
   protected readonly itemKey: (value: TItemValue) => TItemKey;
   protected readonly map = new Map<TKey, BehaviorSubject<Array<TItemKey> | undefined>>();
@@ -42,6 +43,7 @@ export class RxArrays<
 
     this.itemsMap.setEntries(itemsEntries);
     this.updateValue(key, itemKeys);
+    this.$$.next();
   }
 
   modify(key: TKey, func: (current: Array<TItemValue>) => ReadonlyArray<TItemValue>): void {
@@ -52,11 +54,25 @@ export class RxArrays<
   }
 
   delete(key: TKey): void {
-    this.updateValue(key, undefined);
+    const changed = this.updateValue(key, undefined);
+
+    if (changed) {
+      this.$$.next();
+    }
   }
 
   clear(): void {
-    this.map.forEach((value, key) => this.delete(key));
+    let changed = false;
+
+    this.map.forEach((value, key) => {
+      const result = this.updateValue(key, undefined);
+
+      changed = changed || result;
+    });
+
+    if (changed) {
+      this.$$.next();
+    }
   }
 
   protected mapKeysAndEntries(
@@ -75,8 +91,16 @@ export class RxArrays<
     return [keys, entries];
   }
 
-  protected updateValue(key: TKey, updatedItemKeys: Array<TItemKey> | undefined): void {
-    this.ensure(key).next(updatedItemKeys);
+  protected updateValue(key: TKey, value: Array<TItemKey> | undefined): boolean {
+    const value$ = this.ensure(key);
+
+    if (value === value$.value) {
+      return false;
+    }
+
+    value$.next(value);
+
+    return true;
   }
 
   protected ensure(key: TKey): BehaviorSubject<Array<TItemKey> | undefined> {

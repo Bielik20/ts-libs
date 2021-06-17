@@ -6,13 +6,13 @@ export type RxMapKey<Type> = Type extends RxMap<infer X, unknown> ? X : never;
 export type RxMapValue<Type> = Type extends RxMap<unknown, infer X> ? X : never;
 
 export class RxMap<TKey, TValue> {
+  protected readonly $$ = new BehaviorSubject<void>(undefined);
   protected readonly map = new Map<TKey, BehaviorSubject<TValue | undefined>>();
-  protected readonly map$ = new BehaviorSubject<void>(undefined);
-  protected readonly changeSubject$ = new Subject<Change<TKey, TValue>>();
-  readonly change$ = this.changeSubject$.asObservable();
+  protected readonly change$$ = new Subject<Change<TKey, TValue>>();
+  readonly change$ = this.change$$.asObservable();
 
   keys$(): Observable<TKey[]> {
-    return this.map$.pipe(map(() => this.keys()));
+    return this.$$.pipe(map(() => this.keys()));
   }
 
   keys(): TKey[] {
@@ -20,7 +20,7 @@ export class RxMap<TKey, TValue> {
   }
 
   values$(): Observable<TValue[]> {
-    return this.map$.pipe(map(() => this.values()));
+    return this.$$.pipe(map(() => this.values()));
   }
 
   values(): TValue[] {
@@ -28,7 +28,7 @@ export class RxMap<TKey, TValue> {
   }
 
   entries$(): Observable<[key: TKey, value: TValue][]> {
-    return this.map$.pipe(map(() => this.entries()));
+    return this.$$.pipe(map(() => this.entries()));
   }
 
   entries(): [key: TKey, value: TValue][] {
@@ -47,7 +47,7 @@ export class RxMap<TKey, TValue> {
     const changed = this.updateValue(key, value);
 
     if (changed) {
-      this.map$.next();
+      this.$$.next();
     }
   }
 
@@ -61,7 +61,7 @@ export class RxMap<TKey, TValue> {
     }
 
     if (changed) {
-      this.map$.next();
+      this.$$.next();
     }
   }
 
@@ -69,21 +69,21 @@ export class RxMap<TKey, TValue> {
     const changed = this.updateValue(key, undefined);
 
     if (changed) {
-      this.map$.next();
+      this.$$.next();
     }
   }
 
   clear(): void {
     let changed = false;
 
-    Array.from(this.map.keys()).map((key) => {
+    this.map.forEach((value, key) => {
       const result = this.updateValue(key, undefined);
 
       changed = changed || result;
     });
 
     if (changed) {
-      this.map$.next();
+      this.$$.next();
     }
   }
 
@@ -96,7 +96,7 @@ export class RxMap<TKey, TValue> {
     }
 
     value$.next(value);
-    this.changeSubject$.next(makeChange(key, oldValue, value));
+    this.change$$.next(makeChange(key, oldValue, value));
 
     return true;
   }
