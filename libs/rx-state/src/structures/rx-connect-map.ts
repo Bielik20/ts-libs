@@ -35,8 +35,8 @@ export class RxConnectMap<TKey, TValue> extends RxMap<TKey, TValue> {
     return this.connectionsManager.invalidateAll();
   }
 
-  protected updateValue(key: TKey, value: TValue | undefined): boolean {
+  protected updateImpl(key: TKey, value: TValue | undefined): boolean {
     this.connectionsManager.validate(key);
-    return super.updateValue(key, value);
+    return super.updateImpl(key, value);
   }
 }

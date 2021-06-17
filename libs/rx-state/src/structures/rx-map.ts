@@ -1,15 +1,18 @@
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Change, makeChange } from '../models/change';
+import { RxBase } from './rx-base';
 
 export type RxMapKey<Type> = Type extends RxMap<infer X, unknown> ? X : never;
 export type RxMapValue<Type> = Type extends RxMap<unknown, infer X> ? X : never;
 
-export class RxMap<TKey, TValue> {
-  protected readonly $$ = new BehaviorSubject<void>(undefined);
-  protected readonly map = new Map<TKey, BehaviorSubject<TValue | undefined>>();
+export class RxMap<TKey, TValue> extends RxBase<TKey, TValue | undefined> {
   protected readonly change$$ = new Subject<Change<TKey, TValue>>();
   readonly change$ = this.change$$.asObservable();
+
+  constructor() {
+    super(() => undefined);
+  }
 
   keys$(): Observable<TKey[]> {
     return this.$$.pipe(map(() => this.keys()));
@@ -44,50 +47,22 @@ export class RxMap<TKey, TValue> {
   }
 
   set(key: TKey, value: TValue): void {
-    const changed = this.updateValue(key, value);
-
-    if (changed) {
-      this.$$.next();
-    }
+    this.update([[key, value]]);
   }
 
   setEntries(entries: ReadonlyArray<[key: TKey, value: TValue]>): void {
-    let changed = false;
-
-    for (const [key, value] of entries) {
-      const result = this.updateValue(key, value);
-
-      changed = changed || result;
-    }
-
-    if (changed) {
-      this.$$.next();
-    }
+    this.update(entries);
   }
 
   delete(key: TKey): void {
-    const changed = this.updateValue(key, undefined);
-
-    if (changed) {
-      this.$$.next();
-    }
+    this.update([[key, undefined]]);
   }
 
   clear(): void {
-    let changed = false;
-
-    this.map.forEach((value, key) => {
-      const result = this.updateValue(key, undefined);
-
-      changed = changed || result;
-    });
-
-    if (changed) {
-      this.$$.next();
-    }
+    this.update(Array.from(this.map.keys()).map((key) => [key, undefined]));
   }
 
-  protected updateValue(key: TKey, value: TValue | undefined): boolean {
+  protected updateImpl(key: TKey, value: TValue | undefined): boolean {
     const value$ = this.ensure(key);
     const oldValue = value$.value;
 
@@ -99,13 +74,5 @@ export class RxMap<TKey, TValue> {
     this.change$$.next(makeChange(key, oldValue, value));
 
     return true;
-  }
-
-  protected ensure(key: TKey): BehaviorSubject<TValue | undefined> {
-    if (!this.map.has(key)) {
-      this.map.set(key, new BehaviorSubject<TValue | undefined>(undefined));
-    }
-
-    return this.map.get(key)!;
   }
 }

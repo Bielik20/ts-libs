@@ -1,10 +1,13 @@
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { RxBase } from './rx-base';
 
-export class RxSet<TKey> {
-  protected readonly $$ = new BehaviorSubject<void>(undefined);
+export class RxSet<TKey> extends RxBase<TKey, boolean> {
   protected readonly set = new Set<TKey>();
-  protected readonly map = new Map<TKey, BehaviorSubject<boolean>>();
+
+  constructor() {
+    super(() => false);
+  }
 
   size$(): Observable<number> {
     return this.$$.pipe(map(() => this.size()));
@@ -31,36 +34,18 @@ export class RxSet<TKey> {
   }
 
   add(key: TKey): void {
-    const changed = this.updateValue(key, true);
-
-    if (changed) {
-      this.$$.next();
-    }
+    this.update([[key, true]]);
   }
 
   delete(key: TKey): void {
-    const changed = this.updateValue(key, false);
-
-    if (changed) {
-      this.$$.next();
-    }
+    this.update([[key, false]]);
   }
 
   clear(): void {
-    let changed = false;
-
-    this.map.forEach((value, key) => {
-      const result = this.updateValue(key, false);
-
-      changed = changed || result;
-    });
-
-    if (changed) {
-      this.$$.next();
-    }
+    this.update(Array.from(this.map.keys()).map((key) => [key, false]));
   }
 
-  protected updateValue(key: TKey, value: boolean): boolean {
+  protected updateImpl(key: TKey, value: boolean): boolean {
     const value$ = this.ensure(key);
 
     if (value === value$.value) {
@@ -76,13 +61,5 @@ export class RxSet<TKey> {
     value$.next(value);
 
     return true;
-  }
-
-  protected ensure(key: TKey): BehaviorSubject<boolean> {
-    if (!this.map.has(key)) {
-      this.map.set(key, new BehaviorSubject<boolean>(false));
-    }
-
-    return this.map.get(key)!;
   }
 }

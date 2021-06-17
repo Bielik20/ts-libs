@@ -1,6 +1,7 @@
 import { isNotUndefined } from '@ns3/ts-utils';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { mapKeysToValues } from '../utils/map-keys-to-values';
+import { RxBase } from './rx-base';
 import { RxMap, RxMapKey, RxMapValue } from './rx-map';
 
 export interface RxArraysOptions<TMapKey, TMapValue> {
@@ -13,13 +14,12 @@ export class RxArrays<
   TItemsMap extends RxMap<unknown, unknown>,
   TItemKey = RxMapKey<TItemsMap>,
   TItemValue = RxMapValue<TItemsMap>
-> {
-  protected readonly $$ = new BehaviorSubject<void>(undefined);
+> extends RxBase<TKey, Array<TItemKey> | undefined> {
   protected readonly itemsMap: RxMap<TItemKey, TItemValue>;
   protected readonly itemKey: (value: TItemValue) => TItemKey;
-  protected readonly map = new Map<TKey, BehaviorSubject<Array<TItemKey> | undefined>>();
 
   constructor({ itemsMap, itemKey }: RxArraysOptions<TItemKey, TItemValue>) {
+    super(() => undefined);
     this.itemsMap = itemsMap;
     this.itemKey = itemKey;
   }
@@ -42,8 +42,7 @@ export class RxArrays<
     const [itemKeys, itemsEntries] = this.mapKeysAndEntries(itemsToSet);
 
     this.itemsMap.setEntries(itemsEntries);
-    this.updateValue(key, itemKeys);
-    this.$$.next();
+    this.update([[key, itemKeys]]);
   }
 
   modify(key: TKey, func: (current: Array<TItemValue>) => ReadonlyArray<TItemValue>): void {
@@ -54,25 +53,11 @@ export class RxArrays<
   }
 
   delete(key: TKey): void {
-    const changed = this.updateValue(key, undefined);
-
-    if (changed) {
-      this.$$.next();
-    }
+    this.update([[key, undefined]]);
   }
 
   clear(): void {
-    let changed = false;
-
-    this.map.forEach((value, key) => {
-      const result = this.updateValue(key, undefined);
-
-      changed = changed || result;
-    });
-
-    if (changed) {
-      this.$$.next();
-    }
+    this.update(Array.from(this.map.keys()).map((key) => [key, undefined]));
   }
 
   protected mapKeysAndEntries(
@@ -91,7 +76,7 @@ export class RxArrays<
     return [keys, entries];
   }
 
-  protected updateValue(key: TKey, value: Array<TItemKey> | undefined): boolean {
+  protected updateImpl(key: TKey, value: Array<TItemKey> | undefined): boolean {
     const value$ = this.ensure(key);
 
     if (value === value$.value) {
@@ -101,13 +86,5 @@ export class RxArrays<
     value$.next(value);
 
     return true;
-  }
-
-  protected ensure(key: TKey): BehaviorSubject<Array<TItemKey> | undefined> {
-    if (!this.map.has(key)) {
-      this.map.set(key, new BehaviorSubject<Array<TItemKey> | undefined>(undefined));
-    }
-
-    return this.map.get(key)!;
   }
 }
