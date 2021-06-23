@@ -10,31 +10,12 @@ export type Reaction<O> = ReactionExecutor<O> & {
   /**
    * @internal
    */
-  [REACTION_METADATA_KEY]: ReactionConfig;
+  [REACTION_METADATA_KEY]: true;
 };
 
 type ReactionExecutor<O> = () => Observable<O>;
 
-export interface ReactionConfig {
-  /**
-   * @default true
-   */
-  rerunFailed: boolean;
-  /**
-   * @default true
-   */
-  rerunCompleted: boolean;
-}
-
-const DEFAULT_REACTION_CONFIG: ReactionConfig = {
-  rerunFailed: true,
-  rerunCompleted: true,
-};
-
-export function reaction<O>(
-  factory: () => Observable<O>,
-  config: Partial<ReactionConfig> = {},
-): Reaction<O> {
+export function reaction<O>(factory: () => Observable<O>): Reaction<O> {
   const succeeded$$ = new Subject<O>();
   const failed$$ = new Subject<any>();
   const completed$$ = new Subject<void>();
@@ -51,7 +32,7 @@ export function reaction<O>(
     succeeded$: { value: succeeded$$.asObservable() },
     failed$: { value: failed$$.asObservable() },
     completed$: { value: completed$$.asObservable() },
-    [REACTION_METADATA_KEY]: { value: { ...DEFAULT_REACTION_CONFIG, ...config } },
+    [REACTION_METADATA_KEY]: { value: true },
   });
 
   return result as Reaction<O>;
@@ -59,8 +40,4 @@ export function reaction<O>(
 
 export function isReaction(input: any): input is Reaction<unknown> {
   return typeof input === 'function' && REACTION_METADATA_KEY in input;
-}
-
-export function getReactionConfig(input: Reaction<unknown>): ReactionConfig {
-  return input[REACTION_METADATA_KEY];
 }
