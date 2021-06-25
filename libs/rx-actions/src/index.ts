@@ -1,3 +1,3 @@
-export * from './models/action';
-export * from './models/reaction';
-export * from './models/reactions-runner';
+export * from './lib/action';
+export * from './lib/reaction';
+export * from './lib/reactions-runner';
