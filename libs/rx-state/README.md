@@ -1,5 +1,17 @@
 # @ns3/rx-state
 
+<p align="center">
+  <a href="https://www.npmjs.com/package/@ns3/rx-state">
+    <img src="https://img.shields.io/npm/v/@ns3/rx-state.svg" alt="npm version">
+  </a>
+  <a href="https://bundlephobia.com/package/@ns3/rx-state">
+    <img src="https://img.shields.io/bundlephobia/minzip/@ns3/rx-state" alt="bundlephobia">
+  </a>    
+  <a href="https://bundlephobia.com/package/@ns3/rx-state">
+    <img src="https://badgen.net/bundlephobia/tree-shaking/react-colorful" alt="bundlephobia">
+  </a>
+</p>
+
 Reactive State is a platform agnostic solution for state management built as an extension on [RxJs](https://rxjs.dev/). The goal of this solution is to provide standard data structures but with reactive capabilities, as well as configurable way to cache data with minimal effort.
 
 Watch this video the get an idea what Reactive State is about:

@@ -1,5 +1,17 @@
 # @ns3/http-client
 
+<p align="center">
+  <a href="https://www.npmjs.com/package/@ns3/http-client">
+    <img src="https://img.shields.io/npm/v/@ns3/http-client.svg" alt="npm version">
+  </a>
+  <a href="https://bundlephobia.com/package/@ns3/http-client">
+    <img src="https://img.shields.io/bundlephobia/minzip/@ns3/http-client" alt="bundlephobia">
+  </a>    
+  <a href="https://bundlephobia.com/package/@ns3/http-client">
+    <img src="https://badgen.net/bundlephobia/tree-shaking/react-colorful" alt="bundlephobia">
+  </a>
+</p>
+
 RxJs based injectable http-client for frontend applications.
 
 It requires [@wikia/dependency-injection](https://www.npmjs.com/package/@wikia/dependency-injection) and should not be used without it.
