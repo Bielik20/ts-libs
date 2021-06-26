@@ -8,6 +8,7 @@ import {
 import { Linter } from '@nrwl/linter';
 import { libraryGenerator } from '@nrwl/react';
 import npmGenerator from '@ns3/nx-npm/src/generators/npm/generator';
+import { addCoreJsTslibAsPeerDeps } from '../../src/utils/add-corejs-tslib-as-peer-deps';
 import { Schema } from './schema';
 
 export default async function (host: Tree, schema: Schema) {
@@ -25,6 +26,7 @@ export default async function (host: Tree, schema: Schema) {
   });
   await updateWorkspaceConfig(host, { project: schema.name });
   await npmGenerator(host, { project: schema.name, skipFormat: true, access: 'public' });
+  await addCoreJsTslibAsPeerDeps(host, { project: schema.name });
   await formatFiles(host);
 
   return () => {
