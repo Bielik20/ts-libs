@@ -384,8 +384,8 @@
             "tsConfig": "libs/rx-actions/tsconfig.lib.json",
             "project": "libs/rx-actions/package.json",
             "entryFile": "libs/rx-actions/src/index.ts",
-            "external": ["react/jsx-runtime", "tslib"],
-            "rollupConfig": "./tools/src/plugins/react-rollup-plugin",
+            "external": ["tslib"],
+            "rollupConfig": "./tools/src/plugins/web-rollup-plugin",
             "assets": [
               {
                 "glob": "libs/rx-actions/README.md",
