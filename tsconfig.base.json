@@ -15,13 +15,13 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "react-demo/*": ["apps/react-demo/src/*"],
-      "@ns3/ts-utils": ["libs/ts-utils/src/index.ts"],
       "@ns3/http-client": ["libs/http-client/src/index.ts"],
       "@ns3/react-di": ["libs/react-di/src/index.ts"],
-      "@ns3/rx-state": ["libs/rx-state/src/index.ts"],
       "@ns3/react-utils": ["libs/react-utils/src/index.ts"],
-      "@ns3/rx-actions": ["libs/rx-actions/src/index.ts"]
+      "@ns3/rx-actions": ["libs/rx-actions/src/index.ts"],
+      "@ns3/rx-state": ["libs/rx-state/src/index.ts"],
+      "@ns3/ts-utils": ["libs/ts-utils/src/index.ts"],
+      "react-demo/*": ["apps/react-demo/src/*"]
     }
   },
   "exclude": ["node_modules", "tmp"]
