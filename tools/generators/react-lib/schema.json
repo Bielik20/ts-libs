@@ -1,6 +1,6 @@
 {
   "cli": "nx",
-  "id": "lib",
+  "id": "react-lib",
   "type": "object",
   "properties": {
     "name": {
