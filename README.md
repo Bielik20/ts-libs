@@ -2,7 +2,7 @@
 
 Monorepo for holding some of my npm packages.
 
-Packages and their respective READMEs can be found in `lib` folder. These include but are not limited to:
+Packages and their respective READMEs can be found in `libs` folder. These include but are not limited to:
 
 * [@ns3/rx-state](libs/rx-state)
 * [@ns3/react-di](libs/react-di)
