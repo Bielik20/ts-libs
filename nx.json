@@ -22,13 +22,7 @@
     }
   },
   "projects": {
-    "ts-utils": {
-      "tags": []
-    },
     "http-client": {
-      "tags": []
-    },
-    "react-di": {
       "tags": []
     },
     "react-demo": {
@@ -38,13 +32,19 @@
       "tags": [],
       "implicitDependencies": ["react-demo"]
     },
-    "rx-state": {
+    "react-di": {
       "tags": []
     },
     "react-utils": {
       "tags": []
     },
     "rx-actions": {
+      "tags": []
+    },
+    "rx-state": {
+      "tags": []
+    },
+    "ts-utils": {
       "tags": []
     }
   }
