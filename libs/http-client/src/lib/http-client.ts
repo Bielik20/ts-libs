@@ -11,7 +11,7 @@ const BackendHandler = <T>(req: AjaxConfig) => {
 
 @Injectable()
 export class HttpClient {
-  private _handler: HttpHandler<any>;
+  private _handler!: HttpHandler<any>;
 
   constructor(private interceptors: HttpInterceptors) {}
 
