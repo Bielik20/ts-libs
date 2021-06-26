@@ -4,9 +4,6 @@
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
-      "parserOptions": {
-        "project": ["libs/rx-state/tsconfig.*?.json"]
-      },
       "rules": {
         "@typescript-eslint/no-non-null-assertion": "off"
       }
