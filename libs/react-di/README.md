@@ -1,5 +1,17 @@
 # @ns3/react-di
 
+<p align="center">
+  <a href="https://www.npmjs.com/package/@ns3/react-di">
+    <img src="https://img.shields.io/npm/v/@ns3/react-di.svg" alt="npm version">
+  </a>
+  <a href="https://bundlephobia.com/package/@ns3/react-di">
+    <img src="https://img.shields.io/bundlephobia/minzip/@ns3/react-di" alt="bundlephobia">
+  </a>    
+  <a href="https://bundlephobia.com/package/@ns3/react-di">
+    <img src="https://badgen.net/bundlephobia/tree-shaking/react-colorful" alt="bundlephobia">
+  </a>
+</p>
+
 Based on [@wikia/dependency-injection](https://www.npmjs.com/package/@wikia/dependency-injection) React implementation of dependency injection. First look into documentation of [@wikia/dependency-injection](https://www.npmjs.com/package/@wikia/dependency-injection) to get a hang of using it. This library simply integrates it with React.
 
 ## Setup

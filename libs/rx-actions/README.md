@@ -1,5 +1,17 @@
 # @ns3/rx-actions
 
+<p align="center">
+  <a href="https://www.npmjs.com/package/@ns3/rx-actions">
+    <img src="https://img.shields.io/npm/v/@ns3/rx-actions.svg" alt="npm version">
+  </a>
+  <a href="https://bundlephobia.com/package/@ns3/rx-actions">
+    <img src="https://img.shields.io/bundlephobia/minzip/@ns3/rx-actions" alt="bundlephobia">
+  </a>    
+  <a href="https://bundlephobia.com/package/@ns3/rx-actions">
+    <img src="https://badgen.net/bundlephobia/tree-shaking/react-colorful" alt="bundlephobia">
+  </a>
+</p>
+
 Reactive Actions is a platform agnostic solution that aims to provide similar functionality as redux actions and middleware.
 
 ## Core Concepts
