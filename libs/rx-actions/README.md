@@ -79,4 +79,43 @@ Now, manually subscribing to those hooks can be cumbersome. This is where `react
 
 ### Reaction
 
-Still working on it, I try to find the best API for that.
+Reaction loosely resemble redux middleware like [@ngrx/effects](https://ngrx.io/guide/effects) or [redux-observable](https://redux-observable.js.org/).
+
+To create `reaction`:
+
+```ts
+import { reaction } from '@ns3/rx-actions';
+import { getProducts } from './get-products';
+import { tracker } from './tracker';
+
+trackGetProducts = reaction(() =>
+  getProducts.invoked$.pipe(
+    mergeMap(({ input }) =>
+      tracker.track(input).pipe(
+        tap(() => console.log('I have just tracked getProducts.invoked$')),
+        catchError(() => EMPTY),
+      ),
+    ),
+  ),
+);
+```
+
+To execute reaction you can:
+
+- subscribe manually (not recommended)
+- use `ReactionsRunner` (recommended)
+
+```ts
+import { ReactionsRunner } from '@ns3/rx-actions';
+import { trackGetProducts } from './track-get-products';
+
+runner = new ReactionsRunner();
+
+runner.start(trackGetProducts);
+```
+
+Runner will keep subscription reference of given `reaction` and allows you to stop it at any given time.
+
+```ts
+runner.stop(trackGetProducts);
+```
