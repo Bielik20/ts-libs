@@ -41,6 +41,7 @@ function updateWorkspaceConfig(tree: Tree, schema: { project: string }) {
     outputs: ['{options.outputPath}'],
     options: {
       outputPath: `dist/${projectConfig.root}`,
+      buildableProjectDepsInPackageJsonType: 'dependencies',
       tsConfig: `${projectConfig.root}/tsconfig.lib.json`,
       project: `${projectConfig.root}/package.json`,
       entryFile: `${projectConfig.sourceRoot}/index.ts`,

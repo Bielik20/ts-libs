@@ -28,6 +28,7 @@
           "outputs": ["{options.outputPath}"],
           "options": {
             "outputPath": "dist/libs/http-client",
+            "buildableProjectDepsInPackageJsonType": "dependencies",
             "tsConfig": "libs/http-client/tsconfig.lib.json",
             "project": "libs/http-client/package.json",
             "entryFile": "libs/http-client/src/index.ts",
@@ -151,6 +152,7 @@
           "outputs": ["{options.outputPath}"],
           "options": {
             "outputPath": "dist/libs/react-di",
+            "buildableProjectDepsInPackageJsonType": "dependencies",
             "tsConfig": "libs/react-di/tsconfig.lib.json",
             "project": "libs/react-di/package.json",
             "entryFile": "libs/react-di/src/index.ts",
@@ -197,6 +199,7 @@
           "outputs": ["{options.outputPath}"],
           "options": {
             "outputPath": "dist/libs/react-utils",
+            "buildableProjectDepsInPackageJsonType": "dependencies",
             "tsConfig": "libs/react-utils/tsconfig.lib.json",
             "project": "libs/react-utils/package.json",
             "entryFile": "libs/react-utils/src/index.ts",
@@ -243,6 +246,7 @@
           "outputs": ["{options.outputPath}"],
           "options": {
             "outputPath": "dist/libs/rx-actions",
+            "buildableProjectDepsInPackageJsonType": "dependencies",
             "tsConfig": "libs/rx-actions/tsconfig.lib.json",
             "project": "libs/rx-actions/package.json",
             "entryFile": "libs/rx-actions/src/index.ts",
@@ -289,6 +293,7 @@
           "outputs": ["{options.outputPath}"],
           "options": {
             "outputPath": "dist/libs/rx-state",
+            "buildableProjectDepsInPackageJsonType": "dependencies",
             "tsConfig": "libs/rx-state/tsconfig.lib.json",
             "project": "libs/rx-state/package.json",
             "entryFile": "libs/rx-state/src/index.ts",
@@ -335,6 +340,7 @@
           "outputs": ["{options.outputPath}"],
           "options": {
             "outputPath": "dist/libs/ts-utils",
+            "buildableProjectDepsInPackageJsonType": "dependencies",
             "tsConfig": "libs/ts-utils/tsconfig.lib.json",
             "project": "libs/ts-utils/package.json",
             "entryFile": "libs/ts-utils/src/index.ts",
