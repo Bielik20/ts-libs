@@ -37,6 +37,7 @@ export default async function (host: Tree, schema: Schema) {
 function updateWorkspaceConfig(tree: Tree, schema: { project: string }) {
   const projectConfig = readProjectConfiguration(tree, schema.project);
 
+  projectConfig.targets.build.options.buildableProjectDepsInPackageJsonType = 'dependencies';
   projectConfig.targets.build.options.rollupConfig = './tools/src/plugins/react-rollup-plugin';
   projectConfig.targets.build.options.external = [...projectConfig.targets.build.options.external, "tslib"];
 
