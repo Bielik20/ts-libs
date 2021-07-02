@@ -5,7 +5,7 @@ import { RxMap, RxMapKey, RxMapValue } from './rx-map';
 export class RxArray<
   TItemsMap extends RxMap<unknown, unknown>,
   TItemKey = RxMapKey<TItemsMap>,
-  TItemValue = RxMapValue<TItemsMap>
+  TItemValue = RxMapValue<TItemsMap>,
 > {
   protected readonly rxArrays: RxArrays<'only', TItemsMap, TItemKey, TItemValue>;
 
