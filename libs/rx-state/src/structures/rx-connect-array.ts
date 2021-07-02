@@ -11,7 +11,7 @@ type RxConnectArrayOptions<TMapKey, TMapValue> = RxArraysOptions<TMapKey, TMapVa
 export class RxConnectArray<
   TItemsMap extends RxMap<unknown, unknown>,
   TItemKey = RxMapKey<TItemsMap>,
-  TItemValue = RxMapValue<TItemsMap>
+  TItemValue = RxMapValue<TItemsMap>,
 > {
   protected readonly rxArrays: RxConnectArrays<'only', TItemsMap, TItemKey, TItemValue>;
 

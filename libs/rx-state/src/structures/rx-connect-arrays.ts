@@ -16,7 +16,7 @@ export class RxConnectArrays<
   TKey,
   TItemsMap extends RxMap<unknown, unknown>,
   TItemKey = RxMapKey<TItemsMap>,
-  TItemValue = RxMapValue<TItemsMap>
+  TItemValue = RxMapValue<TItemsMap>,
 > extends RxArrays<TKey, TItemsMap, TItemKey, TItemValue> {
   protected readonly connectionsManager: ConnectionsManager<TKey, ReadonlyArray<TItemValue>>;
 

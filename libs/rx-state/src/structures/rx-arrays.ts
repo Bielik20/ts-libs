@@ -13,7 +13,7 @@ export class RxArrays<
   TKey,
   TItemsMap extends RxMap<unknown, unknown>,
   TItemKey = RxMapKey<TItemsMap>,
-  TItemValue = RxMapValue<TItemsMap>
+  TItemValue = RxMapValue<TItemsMap>,
 > extends RxBase<TKey, Array<TItemKey> | undefined> {
   protected readonly itemsMap: RxMap<TItemKey, TItemValue>;
   protected readonly itemKey: (value: TItemValue) => TItemKey;
