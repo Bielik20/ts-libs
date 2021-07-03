@@ -33,7 +33,7 @@ export class ProductsStore {
     return this.entities.connect$(id, () => this.service.get(id));
   }
 
-  connectQuery$(query: ProductsQuery): Observable<ReadonlyArray<Product>> {
+  connectQuery$(query: ProductsQuery): Observable<Array<Product>> {
     const key = `${query.limit}|${query.skip}`;
     this.query$.next(query);
 
