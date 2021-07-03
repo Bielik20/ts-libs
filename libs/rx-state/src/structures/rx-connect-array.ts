@@ -39,7 +39,7 @@ export class RxConnectArray<
     return this.rxArrays.delete('only');
   }
 
-  connect$(factory: () => Observable<Array<TItemValue>>): Observable<ReadonlyArray<TItemValue>> {
+  connect$(factory: () => Observable<Array<TItemValue>>): Observable<Array<TItemValue>> {
     return this.rxArrays.connect$('only', factory);
   }
 

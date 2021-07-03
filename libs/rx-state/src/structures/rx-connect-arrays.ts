@@ -18,7 +18,7 @@ export class RxConnectArrays<
   TItemKey = RxMapKey<TItemsMap>,
   TItemValue = RxMapValue<TItemsMap>,
 > extends RxArrays<TKey, TItemsMap, TItemKey, TItemValue> {
-  protected readonly connectionsManager: ConnectionsManager<TKey, ReadonlyArray<TItemValue>>;
+  protected readonly connectionsManager: ConnectionsManager<TKey, Array<TItemValue>>;
 
   constructor(options: RxConnectArraysOptions<TKey, TItemKey, TItemValue>) {
     super(options);
@@ -31,10 +31,7 @@ export class RxConnectArrays<
     });
   }
 
-  connect$(
-    key: TKey,
-    factory: () => Observable<ReadonlyArray<TItemValue>>,
-  ): Observable<ReadonlyArray<TItemValue>> {
+  connect$(key: TKey, factory: () => Observable<Array<TItemValue>>): Observable<Array<TItemValue>> {
     return this.connectionsManager.connect$(key, factory);
   }
 

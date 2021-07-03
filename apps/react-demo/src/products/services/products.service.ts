@@ -26,7 +26,7 @@ export class ProductsService {
     return this.httpClient.patch<Product>(`${this.url}/${id}`, value).pipe(toResponse());
   }
 
-  query(query: ProductsQuery): Observable<ReadonlyArray<Product>> {
+  query(query: ProductsQuery): Observable<Array<Product>> {
     const url = `${this.url}?limit=${query.limit}&skip=${query.skip}`;
 
     return this.httpClient.get<Product[]>(url).pipe(toResponse());
