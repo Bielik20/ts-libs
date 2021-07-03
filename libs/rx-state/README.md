@@ -239,9 +239,11 @@ interface Options {
 * `strategy` - Invalidation strategy, meaning how eagerly *ConnectionManager* invalidates data.
   * `eager` - Calling `connect$` method on invalid data will cause *ConnectionManager* to NOT return any data and wait for the provided function to retrieve data.
   * `lazy` - Calling `connect$` method on invalid data will cause *ConnectionManager* to return outdated data immediately and use provided function to retrieve data in the background.
+  * defaults to `eager`.
 * `scope` - Describes if invalidation should affect only specific target or entire collection. This only applies to **multiple** connections.
   * `single` - Only element with a given key is considered invalid. This makes sense when elements are not correlated, like individual items etc.
   * `all` - If at least one element is invalid we invalidate all of them. This makes sense when elements are correlated like pages in pagination.
+  * defaults to `single`.
 
 It is common for connect-able structures to also accept one additional **optional** input.
 
