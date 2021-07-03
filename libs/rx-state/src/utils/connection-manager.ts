@@ -16,7 +16,6 @@ export class ConnectionManager<TValue> {
   constructor(config: ConnectionManagerConfig<TValue>) {
     this.connectionsManager = new ConnectionsManager<'only', TValue>({
       ...config,
-      scope: 'single',
       set: (key, value) => config.set(value),
     });
   }

@@ -3,8 +3,8 @@ import { exhaustMap, switchMap, tap } from 'rxjs/operators';
 
 export interface ConnectionsManagerConfig<TKey, TValue> {
   timeout?: number;
-  scope: 'single' | 'all';
-  strategy: 'eager' | 'lazy';
+  scope?: 'single' | 'all';
+  strategy?: 'eager' | 'lazy';
   has: (key: TKey) => boolean;
   get$: (key: TKey) => Observable<TValue>;
   set: (key: TKey, value: TValue) => void;
@@ -35,8 +35,8 @@ export class ConnectionsManager<TKey, TValue> {
     this.get$ = config.get$;
     this.set = config.set;
     this.timeout = config.timeout ?? WEEK;
-    this.scope = config.scope;
-    this.strategy = config.strategy;
+    this.scope = config.scope || 'single';
+    this.strategy = config.strategy || 'eager';
   }
 
   connect$(key: TKey, factory: () => Observable<TValue>): Observable<TValue> {
