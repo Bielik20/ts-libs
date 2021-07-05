@@ -228,8 +228,9 @@ The base `connect$` options consist of:
 ```ts
 interface Options {
   timeout?: number;
-  strategy: 'eager' | 'lazy';
-  scope: 'single' | 'all'; // only in multiple connections
+  strategy?: 'eager' | 'lazy';
+  scope?: 'single' | 'all'; // only in multiple connections
+  preventMultiple?: boolean;
 }
 ```
 
@@ -244,6 +245,8 @@ interface Options {
   * `single` - Only element with a given key is considered invalid. This makes sense when elements are not correlated, like individual items etc.
   * `all` - If at least one element is invalid we invalidate all of them. This makes sense when elements are correlated like pages in pagination.
   * defaults to `single`.
+* `preventMultiple` - if true, factory method won't get executed if one is already executing. Instead, it will return that existing connection.
+  * defaults to `true`
 
 It is common for connect-able structures to also accept one additional **optional** input.
 

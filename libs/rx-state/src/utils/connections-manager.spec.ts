@@ -1,4 +1,4 @@
-import { of, Subject, Subscription } from 'rxjs';
+import { EMPTY, of, Subject, Subscription, throwError } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { RxMap } from '../structures/rx-map';
 import { ConnectionsManager } from './connections-manager';
@@ -138,6 +138,94 @@ describe('ConnectionsManager', () => {
 
         expect(aResults).toEqual([oldValue, newValue, newValue]);
         expect(bResults).toEqual([oldValue, newValue]);
+      });
+    });
+  });
+
+  describe('prevent multiple connections', () => {
+    describe('false', () => {
+      it('should not prevent', () => {
+        makeConnectionsManager('eager', 'single', false);
+        const nextSpy = jest.fn();
+        const errorSpy = jest.fn();
+
+        connectionsManager.connect$('a', factoryMock).subscribe({ next: nextSpy, error: errorSpy });
+        connectionsManager.connect$('a', factoryMock).subscribe({ next: nextSpy, error: errorSpy });
+        expect(factoryMock).toHaveBeenCalledTimes(2);
+      });
+    });
+
+    describe('true', () => {
+      beforeEach(() => {
+        makeConnectionsManager('eager', 'single');
+      });
+
+      it('should prevent', () => {
+        const nextSpy = jest.fn();
+        const errorSpy = jest.fn();
+
+        connectionsManager.connect$('a', factoryMock).subscribe({ next: nextSpy, error: errorSpy });
+        connectionsManager.connect$('a', factoryMock).subscribe({ next: nextSpy, error: errorSpy });
+        expect(factoryMock).toHaveBeenCalledTimes(1);
+
+        factorySubject$.next(10);
+        expect(nextSpy).toHaveBeenCalledTimes(2);
+        expect(errorSpy).toHaveBeenCalledTimes(0);
+
+        factorySubject$.error(new Error());
+        expect(nextSpy).toHaveBeenCalledTimes(2);
+        expect(errorSpy).toHaveBeenCalledTimes(2);
+      });
+
+      it('should not prevent after factory completed', () => {
+        const nextSpy = jest.fn();
+        const errorSpy = jest.fn();
+        const completingFactoryMock = jest.fn(() => of(10));
+
+        connectionsManager
+          .connect$('a', completingFactoryMock)
+          .subscribe({ next: nextSpy, error: errorSpy });
+        connectionsManager.invalidate('a');
+        connectionsManager
+          .connect$('a', completingFactoryMock)
+          .subscribe({ next: nextSpy, error: errorSpy });
+        expect(completingFactoryMock).toHaveBeenCalledTimes(2);
+      });
+
+      it('should not prevent after factory threw', () => {
+        const nextSpy = jest.fn();
+        const errorSpy = jest.fn();
+        const throwingFactoryMock = jest.fn(() => throwError(() => new Error()));
+
+        connectionsManager
+          .connect$('a', throwingFactoryMock)
+          .subscribe({ next: nextSpy, error: errorSpy });
+        connectionsManager
+          .connect$('a', throwingFactoryMock)
+          .subscribe({ next: nextSpy, error: errorSpy });
+        expect(throwingFactoryMock).toHaveBeenCalledTimes(2);
+      });
+
+      it('should drop connection after all unsubscribe', () => {
+        const originalSub = connectionsManager.connect$('a', factoryMock).subscribe();
+        expect(factorySubject$.observed).toBe(true);
+
+        originalSub.unsubscribe();
+        expect(factorySubject$.observed).toBe(false);
+      });
+
+      it('should keep connection after original subscriber unsubscribe', () => {
+        const nextSpy = jest.fn();
+        const errorSpy = jest.fn();
+
+        const originalSub = connectionsManager.connect$('a', factoryMock).subscribe();
+        connectionsManager.connect$('a', () => EMPTY).subscribe({ next: nextSpy, error: errorSpy });
+
+        originalSub.unsubscribe();
+        expect(factorySubject$.observed).toBe(true);
+
+        factorySubject$.next(10);
+        expect(nextSpy).toHaveBeenCalledTimes(1);
       });
     });
   });
@@ -348,12 +436,17 @@ describe('ConnectionsManager', () => {
     dateNowMock.mockReturnValue(dateNowMock() + time);
   }
 
-  function makeConnectionsManager(strategy: 'eager' | 'lazy', scope: 'single' | 'all'): void {
+  function makeConnectionsManager(
+    strategy: 'eager' | 'lazy',
+    scope: 'single' | 'all',
+    preventMultiple?: boolean,
+  ): void {
     connectionsManager = new ConnectionsManager<string, number>({
       ...hooks,
       timeout,
       scope,
       strategy,
+      preventMultiple,
     });
   }
 });
