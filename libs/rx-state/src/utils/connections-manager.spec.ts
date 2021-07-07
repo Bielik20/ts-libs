@@ -227,6 +227,18 @@ describe('ConnectionsManager', () => {
         factorySubject$.next(10);
         expect(nextSpy).toHaveBeenCalledTimes(1);
       });
+
+      it('should retrieve from cache after resubscribe the same connection', (done) => {
+        const completingFactoryMock = jest.fn(() => of(10));
+        const connection = connectionsManager.connect$('a', completingFactoryMock);
+
+        connection.pipe(take(1)).subscribe(() => {
+          connection.subscribe(() => {
+            expect(completingFactoryMock).toHaveBeenCalledTimes(1);
+            done();
+          });
+        });
+      });
     });
   });
 
