@@ -11,7 +11,7 @@ import { DelayInterceptor } from 'react-demo/shared/delay.interceptor';
 import theme from '../src/theme';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
-  const container = useDependencyInjection([HttpInterceptors.provide(DelayInterceptor)]);
+  const container = useDependencyInjection(() => [HttpInterceptors.provide(DelayInterceptor)]);
   const router = useRouter();
 
   React.useEffect(() => {
