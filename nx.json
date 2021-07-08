@@ -41,6 +41,9 @@
     "rx-actions": {
       "tags": []
     },
+    "rx-devtools": {
+      "tags": []
+    },
     "rx-state": {
       "tags": []
     },
