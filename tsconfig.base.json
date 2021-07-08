@@ -19,6 +19,7 @@
       "@ns3/react-di": ["libs/react-di/src/index.ts"],
       "@ns3/react-utils": ["libs/react-utils/src/index.ts"],
       "@ns3/rx-actions": ["libs/rx-actions/src/index.ts"],
+      "@ns3/rx-devtools": ["libs/rx-devtools/src/index.ts"],
       "@ns3/rx-state": ["libs/rx-state/src/index.ts"],
       "@ns3/ts-utils": ["libs/ts-utils/src/index.ts"],
       "react-demo/*": ["apps/react-demo/src/*"]
