@@ -1,4 +1,6 @@
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Debuggable, DEBUGGABLE_KEY } from '../models/debuggable';
 import { ConnectionHooks, ConnectionOptions } from '../utils/connection-options';
 import { RxArraysOptions } from './rx-arrays';
 import { RxConnectArrays } from './rx-connect-arrays';
@@ -12,11 +14,16 @@ export class RxConnectArray<
   TItemsMap extends RxMap<unknown, unknown>,
   TItemKey = RxMapKey<TItemsMap>,
   TItemValue = RxMapValue<TItemsMap>,
-> {
+> implements Debuggable
+{
   protected readonly rxArrays: RxConnectArrays<'only', TItemsMap, TItemKey, TItemValue>;
 
   constructor(options: RxConnectArrayOptions<TItemKey, TItemValue>) {
     this.rxArrays = new RxConnectArrays({ ...options, scope: 'single' });
+  }
+
+  [DEBUGGABLE_KEY](): Observable<unknown> {
+    return this.rxArrays[DEBUGGABLE_KEY]().pipe(map(({ only }) => only));
   }
 
   get$(): Observable<Array<TItemValue> | undefined> {

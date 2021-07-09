@@ -17,10 +17,6 @@ export class RxSet<TKey> extends RxBase<TKey, boolean> {
     return this.set.size;
   }
 
-  keys$(): Observable<TKey[]> {
-    return this.$$.pipe(map(() => this.keys()));
-  }
-
   keys(): TKey[] {
     return Array.from(this.set.keys());
   }
