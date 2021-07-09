@@ -1,3 +1,4 @@
+import { RxDevtools } from '@ns3/rx-devtools';
 import { RxConnectArrays, RxConnectMap, RxSet } from '@ns3/rx-state';
 import { Injectable } from '@wikia/dependency-injection';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -7,6 +8,7 @@ import { ProductsQuery } from '../models/products-query';
 import { ProductsService } from './products.service';
 
 @Injectable()
+@RxDevtools()
 export class ProductsStore {
   public readonly query$ = new BehaviorSubject<ProductsQuery>({ skip: 0, limit: 10 });
   public readonly deleting = new RxSet<string>();
