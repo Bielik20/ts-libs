@@ -1,4 +1,5 @@
 export * from './models/change';
+export * from './models/debuggable';
 export * from './structures/connect-subject';
 export * from './structures/rx-array';
 export * from './structures/rx-arrays';
