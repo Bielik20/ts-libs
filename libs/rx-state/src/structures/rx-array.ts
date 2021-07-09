@@ -1,4 +1,6 @@
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Debuggable, DEBUGGABLE_KEY } from '../models/debuggable';
 import { RxArrays, RxArraysOptions } from './rx-arrays';
 import { RxMap, RxMapKey, RxMapValue } from './rx-map';
 
@@ -6,11 +8,16 @@ export class RxArray<
   TItemsMap extends RxMap<unknown, unknown>,
   TItemKey = RxMapKey<TItemsMap>,
   TItemValue = RxMapValue<TItemsMap>,
-> {
+> implements Debuggable
+{
   protected readonly rxArrays: RxArrays<'only', TItemsMap, TItemKey, TItemValue>;
 
   constructor(options: RxArraysOptions<TItemKey, TItemValue>) {
     this.rxArrays = new RxArrays(options);
+  }
+
+  [DEBUGGABLE_KEY](): Observable<unknown> {
+    return this.rxArrays[DEBUGGABLE_KEY]().pipe(map(({ only }) => only));
   }
 
   get$(): Observable<Array<TItemValue> | undefined> {

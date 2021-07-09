@@ -1,5 +1,6 @@
 import { isNotUndefined } from '@ns3/ts-utils';
 import { Observable } from 'rxjs';
+import { Debuggable } from '../models/debuggable';
 import { mapKeysToValues } from '../utils/map-keys-to-values';
 import { RxBase } from './rx-base';
 import { RxMap, RxMapKey, RxMapValue } from './rx-map';
@@ -10,11 +11,14 @@ export interface RxArraysOptions<TMapKey, TMapValue> {
 }
 
 export class RxArrays<
-  TKey,
-  TItemsMap extends RxMap<unknown, unknown>,
-  TItemKey = RxMapKey<TItemsMap>,
-  TItemValue = RxMapValue<TItemsMap>,
-> extends RxBase<TKey, Array<TItemKey> | undefined> {
+    TKey,
+    TItemsMap extends RxMap<unknown, unknown>,
+    TItemKey = RxMapKey<TItemsMap>,
+    TItemValue = RxMapValue<TItemsMap>,
+  >
+  extends RxBase<TKey, Array<TItemKey> | undefined>
+  implements Debuggable
+{
   protected readonly itemsMap: RxMap<TItemKey, TItemValue>;
   protected readonly itemKey: (value: TItemValue) => TItemKey;
 
