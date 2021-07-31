@@ -1,12 +1,11 @@
-import { tapTeardown } from '@ns3/ts-utils';
 import { defer, EMPTY, merge, Observable } from 'rxjs';
-import { exhaustMap, shareReplay, switchMap, tap } from 'rxjs/operators';
+import { exhaustMap, switchMap, tap } from 'rxjs/operators';
+import { ObservablesCache } from './observables-cache';
 
 export interface ConnectionsManagerConfig<TKey, TValue> {
   timeout?: number;
   scope?: 'single' | 'all';
   strategy?: 'eager' | 'lazy';
-  preventMultiple?: boolean;
   has: (key: TKey) => boolean;
   get$: (key: TKey) => Observable<TValue>;
   set: (key: TKey, value: TValue) => void;
@@ -21,7 +20,7 @@ const WEEK = 604800000;
 
 export class ConnectionsManager<TKey, TValue> {
   protected readonly expiresAtMap = new Map<TKey, number>();
-  protected readonly connectionsMap = new Map<TKey, Observable<TValue>>();
+  protected readonly cache = new ObservablesCache<TKey, TValue>();
   protected readonly connecting: (key: TKey) => void;
   protected readonly connected: (key: TKey) => void;
   protected readonly has: (key: TKey) => boolean;
@@ -30,7 +29,6 @@ export class ConnectionsManager<TKey, TValue> {
   protected readonly timeout: number;
   protected readonly scope: 'single' | 'all';
   protected readonly strategy: 'eager' | 'lazy';
-  protected readonly preventMultiple: boolean;
 
   constructor(config: ConnectionsManagerConfig<TKey, TValue>) {
     this.connecting = config.connecting || (() => null);
@@ -41,15 +39,14 @@ export class ConnectionsManager<TKey, TValue> {
     this.timeout = config.timeout ?? WEEK;
     this.scope = config.scope || 'single';
     this.strategy = config.strategy || 'eager';
-    this.preventMultiple = config.preventMultiple ?? true;
   }
 
   connect$(key: TKey, factory: () => Observable<TValue>): Observable<TValue> {
     return defer(() => {
       const expiresAt = this.expiresAtMap.get(key);
 
-      if (this.preventMultiple && this.connectionsMap.has(key)) {
-        return this.connectionsMap.get(key)!;
+      if (this.cache.has(key)) {
+        return this.cache.get(key)!;
       }
 
       if (!this.has(key)) {
@@ -74,29 +71,15 @@ export class ConnectionsManager<TKey, TValue> {
   }
 
   protected connectEagerly(key: TKey, factory: () => Observable<TValue>): Observable<TValue> {
-    const connection = this.executeFactory(key, factory).pipe(exhaustMap(() => this.get$(key)));
-
-    return this.augmentConnection(key, connection);
+    return this.cache.ensure(key, () =>
+      this.executeFactory(key, factory).pipe(exhaustMap(() => this.get$(key))),
+    );
   }
 
   protected connectLazily(key: TKey, factory: () => Observable<TValue>): Observable<TValue> {
-    const connection = merge(
-      this.get$(key),
-      this.executeFactory(key, factory).pipe(switchMap(() => EMPTY)),
+    return this.cache.ensure(key, () =>
+      merge(this.get$(key), this.executeFactory(key, factory).pipe(switchMap(() => EMPTY))),
     );
-
-    return this.augmentConnection(key, connection);
-  }
-
-  protected augmentConnection(key: TKey, connection: Observable<TValue>) {
-    const augmented = connection.pipe(
-      tapTeardown(() => this.connectionsMap.delete(key)),
-      shareReplay({ bufferSize: 1, refCount: true }),
-    );
-
-    this.connectionsMap.set(key, augmented);
-
-    return augmented;
   }
 
   protected executeFactory(key: TKey, factory: () => Observable<TValue>): Observable<TValue> {
@@ -110,10 +93,9 @@ export class ConnectionsManager<TKey, TValue> {
         },
         error: () => {
           this.connected(key);
-          this.connectionsMap.delete(key);
         },
         complete: () => {
-          this.connectionsMap.delete(key);
+          this.cache.delete(key);
         },
       }),
     );
