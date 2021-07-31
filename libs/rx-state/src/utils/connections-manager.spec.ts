@@ -143,100 +143,86 @@ describe('ConnectionsManager', () => {
   });
 
   describe('prevent multiple connections', () => {
-    describe('false', () => {
-      it('should not prevent', () => {
-        makeConnectionsManager('eager', 'single', false);
-        const nextSpy = jest.fn();
-        const errorSpy = jest.fn();
-
-        connectionsManager.connect$('a', factoryMock).subscribe({ next: nextSpy, error: errorSpy });
-        connectionsManager.connect$('a', factoryMock).subscribe({ next: nextSpy, error: errorSpy });
-        expect(factoryMock).toHaveBeenCalledTimes(2);
-      });
+    beforeEach(() => {
+      makeConnectionsManager('eager', 'single');
     });
 
-    describe('true', () => {
-      beforeEach(() => {
-        makeConnectionsManager('eager', 'single');
-      });
+    it('should prevent', () => {
+      const nextSpy = jest.fn();
+      const errorSpy = jest.fn();
 
-      it('should prevent', () => {
-        const nextSpy = jest.fn();
-        const errorSpy = jest.fn();
+      connectionsManager.connect$('a', factoryMock).subscribe({ next: nextSpy, error: errorSpy });
+      connectionsManager.connect$('a', factoryMock).subscribe({ next: nextSpy, error: errorSpy });
+      expect(factoryMock).toHaveBeenCalledTimes(1);
 
-        connectionsManager.connect$('a', factoryMock).subscribe({ next: nextSpy, error: errorSpy });
-        connectionsManager.connect$('a', factoryMock).subscribe({ next: nextSpy, error: errorSpy });
-        expect(factoryMock).toHaveBeenCalledTimes(1);
+      factorySubject$.next(10);
+      expect(nextSpy).toHaveBeenCalledTimes(2);
+      expect(errorSpy).toHaveBeenCalledTimes(0);
 
-        factorySubject$.next(10);
-        expect(nextSpy).toHaveBeenCalledTimes(2);
-        expect(errorSpy).toHaveBeenCalledTimes(0);
+      factorySubject$.error(new Error());
+      expect(nextSpy).toHaveBeenCalledTimes(2);
+      expect(errorSpy).toHaveBeenCalledTimes(2);
+    });
 
-        factorySubject$.error(new Error());
-        expect(nextSpy).toHaveBeenCalledTimes(2);
-        expect(errorSpy).toHaveBeenCalledTimes(2);
-      });
+    it('should not prevent after factory completed', () => {
+      const nextSpy = jest.fn();
+      const errorSpy = jest.fn();
+      const completingFactoryMock = jest.fn(() => of(10));
 
-      it('should not prevent after factory completed', () => {
-        const nextSpy = jest.fn();
-        const errorSpy = jest.fn();
-        const completingFactoryMock = jest.fn(() => of(10));
+      connectionsManager
+        .connect$('a', completingFactoryMock)
+        .subscribe({ next: nextSpy, error: errorSpy });
+      connectionsManager.invalidate('a');
+      connectionsManager
+        .connect$('a', completingFactoryMock)
+        .subscribe({ next: nextSpy, error: errorSpy });
+      expect(completingFactoryMock).toHaveBeenCalledTimes(2);
+    });
 
-        connectionsManager
-          .connect$('a', completingFactoryMock)
-          .subscribe({ next: nextSpy, error: errorSpy });
-        connectionsManager.invalidate('a');
-        connectionsManager
-          .connect$('a', completingFactoryMock)
-          .subscribe({ next: nextSpy, error: errorSpy });
-        expect(completingFactoryMock).toHaveBeenCalledTimes(2);
-      });
+    it('should not prevent after factory threw', () => {
+      const nextSpy = jest.fn();
+      const errorSpy = jest.fn();
+      const throwingFactoryMock = jest.fn(() => throwError(() => new Error()));
 
-      it('should not prevent after factory threw', () => {
-        const nextSpy = jest.fn();
-        const errorSpy = jest.fn();
-        const throwingFactoryMock = jest.fn(() => throwError(() => new Error()));
+      connectionsManager
+        .connect$('a', throwingFactoryMock)
+        .subscribe({ next: nextSpy, error: errorSpy });
+      connectionsManager
+        .connect$('a', throwingFactoryMock)
+        .subscribe({ next: nextSpy, error: errorSpy });
+      expect(throwingFactoryMock).toHaveBeenCalledTimes(2);
+    });
 
-        connectionsManager
-          .connect$('a', throwingFactoryMock)
-          .subscribe({ next: nextSpy, error: errorSpy });
-        connectionsManager
-          .connect$('a', throwingFactoryMock)
-          .subscribe({ next: nextSpy, error: errorSpy });
-        expect(throwingFactoryMock).toHaveBeenCalledTimes(2);
-      });
+    it('should drop connection after all unsubscribe', () => {
+      const originalSub = connectionsManager.connect$('a', factoryMock).subscribe();
+      expect(factorySubject$.observed).toBe(true);
 
-      it('should drop connection after all unsubscribe', () => {
-        const originalSub = connectionsManager.connect$('a', factoryMock).subscribe();
-        expect(factorySubject$.observed).toBe(true);
+      originalSub.unsubscribe();
+      expect(factorySubject$.observed).toBe(false);
+    });
 
-        originalSub.unsubscribe();
-        expect(factorySubject$.observed).toBe(false);
-      });
+    it('should keep connection after original subscriber unsubscribe', () => {
+      const nextSpy = jest.fn();
+      const errorSpy = jest.fn();
 
-      it('should keep connection after original subscriber unsubscribe', () => {
-        const nextSpy = jest.fn();
-        const errorSpy = jest.fn();
+      const originalSub = connectionsManager.connect$('a', factoryMock).subscribe();
+      connectionsManager.connect$('a', () => EMPTY).subscribe({ next: nextSpy, error: errorSpy });
 
-        const originalSub = connectionsManager.connect$('a', factoryMock).subscribe();
-        connectionsManager.connect$('a', () => EMPTY).subscribe({ next: nextSpy, error: errorSpy });
+      originalSub.unsubscribe();
+      expect(factorySubject$.observed).toBe(true);
 
-        originalSub.unsubscribe();
-        expect(factorySubject$.observed).toBe(true);
+      factorySubject$.next(10);
+      expect(nextSpy).toHaveBeenCalledTimes(1);
+    });
 
-        factorySubject$.next(10);
-        expect(nextSpy).toHaveBeenCalledTimes(1);
-      });
+    it('should retrieve from cache after resubscribe the same connection', (done) => {
+      const completingFactoryMock = jest.fn(() => of(10));
+      const connection = connectionsManager.connect$('a', completingFactoryMock);
 
-      it('should retrieve from cache after resubscribe the same connection', (done) => {
-        const completingFactoryMock = jest.fn(() => of(10));
-        const connection = connectionsManager.connect$('a', completingFactoryMock);
-
-        connection.pipe(take(1)).subscribe(() => {
-          connection.subscribe(() => {
-            expect(completingFactoryMock).toHaveBeenCalledTimes(1);
-            done();
-          });
+      connection.pipe(take(1)).subscribe(() => {
+        connection.subscribe(() => {
+          expect(completingFactoryMock).toHaveBeenCalledTimes(1);
+          done();
         });
       });
     });
@@ -448,17 +434,12 @@ describe('ConnectionsManager', () => {
     dateNowMock.mockReturnValue(dateNowMock() + time);
   }
 
-  function makeConnectionsManager(
-    strategy: 'eager' | 'lazy',
-    scope: 'single' | 'all',
-    preventMultiple?: boolean,
-  ): void {
+  function makeConnectionsManager(strategy: 'eager' | 'lazy', scope: 'single' | 'all'): void {
     connectionsManager = new ConnectionsManager<string, number>({
       ...hooks,
       timeout,
       scope,
       strategy,
-      preventMultiple,
     });
   }
 });
