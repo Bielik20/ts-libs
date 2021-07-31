@@ -45,11 +45,8 @@ export class ConnectionsManager<TKey, TValue> {
     return defer(() => {
       const expiresAt = this.expiresAtMap.get(key);
 
-      if (this.cache.has(key)) {
-        return this.cache.get$(key)!;
-      }
-
-      if (!this.has(key)) {
+      // TODO: kind of possible for cache to expire between check and execution - think about it
+      if (this.cache.has(key) || !this.has(key)) {
         return this.connectEagerly(key, factory);
       }
 
@@ -71,33 +68,28 @@ export class ConnectionsManager<TKey, TValue> {
   }
 
   protected connectEagerly(key: TKey, factory: () => Observable<TValue>): Observable<TValue> {
-    return this.cache.ensure$(key, () =>
-      this.executeFactory(key, factory).pipe(exhaustMap(() => this.get$(key))),
-    );
+    return this.executeFactory(key, factory).pipe(exhaustMap(() => this.get$(key)));
   }
 
   protected connectLazily(key: TKey, factory: () => Observable<TValue>): Observable<TValue> {
-    return this.cache.ensure$(key, () =>
-      merge(this.get$(key), this.executeFactory(key, factory).pipe(switchMap(() => EMPTY))),
-    );
+    return merge(this.get$(key), this.executeFactory(key, factory).pipe(switchMap(() => EMPTY)));
   }
 
   protected executeFactory(key: TKey, factory: () => Observable<TValue>): Observable<TValue> {
     this.connecting(key);
 
-    return factory().pipe(
-      tap({
-        next: (value) => {
-          this.connected(key);
-          this.set(key, value);
-        },
-        error: () => {
-          this.connected(key);
-        },
-        complete: () => {
-          this.cache.delete(key);
-        },
-      }),
+    return this.cache.ensure$(key, () =>
+      factory().pipe(
+        tap({
+          next: (value) => {
+            this.connected(key);
+            this.set(key, value);
+          },
+          error: () => {
+            this.connected(key);
+          },
+        }),
+      ),
     );
   }
 
