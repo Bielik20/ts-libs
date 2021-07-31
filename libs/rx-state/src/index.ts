@@ -11,3 +11,4 @@ export * from './structures/rx-map';
 export * from './structures/rx-set';
 export * from './utils/connection-manager';
 export * from './utils/connections-manager';
+export * from './utils/observables-cache';
