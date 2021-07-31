@@ -46,7 +46,7 @@ export class ConnectionsManager<TKey, TValue> {
       const expiresAt = this.expiresAtMap.get(key);
 
       if (this.cache.has(key)) {
-        return this.cache.get(key)!;
+        return this.cache.get$(key)!;
       }
 
       if (!this.has(key)) {
@@ -71,13 +71,13 @@ export class ConnectionsManager<TKey, TValue> {
   }
 
   protected connectEagerly(key: TKey, factory: () => Observable<TValue>): Observable<TValue> {
-    return this.cache.ensure(key, () =>
+    return this.cache.ensure$(key, () =>
       this.executeFactory(key, factory).pipe(exhaustMap(() => this.get$(key))),
     );
   }
 
   protected connectLazily(key: TKey, factory: () => Observable<TValue>): Observable<TValue> {
-    return this.cache.ensure(key, () =>
+    return this.cache.ensure$(key, () =>
       merge(this.get$(key), this.executeFactory(key, factory).pipe(switchMap(() => EMPTY))),
     );
   }

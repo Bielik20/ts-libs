@@ -14,8 +14,8 @@ describe('ObservablesCache', () => {
     const factorySubject$ = new Subject<number>();
     const factoryMock = jest.fn(() => factorySubject$.asObservable());
 
-    cache.ensure('a', factoryMock).subscribe({ next: nextSpy, error: errorSpy });
-    cache.ensure('a', factoryMock).subscribe({ next: nextSpy, error: errorSpy });
+    cache.ensure$('a', factoryMock).subscribe({ next: nextSpy, error: errorSpy });
+    cache.ensure$('a', factoryMock).subscribe({ next: nextSpy, error: errorSpy });
     expect(factoryMock).toHaveBeenCalledTimes(1);
 
     factorySubject$.next(10);
@@ -32,8 +32,8 @@ describe('ObservablesCache', () => {
     const errorSpy = jest.fn();
     const completingFactoryMock = jest.fn(() => of(10));
 
-    cache.ensure('a', completingFactoryMock).subscribe({ next: nextSpy, error: errorSpy });
-    cache.ensure('a', completingFactoryMock).subscribe({ next: nextSpy, error: errorSpy });
+    cache.ensure$('a', completingFactoryMock).subscribe({ next: nextSpy, error: errorSpy });
+    cache.ensure$('a', completingFactoryMock).subscribe({ next: nextSpy, error: errorSpy });
     expect(completingFactoryMock).toHaveBeenCalledTimes(2);
     expect(cache.has('a')).toBe(false);
   });
@@ -43,8 +43,8 @@ describe('ObservablesCache', () => {
     const errorSpy = jest.fn();
     const throwingFactoryMock = jest.fn(() => throwError(() => new Error()));
 
-    cache.ensure('a', throwingFactoryMock).subscribe({ next: nextSpy, error: errorSpy });
-    cache.ensure('a', throwingFactoryMock).subscribe({ next: nextSpy, error: errorSpy });
+    cache.ensure$('a', throwingFactoryMock).subscribe({ next: nextSpy, error: errorSpy });
+    cache.ensure$('a', throwingFactoryMock).subscribe({ next: nextSpy, error: errorSpy });
     expect(throwingFactoryMock).toHaveBeenCalledTimes(2);
     expect(cache.has('a')).toBe(false);
   });
@@ -55,8 +55,8 @@ describe('ObservablesCache', () => {
     const secondSubject$ = new Subject<number>();
     const secondFactory = jest.fn(() => secondSubject$.asObservable());
 
-    const firstSub = cache.ensure('a', firstFactory).subscribe();
-    const secondSub = cache.ensure('a', secondFactory).subscribe();
+    const firstSub = cache.ensure$('a', firstFactory).subscribe();
+    const secondSub = cache.ensure$('a', secondFactory).subscribe();
 
     firstSub.unsubscribe();
     expect(cache.has('a')).toBe(true);
