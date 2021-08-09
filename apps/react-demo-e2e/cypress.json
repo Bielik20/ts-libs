@@ -8,5 +8,9 @@
   "video": true,
   "videosFolder": "../../dist/cypress/apps/react-demo-e2e/videos",
   "screenshotsFolder": "../../dist/cypress/apps/react-demo-e2e/screenshots",
-  "chromeWebSecurity": false
+  "chromeWebSecurity": false,
+  "retries": {
+    "runMode": 2,
+    "openMode": 0
+  }
 }
