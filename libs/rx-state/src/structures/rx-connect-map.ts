@@ -12,7 +12,7 @@ type RxConnectMapOptions<TKey> = ConnectionsOptions<TKey> & ConnectionsHooks<TKe
 export class RxConnectMap<TKey, TValue> extends RxMap<TKey, TValue> {
   protected readonly connectionsManager: ConnectionsManager<TKey, TValue>;
 
-  constructor(options: RxConnectMapOptions<TKey>) {
+  constructor(options: RxConnectMapOptions<TKey> = {}) {
     super();
     this.connectionsManager = new ConnectionsManager({
       ...options,
