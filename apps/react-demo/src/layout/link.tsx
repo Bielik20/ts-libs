@@ -5,6 +5,7 @@ import clsx from 'clsx';
 import NextLink, { LinkProps as NextLinkProps } from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { UrlObject } from 'url';
 
 type AProps = React.DetailedHTMLProps<
   React.AnchorHTMLAttributes<HTMLAnchorElement>,
@@ -37,7 +38,7 @@ function StyledLink(props: LinkProps) {
   } = props;
 
   const router = useRouter();
-  const pathname = typeof href === 'string' ? href : href.pathname;
+  const pathname = typeof href === 'string' ? href : (href as UrlObject).pathname;
   const className = clsx(classNameProps, {
     [activeClassName]: router.pathname === pathname && activeClassName,
   });
@@ -51,6 +52,6 @@ function StyledLink(props: LinkProps) {
   );
 }
 
-export const Link = React.forwardRef((props: LinkProps, ref) => (
-  <StyledLink {...props} innerRef={ref} />
-));
+export const Link = React.forwardRef(function Link(props: LinkProps, ref) {
+  return <StyledLink {...props} innerRef={ref} />;
+});
