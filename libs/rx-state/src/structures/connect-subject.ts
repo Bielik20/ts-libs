@@ -11,7 +11,7 @@ type ConnectSubjectOptions = ConnectionOptions & ConnectionHooks;
 export class ConnectSubject<T> extends BehaviorSubject<T | undefined> {
   protected readonly connectionManager: ConnectionManager<T>;
 
-  constructor(options: ConnectSubjectOptions) {
+  constructor(options: ConnectSubjectOptions = {}) {
     super(undefined);
     this.connectionManager = new ConnectionManager<T>({
       ...options,
