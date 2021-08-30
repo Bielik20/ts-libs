@@ -27,7 +27,7 @@ describe('RxArrays', () => {
   });
 
   describe('get, set, delete', () => {
-    it('should should only emit on change value', () => {
+    it('should only emit on change value', () => {
       const aValues: Item[][] = [];
 
       rxArrays.get$('default').subscribe((v) => aValues.push(v));
@@ -41,6 +41,17 @@ describe('RxArrays', () => {
         undefined,
         [{ id: 'a', value: 2 }],
       ]);
+    });
+
+    it('should return empty array', (done) => {
+      rxArrays.set('default', []);
+
+      expect(rxArrays.get('default')).toEqual([]);
+
+      rxArrays.get$('default').subscribe((value) => {
+        expect(value).toEqual([]);
+        done();
+      });
     });
   });
 
