@@ -1,7 +1,7 @@
 import { FactoryOrValue, Falsy, unpackFactoryOrValue } from '@ns3/ts-utils';
-import { DependencyList, useDebugValue, useEffect, useMemo, useRef, useState } from 'react';
-import { BehaviorSubject, Observable, Unsubscribable } from 'rxjs';
-import { debounce } from 'rxjs/operators';
+import { DependencyList, useDebugValue, useEffect, useMemo, useState } from 'react';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { debounce, last, takeUntil } from 'rxjs/operators';
 import {
   ErrorResult,
   makeErrorResult,
@@ -17,16 +17,12 @@ export function useStream<T>(
   factory: FactoryOrValue<Falsy | Observable<T>>,
   deps?: DependencyList,
 ): StreamResult<T> {
-  const sub = useRef<Unsubscribable>({ unsubscribe: () => null });
-
   const behaviorSubject$ = useMemo(() => {
     const behaviorSubject$ = new BehaviorSubject<StreamResult<T>>(PENDING_RESULT);
     const stream$ = unpackFactoryOrValue(factory);
 
-    sub.current.unsubscribe();
-
     if (stream$) {
-      sub.current = stream$.subscribe({
+      stream$.pipe(takeUntil(behaviorSubject$.pipe(last()))).subscribe({
         next: (v) => behaviorSubject$.next(makeSuccessResult(v)),
         error: (e) => behaviorSubject$.next(makeErrorResult(e)),
       });
@@ -42,10 +38,6 @@ export function useStream<T>(
 
     return () => behaviorSubject$.complete();
   }, [behaviorSubject$]);
-
-  useEffect(() => {
-    return () => sub.current.unsubscribe();
-  }, []);
 
   useDebugValue(value);
 
