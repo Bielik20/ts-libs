@@ -15,7 +15,7 @@ export type StreamResult<T> = PendingResult | SuccessResult<T> | ErrorResult;
 
 export function useStream<T>(
   factory: FactoryOrValue<Falsy | Observable<T>>,
-  deps?: DependencyList,
+  deps: DependencyList | undefined,
 ): StreamResult<T> {
   const behaviorSubject$ = useMemo(() => {
     const behaviorSubject$ = new BehaviorSubject<StreamResult<T>>(PENDING_RESULT);
