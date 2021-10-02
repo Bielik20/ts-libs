@@ -13,7 +13,7 @@ export type PromiseResult<T> = PendingResult | SuccessResult<T> | ErrorResult;
 
 export function usePromise<T>(
   factory: FactoryOrValue<Falsy | Promise<T>>,
-  deps?: DependencyList,
+  deps: DependencyList | undefined,
 ): PromiseResult<T> {
   const [value, setValue] = useState<PromiseResult<T>>(PENDING_RESULT);
 
