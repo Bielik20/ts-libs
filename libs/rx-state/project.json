@@ -1,0 +1,46 @@
+{
+  "root": "libs/rx-state",
+  "sourceRoot": "libs/rx-state/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/web:package",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/rx-state",
+        "buildableProjectDepsInPackageJsonType": "dependencies",
+        "tsConfig": "libs/rx-state/tsconfig.lib.json",
+        "project": "libs/rx-state/package.json",
+        "entryFile": "libs/rx-state/src/index.ts",
+        "external": ["tslib"],
+        "rollupConfig": "./tools/src/plugins/web-rollup-plugin",
+        "assets": [
+          {
+            "glob": "libs/rx-state/README.md",
+            "input": ".",
+            "output": "."
+          }
+        ]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/rx-state/**/*.{ts,tsx,js,jsx}"]
+      },
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/rx-state"],
+      "options": {
+        "jestConfig": "libs/rx-state/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "publish": {
+      "executor": "@ns3/nx-npm:publish"
+    }
+  },
+  "tags": []
+}

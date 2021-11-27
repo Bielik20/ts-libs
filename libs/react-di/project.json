@@ -1,0 +1,46 @@
+{
+  "root": "libs/react-di",
+  "sourceRoot": "libs/react-di/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/web:package",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/react-di",
+        "buildableProjectDepsInPackageJsonType": "dependencies",
+        "tsConfig": "libs/react-di/tsconfig.lib.json",
+        "project": "libs/react-di/package.json",
+        "entryFile": "libs/react-di/src/index.ts",
+        "external": ["react/jsx-runtime", "tslib"],
+        "rollupConfig": "./tools/src/plugins/react-rollup-plugin",
+        "assets": [
+          {
+            "glob": "libs/react-di/README.md",
+            "input": ".",
+            "output": "."
+          }
+        ]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/react-di/**/*.{ts,tsx,js,jsx}"]
+      },
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/react-di"],
+      "options": {
+        "jestConfig": "libs/react-di/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "publish": {
+      "executor": "@ns3/nx-npm:publish"
+    }
+  },
+  "tags": []
+}
