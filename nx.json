@@ -17,38 +17,9 @@
         "cacheableOperations": ["build", "lint", "test", "e2e"],
         "accessToken": "MTA3ZjEzODEtZWIxZS00M2M0LWJlNTItOTYxMjEyY2NlNWUzfHJlYWQtd3JpdGU=",
         "canTrackAnalytics": false,
-        "showUsageWarnings": true
+        "showUsageWarnings": true,
+        "parallel": 1
       }
-    }
-  },
-  "projects": {
-    "http-client": {
-      "tags": []
-    },
-    "react-demo": {
-      "tags": []
-    },
-    "react-demo-e2e": {
-      "tags": [],
-      "implicitDependencies": ["react-demo"]
-    },
-    "react-di": {
-      "tags": []
-    },
-    "react-utils": {
-      "tags": []
-    },
-    "rx-actions": {
-      "tags": []
-    },
-    "rx-devtools": {
-      "tags": []
-    },
-    "rx-state": {
-      "tags": []
-    },
-    "ts-utils": {
-      "tags": []
     }
   },
   "targetDependencies": {
@@ -58,5 +29,22 @@
         "projects": "dependencies"
       }
     ]
-  }
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/react"
+  },
+  "generators": {
+    "@nrwl/react": {
+      "application": {
+        "babel": true
+      }
+    },
+    "@nrwl/next": {
+      "application": {
+        "style": "css",
+        "linter": "eslint"
+      }
+    }
+  },
+  "defaultProject": "react-demo"
 }
