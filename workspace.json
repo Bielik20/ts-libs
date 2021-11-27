@@ -1,22 +1,5 @@
 {
   "version": 2,
-  "cli": {
-    "defaultCollection": "@nrwl/react"
-  },
-  "defaultProject": "react-demo",
-  "generators": {
-    "@nrwl/react": {
-      "application": {
-        "babel": true
-      }
-    },
-    "@nrwl/next": {
-      "application": {
-        "style": "css",
-        "linter": "eslint"
-      }
-    }
-  },
   "projects": {
     "http-client": {
       "root": "libs/http-client",
@@ -47,7 +30,8 @@
           "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/http-client/**/*.{ts,tsx,js,jsx}"]
-          }
+          },
+          "outputs": ["{options.outputFile}"]
         },
         "test": {
           "executor": "@nrwl/jest:jest",
@@ -60,7 +44,8 @@
         "publish": {
           "executor": "@ns3/nx-npm:publish"
         }
-      }
+      },
+      "tags": []
     },
     "react-demo": {
       "root": "apps/react-demo",
@@ -109,9 +94,11 @@
           "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["apps/react-demo/**/*.{ts,tsx,js,jsx}"]
-          }
+          },
+          "outputs": ["{options.outputFile}"]
         }
-      }
+      },
+      "tags": []
     },
     "react-demo-e2e": {
       "root": "apps/react-demo-e2e",
@@ -135,9 +122,12 @@
           "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["apps/react-demo-e2e/**/*.{js,ts}"]
-          }
+          },
+          "outputs": ["{options.outputFile}"]
         }
-      }
+      },
+      "tags": [],
+      "implicitDependencies": ["react-demo"]
     },
     "react-di": {
       "root": "libs/react-di",
@@ -168,7 +158,8 @@
           "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/react-di/**/*.{ts,tsx,js,jsx}"]
-          }
+          },
+          "outputs": ["{options.outputFile}"]
         },
         "test": {
           "executor": "@nrwl/jest:jest",
@@ -181,7 +172,8 @@
         "publish": {
           "executor": "@ns3/nx-npm:publish"
         }
-      }
+      },
+      "tags": []
     },
     "react-utils": {
       "root": "libs/react-utils",
@@ -212,7 +204,8 @@
           "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/react-utils/**/*.{ts,tsx,js,jsx}"]
-          }
+          },
+          "outputs": ["{options.outputFile}"]
         },
         "test": {
           "executor": "@nrwl/jest:jest",
@@ -225,7 +218,8 @@
         "publish": {
           "executor": "@ns3/nx-npm:publish"
         }
-      }
+      },
+      "tags": []
     },
     "rx-actions": {
       "root": "libs/rx-actions",
@@ -256,7 +250,8 @@
           "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/rx-actions/**/*.{ts,tsx,js,jsx}"]
-          }
+          },
+          "outputs": ["{options.outputFile}"]
         },
         "test": {
           "executor": "@nrwl/jest:jest",
@@ -269,7 +264,8 @@
         "publish": {
           "executor": "@ns3/nx-npm:publish"
         }
-      }
+      },
+      "tags": []
     },
     "rx-devtools": {
       "root": "libs/rx-devtools",
@@ -300,7 +296,8 @@
           "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/rx-devtools/**/*.ts"]
-          }
+          },
+          "outputs": ["{options.outputFile}"]
         },
         "test": {
           "executor": "@nrwl/jest:jest",
@@ -313,7 +310,8 @@
         "publish": {
           "executor": "@ns3/nx-npm:publish"
         }
-      }
+      },
+      "tags": []
     },
     "rx-state": {
       "root": "libs/rx-state",
@@ -344,7 +342,8 @@
           "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/rx-state/**/*.{ts,tsx,js,jsx}"]
-          }
+          },
+          "outputs": ["{options.outputFile}"]
         },
         "test": {
           "executor": "@nrwl/jest:jest",
@@ -357,7 +356,8 @@
         "publish": {
           "executor": "@ns3/nx-npm:publish"
         }
-      }
+      },
+      "tags": []
     },
     "ts-utils": {
       "root": "libs/ts-utils",
@@ -388,7 +388,8 @@
           "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/ts-utils/**/*.{ts,tsx,js,jsx}"]
-          }
+          },
+          "outputs": ["{options.outputFile}"]
         },
         "test": {
           "executor": "@nrwl/jest:jest",
@@ -401,7 +402,8 @@
         "publish": {
           "executor": "@ns3/nx-npm:publish"
         }
-      }
+      },
+      "tags": []
     }
   }
 }

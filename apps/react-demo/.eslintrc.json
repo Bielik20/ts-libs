@@ -10,7 +10,8 @@
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "rules": {
-        "@nrwl/nx/enforce-module-boundaries": "off"
+        "@nrwl/nx/enforce-module-boundaries": "off",
+        "@next/next/no-html-link-for-pages": ["error", "apps/react-demo/pages"]
       }
     },
     {
