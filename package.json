@@ -75,7 +75,7 @@
     "@nrwl/tao": "13.2.0",
     "@nrwl/web": "13.2.0",
     "@nrwl/workspace": "13.2.0",
-    "@ns3/nx-npm": "^1.1.2",
+    "@ns3/nx-npm": "^1.4.0",
     "@testing-library/react": "12.1.2",
     "@types/faker": "^5.5.3",
     "@types/jest": "27.0.2",
@@ -93,6 +93,7 @@
     "cz-conventional-changelog": "^3.3.0",
     "dotenv": "10.0.0",
     "eslint": "7.32.0",
+    "eslint-config-next": "12.0.0",
     "eslint-config-prettier": "8.3.0",
     "eslint-plugin-cypress": "^2.10.3",
     "eslint-plugin-import": "2.25.2",
@@ -109,8 +110,7 @@
     "semantic-release": "^17.3.0",
     "ts-jest": "27.0.5",
     "ts-node": "~9.1.1",
-    "typescript": "4.3.5",
-    "eslint-config-next": "12.0.0"
+    "typescript": "4.3.5"
   },
   "config": {
     "commitizen": {
