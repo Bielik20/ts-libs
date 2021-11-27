@@ -1,0 +1,46 @@
+{
+  "root": "libs/http-client",
+  "sourceRoot": "libs/http-client/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/web:package",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/http-client",
+        "buildableProjectDepsInPackageJsonType": "dependencies",
+        "tsConfig": "libs/http-client/tsconfig.lib.json",
+        "project": "libs/http-client/package.json",
+        "entryFile": "libs/http-client/src/index.ts",
+        "external": ["tslib"],
+        "rollupConfig": "./tools/src/plugins/web-rollup-plugin",
+        "assets": [
+          {
+            "glob": "libs/http-client/README.md",
+            "input": ".",
+            "output": "."
+          }
+        ]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/http-client/**/*.{ts,tsx,js,jsx}"]
+      },
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/http-client"],
+      "options": {
+        "jestConfig": "libs/http-client/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "publish": {
+      "executor": "@ns3/nx-npm:publish"
+    }
+  },
+  "tags": []
+}
