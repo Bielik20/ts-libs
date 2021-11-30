@@ -19,6 +19,11 @@
             "glob": "libs/rx-state/README.md",
             "input": ".",
             "output": "."
+          },
+          {
+            "glob": "LICENSE",
+            "input": ".",
+            "output": "."
           }
         ]
       }

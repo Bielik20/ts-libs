@@ -1,6 +1,7 @@
 {
   "name": "@ns3/rx-actions",
   "version": "0.0.1",
+  "license": "MIT",
   "sideEffects": false,
   "repository": {
     "type": "git",

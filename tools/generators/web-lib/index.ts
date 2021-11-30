@@ -2,7 +2,7 @@ import {
   formatFiles,
   installPackagesTask,
   readProjectConfiguration,
-  Tree,
+  Tree, updateJson,
   updateProjectConfiguration,
 } from '@nrwl/devkit';
 import { Linter } from '@nrwl/linter';
@@ -25,6 +25,7 @@ export default async function (host: Tree, schema: Schema) {
   });
   await updateWorkspaceConfig(host, { project: schema.name });
   await npmGenerator(host, { project: schema.name, skipFormat: true, access: 'public' });
+  await addLicenceFieldToPackageJson(host, { project: schema.name });
   await addCoreJsTslibAsPeerDeps(host, { project: schema.name });
   await formatFiles(host);
 
@@ -53,9 +54,24 @@ function updateWorkspaceConfig(tree: Tree, schema: { project: string }) {
           input: '.',
           output: '.',
         },
+        {
+          glob: 'LICENSE',
+          input: '.',
+          output: '.',
+        },
       ],
     },
   };
 
   updateProjectConfiguration(tree, schema.project, projectConfig);
+}
+
+function addLicenceFieldToPackageJson(tree: Tree, schema: { project: string }) {
+  const projectConfig = readProjectConfiguration(tree, schema.project);
+
+  updateJson(tree, projectConfig.targets.build.options.packageJson, (json) => {
+    json.license = 'MIT';
+
+    return json;
+  });
 }
