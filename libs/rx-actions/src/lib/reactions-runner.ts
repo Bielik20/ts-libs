@@ -1,5 +1,4 @@
-import { Observable, Subscription } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, Observable, Subscription } from 'rxjs';
 import { Reaction } from './reaction';
 
 export class ReactionsRunner {

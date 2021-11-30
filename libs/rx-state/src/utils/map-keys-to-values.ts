@@ -1,6 +1,5 @@
 import { isNotUndefined } from '@ns3/ts-utils';
-import { combineLatest, Observable, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { combineLatest, map, Observable, of, switchMap } from 'rxjs';
 import { RxMap } from '../structures/rx-map';
 
 export function mapKeysToValues<TKey, TValue>(itemsMap: RxMap<TKey, TValue>) {

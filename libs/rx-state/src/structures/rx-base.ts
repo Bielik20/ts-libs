@@ -1,5 +1,4 @@
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { Debuggable, DEBUGGABLE_KEY } from '../models/debuggable';
 import { mapEntriesToRecord } from '../utils/map-entries-to-record';
 

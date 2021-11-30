@@ -1,5 +1,4 @@
-import { Observable, Subject } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
+import { mergeMap, Observable, Subject } from 'rxjs';
 import { Reaction, reaction } from './reaction';
 import { ReactionsRunner } from './reactions-runner';
 

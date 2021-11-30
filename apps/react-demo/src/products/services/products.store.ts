@@ -1,8 +1,7 @@
 import { RxDevtools } from '@ns3/rx-devtools';
 import { RxConnectArrays, RxConnectMap, RxSet } from '@ns3/rx-state';
 import { Injectable } from '@wikia/dependency-injection';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Product } from '../models/product';
 import { ProductsQuery } from '../models/products-query';
 import { ProductsService } from './products.service';

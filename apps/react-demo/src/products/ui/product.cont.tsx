@@ -5,8 +5,7 @@ import React, { FunctionComponent } from 'react';
 import { Product, Product as ProductModel } from 'react-demo/products/models/product';
 import { ProductsStore } from 'react-demo/products/services/products.store';
 import { Product as ProductComponent } from 'react-demo/products/ui/product';
-import { combineLatest } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { combineLatest, takeUntil } from 'rxjs';
 
 type Props = {
   product: ProductModel;

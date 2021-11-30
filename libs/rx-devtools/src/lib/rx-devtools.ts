@@ -1,6 +1,5 @@
 import { DEBUGGABLE_KEY, isDebuggable } from '@ns3/rx-state';
-import { BehaviorSubject, merge, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, map, merge, Observable } from 'rxjs';
 import { getConnection } from './get-connection';
 import { StateFragment } from './state-fragment';
 
