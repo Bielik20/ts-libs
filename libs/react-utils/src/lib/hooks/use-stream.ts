@@ -1,7 +1,6 @@
 import { FactoryOrValue, Falsy, unpackFactoryOrValue } from '@ns3/ts-utils';
 import { DependencyList, useDebugValue, useEffect, useMemo, useState } from 'react';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { debounce, last, takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, debounce, last, Observable, takeUntil } from 'rxjs';
 import {
   ErrorResult,
   makeErrorResult,

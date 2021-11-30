@@ -1,6 +1,5 @@
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { AjaxResponse } from 'rxjs/ajax';
-import { map } from 'rxjs/operators';
 
 export function toResponse() {
   return <T>(source: Observable<AjaxResponse<T>>): Observable<T> =>

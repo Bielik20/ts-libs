@@ -1,5 +1,4 @@
-import { EMPTY, of, Subject, Subscription, throwError } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { EMPTY, of, Subject, Subscription, take, throwError } from 'rxjs';
 import { RxMap } from '../structures/rx-map';
 import { ConnectionsManager } from './connections-manager';
 

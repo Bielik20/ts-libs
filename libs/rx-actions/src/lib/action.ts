@@ -1,5 +1,4 @@
-import { defer, Observable, ObservableInput, ObservedValueOf, of, Subject } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { defer, Observable, ObservableInput, ObservedValueOf, of, Subject, tap } from 'rxjs';
 
 const ACTION_METADATA_KEY = '__@ns3/rx-actions_action__';
 

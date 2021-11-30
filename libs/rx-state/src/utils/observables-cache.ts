@@ -1,6 +1,5 @@
 import { tapTeardown } from '@ns3/ts-utils';
-import { Observable } from 'rxjs';
-import { shareReplay } from 'rxjs/operators';
+import { Observable, shareReplay } from 'rxjs';
 
 export class ObservablesCache<TKey, TValue> {
   private readonly map = new Map<TKey, Observable<TValue>>();

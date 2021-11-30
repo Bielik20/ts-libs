@@ -1,5 +1,4 @@
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, Observable } from 'rxjs';
 import { Debuggable, DEBUGGABLE_KEY } from '../models/debuggable';
 import { ConnectionHooks, ConnectionOptions } from '../utils/connection-options';
 import { RxArraysOptions } from './rx-arrays';

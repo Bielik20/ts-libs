@@ -1,5 +1,4 @@
-import { merge, MonoTypeOperatorFunction, Observable, Observer } from 'rxjs';
-import { filter, take, tap } from 'rxjs/operators';
+import { filter, merge, MonoTypeOperatorFunction, Observable, Observer, take, tap } from 'rxjs';
 
 export function tapOnce<T>(next: (value: T) => void): MonoTypeOperatorFunction<T>;
 export function tapOnce<T>(observer?: Partial<Observer<T>>): MonoTypeOperatorFunction<T>;

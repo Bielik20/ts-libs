@@ -1,5 +1,4 @@
-import { defer, EMPTY, merge, Observable } from 'rxjs';
-import { exhaustMap, switchMap, tap } from 'rxjs/operators';
+import { defer, EMPTY, exhaustMap, merge, Observable, switchMap, tap } from 'rxjs';
 import { ObservablesCache } from './observables-cache';
 
 export interface ConnectionsManagerConfig<TKey, TValue> {

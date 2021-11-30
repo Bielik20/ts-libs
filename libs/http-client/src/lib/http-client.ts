@@ -1,7 +1,6 @@
 import { Injectable } from '@wikia/dependency-injection';
-import { Observable, of } from 'rxjs';
+import { concatMap, Observable, of } from 'rxjs';
 import { ajax, AjaxConfig, AjaxResponse } from 'rxjs/ajax';
-import { concatMap } from 'rxjs/operators';
 import { HttpInterceptors } from './http-interceptors';
 import { HttpHandler } from './models/http-handler';
 

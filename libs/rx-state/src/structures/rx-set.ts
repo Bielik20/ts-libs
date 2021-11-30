@@ -1,5 +1,4 @@
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, Observable } from 'rxjs';
 import { RxBase } from './rx-base';
 
 export class RxSet<TKey> extends RxBase<TKey, boolean> {
