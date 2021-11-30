@@ -19,6 +19,11 @@
             "glob": "libs/react-utils/README.md",
             "input": ".",
             "output": "."
+          },
+          {
+            "glob": "LICENSE",
+            "input": ".",
+            "output": "."
           }
         ]
       }
