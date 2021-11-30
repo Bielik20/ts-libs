@@ -9,6 +9,11 @@ export function getConnection(): RxDevtoolsConnection | undefined {
 
   if (!connection) {
     const reduxDevTools = (window as any)?.__REDUX_DEVTOOLS_EXTENSION__?.connect();
+
+    if (!reduxDevTools) {
+      return undefined;
+    }
+
     connection = new RxDevtoolsConnection(reduxDevTools);
   }
 
