@@ -7,7 +7,11 @@ module.exports = {
   ],
   branches: [
     { name: 'master' },
-    { name: 'develop', prerelease: 'beta' },
-    { name: 'alpha/*', prerelease: 'alpha-${name.replace(/^alpha\\//g, "")}' },
+    { name: 'develop', channel: 'beta', prerelease: 'beta' },
+    {
+      name: 'alpha/*',
+      channel: 'alpha-${name.replace(/^alpha\\//g, "")}',
+      prerelease: 'alpha-${name.replace(/^alpha\\//g, "")}',
+    },
   ],
 };
