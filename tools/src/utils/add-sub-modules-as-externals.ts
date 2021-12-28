@@ -1,5 +1,5 @@
-import { readJsonFile } from '@nrwl/workspace';
-import { appRootPath } from '@nrwl/workspace/src/utilities/app-root';
+import { readJsonFile } from '@nrwl/tao/src/utils/fileutils';
+import { appRootPath } from '@nrwl/tao/src/utils/app-root';
 import * as rollup from 'rollup';
 
 /**
