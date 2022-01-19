@@ -13,7 +13,7 @@
         "project": "libs/react-di/package.json",
         "entryFile": "libs/react-di/src/index.ts",
         "external": ["react/jsx-runtime", "tslib"],
-        "rollupConfig": "./tools/src/plugins/react-rollup-plugin",
+        "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
         "assets": [
           {
             "glob": "libs/react-di/README.md",
