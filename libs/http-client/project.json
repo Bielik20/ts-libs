@@ -13,7 +13,6 @@
         "project": "libs/http-client/package.json",
         "entryFile": "libs/http-client/src/index.ts",
         "external": ["tslib"],
-        "rollupConfig": "./tools/src/plugins/web-rollup-plugin",
         "assets": [
           {
             "glob": "libs/http-client/README.md",

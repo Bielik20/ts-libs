@@ -47,7 +47,6 @@ function updateWorkspaceConfig(tree: Tree, schema: { project: string }) {
       project: `${projectConfig.root}/package.json`,
       entryFile: `${projectConfig.sourceRoot}/index.ts`,
       external: ['tslib'],
-      rollupConfig: './tools/src/plugins/web-rollup-plugin',
       assets: [
         {
           glob: `${projectConfig.root}/README.md`,
