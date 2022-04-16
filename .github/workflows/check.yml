@@ -23,7 +23,6 @@ jobs:
       - run: npx nx affected --target lint --parallel 3
       - run: npx nx affected --target build --parallel 3
       - run: npx nx affected --target test --parallel 2
-      - run: npx nx affected --target e2e --parallel 1
       - run: npx nx-cloud stop-all-agents
         if: ${{ always() }}
 

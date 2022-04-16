@@ -3,7 +3,6 @@
   "projects": {
     "http-client": "libs/http-client",
     "react-demo": "apps/react-demo",
-    "react-demo-e2e": "apps/react-demo-e2e",
     "react-di": "libs/react-di",
     "react-utils": "libs/react-utils",
     "rx-actions": "libs/rx-actions",
