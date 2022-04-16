@@ -32,7 +32,7 @@ export function usePromise<T>(
         if (!ended) {
           setValue(makeSuccessResult(value));
         }
-      } catch (error) {
+      } catch (error: any) {
         if (!ended) {
           setValue(makeErrorResult(error));
         }

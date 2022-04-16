@@ -4,7 +4,7 @@ import { useCallback, useEffect } from 'react';
  * Used to prevent manual navigation/refresh etc.
  */
 export const usePreventUnload = (shouldPrevent: boolean) => {
-  const preventReload = useCallback((event) => {
+  const preventReload = useCallback((event: any) => {
     event.preventDefault();
     event.returnValue = '';
   }, []);

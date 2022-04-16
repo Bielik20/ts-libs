@@ -15,7 +15,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const AppLayout: React.FC = ({ children }) => {
+type Props = {
+  children?: React.ReactNode;
+};
+
+export const AppLayout: React.FC<Props> = ({ children }) => {
   const classes = useStyles();
 
   return (
