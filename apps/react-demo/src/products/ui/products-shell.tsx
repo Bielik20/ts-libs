@@ -9,6 +9,7 @@ import { ProductsQuery } from '../models/products-query';
 
 type Props = {
   query: ProductsQuery;
+  children?: React.ReactNode;
 };
 
 export const ProductsShell: FunctionComponent<Props> = ({ query, children }) => {
