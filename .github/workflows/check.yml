@@ -1,150 +1,43 @@
 name: Check
 on:
   pull_request:
+env:
+  NX_CLOUD_DISTRIBUTED_EXECUTION: true
 
 jobs:
-  install:
-    name: Install Dependencies
+  controller:
+    name: Controller
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: Cache Dependencies
-        id: cache
-        uses: actions/cache@v2
+      - name: Setup
+        uses: ./.github/actions/setup
+      - name: Derive appropriate SHAs for base and head for `nx affected` commands
+        uses: nrwl/nx-set-shas@v2
         with:
-          path: |
-            node_modules
-            tools/src/**/*.js
-          key: dependencies-${{ runner.os }}-${{ hashFiles('yarn.lock', 'tools/src/**/*.ts') }}
-      - name: Setup Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: 14
-      - name: Execute
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: yarn
-      - name: Set Variables
-        id: variables
-        run: yarn script set-pr-variables
-      - name: Set build
-        id: set-build
-        run: yarn script set-affected --target publish --base ${{ steps.variables.outputs.base }} --with-deps
-      - name: Set e2e
-        id: set-e2e
-        run: yarn script set-affected --target e2e --base ${{ steps.variables.outputs.base }}
-      - name: Set lint
-        id: set-lint
-        run: yarn script set-affected --target lint --base ${{ steps.variables.outputs.base }}
-      - name: Set test
-        id: set-test
-        run: yarn script set-affected --target test --base ${{ steps.variables.outputs.base }}
-    outputs:
-      e2e-array: ${{ steps.set-e2e.outputs.array }}
-      build-comma: ${{ steps.set-build.outputs.comma-separated }}
-      lint-comma: ${{ steps.set-lint.outputs.comma-separated }}
-      test-comma: ${{ steps.set-test.outputs.comma-separated }}
+          main-branch-name: 'master'
+      - run: npx nx-cloud start-ci-run
+      - run: npx nx affected --target lint --parallel 3
+      - run: npx nx affected --target build --parallel 3
+      - run: npx nx affected --target test --parallel 2
+      - run: npx nx affected --target e2e --parallel 1
+      - run: npx nx-cloud stop-all-agents
+        if: ${{ always() }}
 
-  build:
-    name: Build
-    needs: install
+  agents:
+    name: Agent
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Setup Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: 14
-      - name: Load Dependencies
-        uses: actions/cache@v2
-        with:
-          path: |
-            node_modules
-            tools/src/**/*.js
-          key: dependencies-${{ runner.os }}-${{ hashFiles('yarn.lock', 'tools/src/**/*.ts') }}
-      - name: Execute
-        if: ${{ needs.install.outputs.build-comma }}
-        run: yarn nx run-many --projects ${{ needs.install.outputs.build-comma }} --target build --parallel
-
-  lint:
-    name: Lint
-    needs: install
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Setup Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: 14
-      - name: Load Dependencies
-        uses: actions/cache@v2
-        with:
-          path: |
-            node_modules
-            tools/src/**/*.js
-          key: dependencies-${{ runner.os }}-${{ hashFiles('yarn.lock', 'tools/src/**/*.ts') }}
-      - name: Execute
-        if: ${{ needs.install.outputs.lint-comma }}
-        run: npm run nx -- run-many --projects ${{ needs.install.outputs.lint-comma }} --target lint --parallel -- --quiet
-
-  test:
-    name: Test
-    needs: install
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Setup Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: 14
-      - name: Load Dependencies
-        uses: actions/cache@v2
-        with:
-          path: |
-            node_modules
-            tools/src/**/*.js
-          key: dependencies-${{ runner.os }}-${{ hashFiles('yarn.lock', 'tools/src/**/*.ts') }}
-      - name: Execute
-        if: ${{ needs.install.outputs.test-comma }}
-        run: yarn nx run-many --projects ${{ needs.install.outputs.test-comma }} --target test --parallel
-
-  e2e:
-    name: E2E
-    needs: [install]
-    runs-on: ubuntu-latest
+    timeout-minutes: 60
     strategy:
       matrix:
-        project: ${{ fromJson(needs.install.outputs.e2e-array) }}
+        agent: [1, 2, 3]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Setup Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: 14
-      - name: Load Dependencies
-        uses: actions/cache@v2
-        with:
-          path: |
-            node_modules
-            tools/src/**/*.js
-          key: dependencies-${{ runner.os }}-${{ hashFiles('yarn.lock', 'tools/src/**/*.ts') }}
-      - name: Install Cypress
-        run: npm rebuild cypress
-      - name: Execute
-        run: yarn nx run ${{ matrix.project }}:e2e
-
-  e2e-done:
-    name: E2E
-    needs: [install, e2e]
-    if: ${{ always() }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check status
-        if: ${{ needs.e2e.result != 'success' && !contains(needs.install.outputs.e2e-array, '[]') }}
-        run: exit 1
+      - name: Setup
+        uses: ./.github/actions/setup
+      - name: Start Nx Agent ${{ matrix.agent }}
+        run: npx nx-cloud start-agent
