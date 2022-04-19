@@ -28,6 +28,12 @@
         "target": "build",
         "projects": "dependencies"
       }
+    ],
+    "version": [
+      {
+        "target": "build",
+        "projects": "self"
+      }
     ]
   },
   "cli": {
