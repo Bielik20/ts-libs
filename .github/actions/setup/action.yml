@@ -20,3 +20,6 @@ runs:
       if: steps.cache.outputs.cache-hit != 'true'
       shell: bash
       run: yarn
+    - name: Setup git user
+      shell: bash
+      run: git config user.email "-" && git config user.name "🤖 ns3 CI/CD"

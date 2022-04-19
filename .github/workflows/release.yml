@@ -1,17 +1,16 @@
 name: Release
+concurrency:  ${{ github.workflow }}-${{ github.ref }}
 on:
   push:
     branches:
       - master
-      - develop
-      - 'alpha/*'
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
 jobs:
-  release:
-    name: Release
+  controller:
+    name: Controller
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -20,12 +19,18 @@ jobs:
           fetch-depth: 0
       - name: Setup
         uses: ./.github/actions/setup
-      - name: Start Release
-        id: semantic
-        run: npx semantic-release --dry-run
-      - name: Build
-        run: yarn nx affected --target build --parallel --base ${{ steps.semantic.outputs.last-head || 'HEAD' }} --with-deps
-      - name: Publish
-        run: yarn nx affected --target publish --parallel --base ${{ steps.semantic.outputs.last-head || 'HEAD' }} --with-deps --pkgVersion ${{ steps.semantic.outputs.next-version }} --tag ${{ steps.semantic.outputs.channel }}
-      - name: Finish Release
-        run: npx semantic-release
+      - name: Derive appropriate SHAs for base and head for `nx affected` commands
+        run: |
+          echo "NX_BASE=last-release" >> $GITHUB_ENV
+          echo "NX_HEAD=${{ github.sha }}" >> $GITHUB_ENV
+      - name: Version
+        run: yarn nx affected --target=version
+      - name: Tag last-release
+        run: git tag -f last-release
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+          force: true
+          tags: true

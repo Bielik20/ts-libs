@@ -1,14 +1,12 @@
 import {
-  formatFiles,
-  installPackagesTask,
-  readProjectConfiguration,
-  Tree, updateJson,
-  updateProjectConfiguration,
+  formatFiles, installPackagesTask, readProjectConfiguration, Tree, updateProjectConfiguration,
 } from '@nrwl/devkit';
 import { Linter } from '@nrwl/linter';
 import { libraryGenerator } from '@nrwl/react';
 import npmGenerator from '@ns3/nx-npm/src/generators/npm/generator';
 import { addCoreJsTslibAsPeerDeps } from '../../src/utils/add-corejs-tslib-as-peer-deps';
+import { addLicenceFieldToPackageJson } from '../../src/utils/add-licence-field-to-package-json';
+import { addSemverVersion } from '../../src/utils/add-semver-version';
 import { Schema } from './schema';
 
 export default async function (host: Tree, schema: Schema) {
@@ -25,6 +23,7 @@ export default async function (host: Tree, schema: Schema) {
     importPath: `@ns3/${schema.name}`,
   });
   await updateWorkspaceConfig(host, { project: schema.name });
+  await addSemverVersion(host, { project: schema.name });
   await npmGenerator(host, { project: schema.name, skipFormat: true, access: 'public' });
   await addLicenceFieldToPackageJson(host, { project: schema.name });
   await addCoreJsTslibAsPeerDeps(host, { project: schema.name });
@@ -53,14 +52,4 @@ function updateWorkspaceConfig(tree: Tree, schema: { project: string }) {
   ];
 
   updateProjectConfiguration(tree, schema.project, projectConfig);
-}
-
-function addLicenceFieldToPackageJson(tree: Tree, schema: { project: string }) {
-  const projectConfig = readProjectConfiguration(tree, schema.project);
-
-  updateJson(tree, projectConfig.targets.build.options.packageJson, (json) => {
-    json.license = 'MIT';
-
-    return json;
-  });
 }
