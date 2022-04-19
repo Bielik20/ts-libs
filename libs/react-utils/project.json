@@ -43,14 +43,23 @@
         "passWithNoTests": true
       }
     },
-    "publish": {
-      "executor": "@ns3/nx-npm:publish"
-    },
     "version": {
       "executor": "@jscutlery/semver:version",
       "options": {
         "preset": "conventional",
-        "commitMessageFormat": "chore(${projectName}): release version ${version}"
+        "baseBranch": "master",
+        "postTargets": ["react-utils:publish", "react-utils:github"],
+        "commitMessageFormat": "chore(${projectName}): release version ${version} [skip ci]"
+      }
+    },
+    "publish": {
+      "executor": "@ns3/nx-npm:publish"
+    },
+    "github": {
+      "executor": "@jscutlery/semver:github",
+      "options": {
+        "tag": "${tag}",
+        "notes": "${notes}"
       }
     }
   },
