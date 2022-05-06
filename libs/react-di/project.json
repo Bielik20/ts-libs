@@ -1,5 +1,4 @@
 {
-  "root": "libs/react-di",
   "sourceRoot": "libs/react-di/src",
   "projectType": "library",
   "targets": {
@@ -39,7 +38,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/react-di"],
       "options": {
-        "jestConfig": "libs/react-di/jest.config.js",
+        "jestConfig": "libs/react-di/jest.config.ts",
         "passWithNoTests": true
       }
     },

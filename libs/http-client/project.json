@@ -1,5 +1,4 @@
 {
-  "root": "libs/http-client",
   "sourceRoot": "libs/http-client/src",
   "projectType": "library",
   "targets": {
@@ -38,7 +37,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/http-client"],
       "options": {
-        "jestConfig": "libs/http-client/jest.config.js",
+        "jestConfig": "libs/http-client/jest.config.ts",
         "passWithNoTests": true
       }
     },

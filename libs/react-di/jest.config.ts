@@ -1,9 +1,10 @@
 module.exports = {
-  displayName: 'http-client',
-  preset: '../../jest.preset.js',
+  displayName: 'react-di',
+
   transform: {
     '^.+\\.[tj]sx?$': 'babel-jest',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../coverage/libs/http-client',
+  coverageDirectory: '../../coverage/libs/react-di',
+  preset: '../../jest.preset.ts',
 };

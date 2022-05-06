@@ -1,5 +1,4 @@
 {
-  "root": "apps/react-demo",
   "sourceRoot": "apps/react-demo",
   "projectType": "application",
   "targets": {
@@ -11,8 +10,10 @@
         "outputPath": "dist/apps/react-demo"
       },
       "configurations": {
-        "production": {}
-      }
+        "production": {},
+        "development": {}
+      },
+      "defaultConfiguration": "production"
     },
     "serve": {
       "executor": "@nrwl/next:server",
@@ -24,8 +25,13 @@
         "production": {
           "buildTarget": "react-demo:build:production",
           "dev": false
+        },
+        "development": {
+          "buildTarget": "react-demo:build:development",
+          "dev": true
         }
-      }
+      },
+      "defaultConfiguration": "development"
     },
     "export": {
       "executor": "@nrwl/next:export",
@@ -37,7 +43,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/apps/react-demo"],
       "options": {
-        "jestConfig": "apps/react-demo/jest.config.js",
+        "jestConfig": "apps/react-demo/jest.config.ts",
         "passWithNoTests": true
       }
     },

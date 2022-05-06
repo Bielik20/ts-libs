@@ -1,9 +1,10 @@
 module.exports = {
-  displayName: 'ts-utils',
-  preset: '../../jest.preset.js',
+  displayName: 'react-utils',
+
   transform: {
     '^.+\\.[tj]sx?$': 'babel-jest',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../coverage/libs/ts-utils',
+  coverageDirectory: '../../coverage/libs/react-utils',
+  preset: '../../jest.preset.ts',
 };
