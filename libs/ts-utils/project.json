@@ -1,5 +1,4 @@
 {
-  "root": "libs/ts-utils",
   "sourceRoot": "libs/ts-utils/src",
   "projectType": "library",
   "targets": {
@@ -38,7 +37,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/ts-utils"],
       "options": {
-        "jestConfig": "libs/ts-utils/jest.config.js",
+        "jestConfig": "libs/ts-utils/jest.config.ts",
         "passWithNoTests": true
       }
     },

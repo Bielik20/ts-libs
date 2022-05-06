@@ -1,5 +1,4 @@
 {
-  "root": "libs/rx-devtools",
   "sourceRoot": "libs/rx-devtools/src",
   "projectType": "library",
   "targets": {
@@ -14,7 +13,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/rx-devtools"],
       "options": {
-        "jestConfig": "libs/rx-devtools/jest.config.js",
+        "jestConfig": "libs/rx-devtools/jest.config.ts",
         "passWithNoTests": true
       }
     }

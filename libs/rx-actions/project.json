@@ -1,5 +1,4 @@
 {
-  "root": "libs/rx-actions",
   "sourceRoot": "libs/rx-actions/src",
   "projectType": "library",
   "targets": {
@@ -14,7 +13,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/rx-actions"],
       "options": {
-        "jestConfig": "libs/rx-actions/jest.config.js",
+        "jestConfig": "libs/rx-actions/jest.config.ts",
         "passWithNoTests": true
       }
     }

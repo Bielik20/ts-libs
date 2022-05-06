@@ -1,5 +1,4 @@
 {
-  "root": "libs/rx-state",
   "sourceRoot": "libs/rx-state/src",
   "projectType": "library",
   "targets": {
@@ -38,7 +37,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/rx-state"],
       "options": {
-        "jestConfig": "libs/rx-state/jest.config.js",
+        "jestConfig": "libs/rx-state/jest.config.ts",
         "passWithNoTests": true
       }
     },
