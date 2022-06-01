@@ -1,4 +1,4 @@
-import faker from 'faker';
+import { faker } from '@faker-js/faker';
 import { generateProducts } from 'react-demo/products/debug/generate-products';
 import { Product } from 'react-demo/products/models/product';
 import { ProductsQuery } from '../models/products-query';

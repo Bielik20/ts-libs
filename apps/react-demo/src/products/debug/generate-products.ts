@@ -1,4 +1,4 @@
-import faker from 'faker';
+import { faker } from '@faker-js/faker';
 import { Product } from 'react-demo/products/models/product';
 
 export function generateProducts(): Product[] {
