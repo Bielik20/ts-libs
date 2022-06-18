@@ -38,30 +38,15 @@ export default async function (host: Tree, schema: Schema) {
 function updateWorkspaceConfig(tree: Tree, schema: { project: string }) {
   const projectConfig = readProjectConfiguration(tree, schema.project);
 
-  projectConfig.targets.build = {
-    executor: '@nrwl/web:rollup',
-    outputs: ['{options.outputPath}'],
-    options: {
-      outputPath: `dist/${projectConfig.root}`,
-      buildableProjectDepsInPackageJsonType: 'dependencies',
-      tsConfig: `${projectConfig.root}/tsconfig.lib.json`,
-      project: `${projectConfig.root}/package.json`,
-      entryFile: `${projectConfig.sourceRoot}/index.ts`,
-      external: ['tslib'],
-      assets: [
-        {
-          glob: `${projectConfig.root}/README.md`,
-          input: '.',
-          output: '.',
-        },
-        {
-          glob: 'LICENSE',
-          input: '.',
-          output: '.',
-        },
-      ],
+  projectConfig.targets.build.options.buildableProjectDepsInPackageJsonType = 'dependencies';
+  projectConfig.targets.build.options.assets = [
+    ...projectConfig.targets.build.options.assets,
+    {
+      glob: 'LICENSE',
+      input: '.',
+      output: '.',
     },
-  };
+  ];
 
   updateProjectConfiguration(tree, schema.project, projectConfig);
 }
