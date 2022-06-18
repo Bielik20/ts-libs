@@ -3,6 +3,7 @@ import {
   installPackagesTask,
   readProjectConfiguration,
   Tree,
+  updateJson,
   updateProjectConfiguration,
 } from '@nrwl/devkit';
 import { Linter } from '@nrwl/linter';
@@ -27,6 +28,7 @@ export default async function (host: Tree, schema: Schema) {
   await updateWorkspaceConfig(host, { project: schema.name });
   await npmGenerator(host, { project: schema.name, skipFormat: true, access: 'public' });
   await addLicenceFieldToPackageJson(host, { project: schema.name });
+  await addModuleFieldsToPackageJson(host, { project: schema.name });
   await addCoreJsTslibAsPeerDeps(host, { project: schema.name });
   await formatFiles(host);
 
@@ -38,30 +40,34 @@ export default async function (host: Tree, schema: Schema) {
 function updateWorkspaceConfig(tree: Tree, schema: { project: string }) {
   const projectConfig = readProjectConfiguration(tree, schema.project);
 
-  projectConfig.targets.build = {
-    executor: '@nrwl/web:rollup',
-    outputs: ['{options.outputPath}'],
-    options: {
-      outputPath: `dist/${projectConfig.root}`,
-      buildableProjectDepsInPackageJsonType: 'dependencies',
-      tsConfig: `${projectConfig.root}/tsconfig.lib.json`,
-      project: `${projectConfig.root}/package.json`,
-      entryFile: `${projectConfig.sourceRoot}/index.ts`,
-      external: ['tslib'],
-      assets: [
-        {
-          glob: `${projectConfig.root}/README.md`,
-          input: '.',
-          output: '.',
-        },
-        {
-          glob: 'LICENSE',
-          input: '.',
-          output: '.',
-        },
-      ],
+  projectConfig.targets.build.options.buildableProjectDepsInPackageJsonType = 'dependencies';
+  projectConfig.targets.build.options.assets = [
+    ...projectConfig.targets.build.options.assets,
+    {
+      glob: 'LICENSE',
+      input: '.',
+      output: '.',
     },
-  };
+  ];
 
   updateProjectConfiguration(tree, schema.project, projectConfig);
+}
+
+export function addModuleFieldsToPackageJson(tree: Tree, schema: { project: string }) {
+  const projectConfig = readProjectConfiguration(tree, schema.project);
+
+  updateJson(tree, projectConfig.targets.build.options.packageJson, (json) => {
+    json.type = 'module';
+    json.main = './src/index.js';
+    json.typings = './src/index.d.ts';
+    json.module = './src/index.js';
+    json.exports = {
+      '.': {
+        types: './src/index.d.ts',
+        import: './src/index.js',
+      },
+    };
+
+    return json;
+  });
 }
