@@ -3,21 +3,15 @@
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nrwl/web:rollup",
+      "executor": "@nrwl/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/http-client",
-        "buildableProjectDepsInPackageJsonType": "dependencies",
+        "main": "libs/http-client/src/index.ts",
         "tsConfig": "libs/http-client/tsconfig.lib.json",
-        "project": "libs/http-client/package.json",
-        "entryFile": "libs/http-client/src/index.ts",
-        "external": ["tslib"],
+        "buildableProjectDepsInPackageJsonType": "dependencies",
         "assets": [
-          {
-            "glob": "libs/http-client/README.md",
-            "input": ".",
-            "output": "."
-          },
+          "libs/http-client/*.md",
           {
             "glob": "LICENSE",
             "input": ".",
