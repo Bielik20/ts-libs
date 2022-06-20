@@ -3,6 +3,16 @@
   "version": "0.0.1",
   "license": "MIT",
   "sideEffects": false,
+  "type": "module",
+  "main": "./src/index.js",
+  "typings": "./src/index.d.ts",
+  "module": "./src/index.js",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "import": "./src/index.js"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/Bielik20/ts-libs"
