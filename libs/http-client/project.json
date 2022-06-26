@@ -10,6 +10,7 @@
         "main": "libs/http-client/src/index.ts",
         "tsConfig": "libs/http-client/tsconfig.lib.json",
         "buildableProjectDepsInPackageJsonType": "dependencies",
+        "transformers": ["../tools/src/ts-plugins/add-extension"],
         "assets": [
           "libs/http-client/*.md",
           {
