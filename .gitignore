@@ -40,3 +40,6 @@ Thumbs.db
 
 # Tools compiled output
 /tools/**/*.js
+
+# Next.js
+.next
