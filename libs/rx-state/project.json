@@ -8,7 +8,6 @@
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/rx-state",
-        "buildableProjectDepsInPackageJsonType": "dependencies",
         "tsConfig": "libs/rx-state/tsconfig.lib.json",
         "project": "libs/rx-state/package.json",
         "entryFile": "libs/rx-state/src/index.ts",
