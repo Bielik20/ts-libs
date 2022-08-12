@@ -8,7 +8,6 @@
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/react-utils",
-        "buildableProjectDepsInPackageJsonType": "dependencies",
         "tsConfig": "libs/react-utils/tsconfig.lib.json",
         "project": "libs/react-utils/package.json",
         "entryFile": "libs/react-utils/src/index.ts",

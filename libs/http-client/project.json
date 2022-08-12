@@ -8,7 +8,6 @@
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/http-client",
-        "buildableProjectDepsInPackageJsonType": "dependencies",
         "tsConfig": "libs/http-client/tsconfig.lib.json",
         "project": "libs/http-client/package.json",
         "entryFile": "libs/http-client/src/index.ts",
