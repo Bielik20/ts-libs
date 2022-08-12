@@ -9,5 +9,6 @@
     "rx-devtools": "libs/rx-devtools",
     "rx-state": "libs/rx-state",
     "ts-utils": "libs/ts-utils"
-  }
+  },
+  "$schema": "./node_modules/nx/schemas/workspace-schema.json"
 }
