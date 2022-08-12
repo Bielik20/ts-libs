@@ -1,10 +1,9 @@
 import { FactoryOrValue, unpackFactoryOrValue } from '@ns3/ts-utils';
 import { Container } from '@wikia/dependency-injection';
-import { flattenDeep } from 'lodash';
 import { useMemo } from 'react';
 
 export type Dependency = Parameters<Container['bind']>[0];
-type Dependencies = (Dependency | Dependencies)[];
+type Dependencies = Dependency[];
 
 export function useDependencyInjection(
   factory: FactoryOrValue<Dependencies> = () => [],
@@ -12,9 +11,8 @@ export function useDependencyInjection(
   return useMemo(() => {
     const container = new Container();
     const dependencies = unpackFactoryOrValue(factory);
-    const flattenDependencies = flattenDeep<Dependency>(dependencies);
 
-    flattenDependencies
+    dependencies
       .filter((dependency) => dependency)
       .forEach((dependency) => container.bind(dependency));
 
