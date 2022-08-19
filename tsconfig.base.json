@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@ns3/di": ["libs/di/src/index.ts"],
       "@ns3/http-client": ["libs/http-client/src/index.ts"],
       "@ns3/react-di": ["libs/react-di/src/index.ts"],
       "@ns3/react-utils": ["libs/react-utils/src/index.ts"],

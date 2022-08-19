@@ -1,6 +1,7 @@
 {
   "version": 2,
   "projects": {
+    "di": "libs/di",
     "http-client": "libs/http-client",
     "react-demo": "apps/react-demo",
     "react-di": "libs/react-di",

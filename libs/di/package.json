@@ -1,0 +1,16 @@
+{
+  "name": "@ns3/di",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Bielik20/ts-libs"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
+  "peerDependencies": {
+    "core-js": "^3.0.0",
+    "tslib": "^2.0.0"
+  }
+}
