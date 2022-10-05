@@ -6,5 +6,5 @@
     "types": ["reflect-metadata"]
   },
   "include": ["**/*.ts"],
-  "exclude": ["jest.config.ts", "**/*.spec.ts"]
+  "exclude": ["jest.config.ts", "**/*.spec.ts", "**/*.test-d.ts", "**/dummy.d.ts"]
 }

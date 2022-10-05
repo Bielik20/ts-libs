@@ -41,6 +41,13 @@
         "passWithNoTests": true
       }
     },
+    "tsd": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx tsd --t dummy.d.ts",
+        "cwd": "libs/di"
+      }
+    },
     "publish": {
       "executor": "@ns3/nx-npm:publish"
     }
