@@ -29,8 +29,8 @@ describe('Inject', () => {
   });
 
   test('work with binder object', () => {
-    container.bind({ bind: 'string', klass: MockClass });
-    container.bind({ bind: symbol, value: new MockClass() });
+    container.set({ bind: 'string', klass: MockClass });
+    container.set({ bind: symbol, value: new MockClass() });
 
     const instance = container.get(TestClass);
 

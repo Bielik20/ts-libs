@@ -18,7 +18,7 @@ describe('Inject - priority', () => {
   beforeEach(() => {
     container = Container.make();
 
-    container.bind({ bind: 'symbol', klass: Foo });
+    container.set({ bind: 'symbol', klass: Foo });
   });
 
   test('Inject overwrites Injectable', () => {

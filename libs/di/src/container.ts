@@ -35,14 +35,14 @@ export class Container {
     private readonly options: Required<ContainerOptions>,
     private readonly repository: BindingsRepository,
   ) {
-    this.bind({ bind: Container, value: this, scope: Scope.Local });
+    this.set({ bind: Container, value: this, scope: Scope.Local });
   }
 
   clone(): Container {
     return new Container(this.options, this.repository.clone());
   }
 
-  bind<T>(config: BindingConfig<T>): void {
+  set<T>(config: BindingConfig<T>): void {
     const binding = Binding.make({ scope: this.options.scope, ...config });
 
     this.repository.save(binding);

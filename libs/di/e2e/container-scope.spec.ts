@@ -16,8 +16,8 @@ describe('Container - scope', () => {
       const container1 = Container.make();
       const container2 = container1.clone();
 
-      container1.bind(config);
-      container2.bind(config);
+      container1.set(config);
+      container2.set(config);
 
       const instance1 = container1.get(TestClass);
       const instance2 = container2.get(TestClass);
@@ -37,8 +37,8 @@ describe('Container - scope', () => {
       const container1 = Container.make();
       const container2 = container1.clone();
 
-      container1.bind(config);
-      container2.bind(config);
+      container1.set(config);
+      container2.set(config);
 
       const instance1 = container1.get(TestClass);
       const instance2 = container2.get(TestClass);
@@ -49,7 +49,7 @@ describe('Container - scope', () => {
     test('return the same instance from the same container', () => {
       const container1 = Container.make();
 
-      container1.bind(config);
+      container1.set(config);
 
       const instance1 = container1.get(TestClass);
       const instance2 = container1.get(TestClass);
@@ -68,7 +68,7 @@ describe('Container - scope', () => {
     test('return the different instance from the same container', () => {
       const container1 = Container.make();
 
-      container1.bind(config);
+      container1.set(config);
 
       const instance1 = container1.get(TestClass);
       const instance2 = container1.get(TestClass);
