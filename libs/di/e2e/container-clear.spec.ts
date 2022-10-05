@@ -12,7 +12,7 @@ const TEST_VALUE = {};
 describe('Container - clear', () => {
   test('clear only global', () => {
     const container = Container.make();
-    container.bind({ bind: TestGlobalClass, value: TEST_VALUE, scope: Scope.Global });
+    container.set({ bind: TestGlobalClass, value: TEST_VALUE, scope: Scope.Global });
     const global1 = container.get(TestGlobalClass);
     const local1 = container.get(TestLocalClass);
 
@@ -29,7 +29,7 @@ describe('Container - clear', () => {
 
   test('clear only local', () => {
     const container = Container.make();
-    container.bind({ bind: TestLocalClass, value: TEST_VALUE, scope: Scope.Local });
+    container.set({ bind: TestLocalClass, value: TEST_VALUE, scope: Scope.Local });
     const global1 = container.get(TestGlobalClass);
     const local1 = container.get(TestLocalClass);
 

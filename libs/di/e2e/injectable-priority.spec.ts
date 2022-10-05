@@ -11,7 +11,7 @@ describe('Injectable - priority', () => {
   test('Injectable is ignored when bind is used', () => {
     const container = Container.make();
 
-    container.bind({ bind: TestBarClass, klass: TestBarClass });
+    container.set({ bind: TestBarClass, klass: TestBarClass });
 
     const instance1 = container.get(TestBarClass);
     const instance2 = container.get(TestBarClass);

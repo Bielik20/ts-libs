@@ -13,7 +13,7 @@ describe('Container - bind', () => {
 
     test('create instance', () => {
       const container = Container.make();
-      container.bind({
+      container.set({
         bind: MasterClass,
         provider: (innerContainer: Container, requesterScope: Scope) => {
           const dep = innerContainer.get(DependencyClass, requesterScope);
@@ -34,7 +34,7 @@ describe('Container - bind', () => {
 
     test('create instance', () => {
       const container = Container.make();
-      container.bind({
+      container.set({
         bind: TestClass,
         value: TEST_VALUE,
       });
@@ -53,7 +53,7 @@ describe('Container - bind', () => {
 
     test('create instance', () => {
       const container = Container.make();
-      container.bind({
+      container.set({
         bind: TestFooClass,
         klass: TestBarClass,
       });
