@@ -3,7 +3,7 @@
   "ignorePatterns": ["!**/*"],
   "overrides": [
     {
-      "files": ["*.spec.ts"],
+      "files": ["*.spec.ts", "*.test-d.ts"],
       "rules": {
         "@nrwl/nx/enforce-module-boundaries": "off"
       }
