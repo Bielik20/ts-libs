@@ -42,22 +42,26 @@ export class Container {
     return new Container(this.options, this.repository.clone());
   }
 
-  set<T>(config: BindingConfig<T>): void {
-    const binding = Binding.make({ scope: this.options.scope, ...config });
-
-    this.repository.save(binding);
-  }
-
-  unbind<T>(bindingId: BindingId<T>): void {
-    this.repository.delete(bindingId);
-  }
-
   get<T>(bindingId: BindingId<T>, requesterScope: Scope = Scope.Transient): T {
     const binding = this.ensureBinding(bindingId);
 
     assertScopeBoundary(binding.config.scope, requesterScope);
 
     return binding.getInstance(this, binding.config.scope);
+  }
+
+  set<T>(config: BindingConfig<T>): void {
+    const binding = Binding.make({ scope: this.options.scope, ...config });
+
+    this.repository.save(binding);
+  }
+
+  resetLocal<T>(bindingId: BindingId<T>): void {
+    this.repository.deleteLocal(bindingId);
+  }
+
+  resetGlobal<T>(bindingId: BindingId<T>): void {
+    this.repository.deleteGlobal(bindingId);
   }
 
   clearLocal() {

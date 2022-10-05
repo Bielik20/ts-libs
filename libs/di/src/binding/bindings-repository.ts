@@ -47,12 +47,12 @@ export class BindingsRepository {
     }
   }
 
-  // TODO: maybe remove ???
-  delete<T>(id: BindingId<T>): void {
-    const deleted = this.local.delete(id);
-    if (!deleted) {
-      this.global.delete(id);
-    }
+  deleteLocal<T>(id: BindingId<T>): void {
+    this.local.delete(id);
+  }
+
+  deleteGlobal<T>(id: BindingId<T>): void {
+    this.global.delete(id);
   }
 
   clearLocal() {
