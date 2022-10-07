@@ -14,6 +14,7 @@ export { Container, ContainerOptions } from './container';
 export { Inject } from './decorators/inject';
 export { Injectable } from './decorators/injectable';
 export { InjectableConfig } from './decorators/injectable-config';
+export { Optional } from './decorators/optional';
 export { assertKlass, isKlass, Klass } from './klass';
 export { Provider } from './provider';
 export { Scope } from './scope';

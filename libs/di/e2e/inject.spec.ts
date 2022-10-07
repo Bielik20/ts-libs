@@ -59,13 +59,4 @@ describe('Inject', () => {
       }
     }).toThrow('Cannot apply @Inject decorator to a property.');
   });
-
-  test('throw if multiple times', () => {
-    expect(() => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      class ClassWithParameter {
-        constructor(@Inject('string1') @Inject('string2') public parameter: any) {}
-      }
-    }).toThrow('Cannot apply @Inject decorator multiple times on the same parameter.');
-  });
 });
