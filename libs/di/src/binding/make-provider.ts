@@ -27,9 +27,17 @@ function makeKlassProvider<T>(config: KlassBindingConfig<T>): Provider<T> {
   if (config.bind === config.klass) {
     const paramConfigs = getParamConfigs(config.klass);
     return (container: Container, requesterScope: Scope) => {
-      const params = paramConfigs.map((paramConfig) =>
-        container.get(paramConfig.id, requesterScope),
-      );
+      const params = paramConfigs.map((paramConfig) => {
+        try {
+          return container.get(paramConfig.id, requesterScope);
+        } catch (e) {
+          if (paramConfig.optional) {
+            return undefined;
+          } else {
+            throw e;
+          }
+        }
+      });
 
       return new config.klass(...params);
     };
