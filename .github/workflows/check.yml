@@ -2,7 +2,7 @@ name: Check
 on:
   pull_request:
 env:
-  NX_CLOUD_DISTRIBUTED_EXECUTION: true
+  NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT: 3
 
 jobs:
   controller:
@@ -15,15 +15,17 @@ jobs:
           fetch-depth: 0
       - name: Setup
         uses: ./.github/actions/setup
-      - name: Derive appropriate SHAs for base and head for `nx affected` commands
-        uses: nrwl/nx-set-shas@v2
         with:
-          main-branch-name: 'master'
+          affected: true
       - run: npx nx-cloud start-ci-run
-      - run: npx nx affected --target lint --parallel 3
-      - run: npx nx affected --target build --parallel 3
-      - run: npx nx affected --target tsd --parallel 3
-      - run: npx nx affected --target test --parallel 3
+      - name: Run Commands
+        uses: ./.github/actions/run-commands-in-parallel
+        with:
+          parallel-commands-on-agents: |
+            npx nx affected --target=build --parallel=3
+            npx nx affected --target=lint --parallel=3 --silent
+            npx nx affected --target=test --parallel=3 --quiet
+            npx nx affected --target=tsd --parallel=3
       - run: npx nx-cloud stop-all-agents
         if: ${{ always() }}
 

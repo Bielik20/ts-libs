@@ -40,6 +40,9 @@
   "targetDefaults": {
     "build": {
       "dependsOn": ["^build"]
+    },
+    "publish": {
+      "dependsOn": ["^publish"]
     }
   }
 }
