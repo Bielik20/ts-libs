@@ -1,10 +1,11 @@
 {
+  "name": "di",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/di/src",
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nrwl/web:rollup",
+      "executor": "@nrwl/rollup:rollup",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/di",
@@ -35,7 +36,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/di"],
+      "outputs": ["{workspaceRoot}/coverage/libs/di"],
       "options": {
         "jestConfig": "libs/di/jest.config.ts",
         "passWithNoTests": true

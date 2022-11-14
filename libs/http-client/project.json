@@ -1,10 +1,11 @@
 {
+  "name": "http-client",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/http-client/src",
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nrwl/web:rollup",
+      "executor": "@nrwl/rollup:rollup",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/http-client",
@@ -35,7 +36,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/http-client"],
+      "outputs": ["{workspaceRoot}/coverage/libs/http-client"],
       "options": {
         "jestConfig": "libs/http-client/jest.config.ts",
         "passWithNoTests": true
