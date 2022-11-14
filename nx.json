@@ -1,8 +1,8 @@
 {
+  "npmScope": "ns3",
   "affected": {
     "defaultBase": "master"
   },
-  "npmScope": "ns3",
   "tasksRunnerOptions": {
     "default": {
       "runner": "@nrwl/nx-cloud",
@@ -15,20 +15,6 @@
       }
     }
   },
-  "generators": {
-    "@nrwl/react": {
-      "application": {
-        "babel": true
-      }
-    },
-    "@nrwl/next": {
-      "application": {
-        "style": "css",
-        "linter": "eslint"
-      }
-    }
-  },
-  "defaultProject": "react-demo",
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "targetDefaults": {
     "build": {
@@ -36,7 +22,8 @@
       "inputs": ["production", "^production"]
     },
     "publish": {
-      "dependsOn": ["^publish"]
+      "dependsOn": ["^publish"],
+      "inputs": ["production", "^production"]
     },
     "test": {
       "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"]
