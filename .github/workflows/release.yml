@@ -26,6 +26,6 @@ jobs:
       - name: Build
         run: yarn nx affected --target build --parallel --base ${{ steps.semantic.outputs.last-head || 'HEAD' }}
       - name: Publish
-        run: yarn nx affected --target publish --parallel --base ${{ steps.semantic.outputs.last-head || 'HEAD' }} --pkgVersion ${{ steps.semantic.outputs.next-version }} --tag ${{ steps.semantic.outputs.channel }}
+        run: yarn nx affected --target publish --parallel --base ${{ steps.semantic.outputs.last-head || 'HEAD' }} --pkgVersion ${{ steps.semantic.outputs.next-version }} --tag ${{ steps.semantic.outputs.channel }} --exclude di
       - name: Finish Release
         run: npx semantic-release
