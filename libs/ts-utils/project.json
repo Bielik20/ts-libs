@@ -1,10 +1,11 @@
 {
+  "name": "ts-utils",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/ts-utils/src",
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nrwl/web:rollup",
+      "executor": "@nrwl/rollup:rollup",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/ts-utils",
@@ -35,7 +36,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/ts-utils"],
+      "outputs": ["{workspaceRoot}/coverage/libs/ts-utils"],
       "options": {
         "jestConfig": "libs/ts-utils/jest.config.ts",
         "passWithNoTests": true
