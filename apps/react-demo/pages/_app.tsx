@@ -4,30 +4,30 @@ import { HttpInterceptors } from '@ns3/http-client';
 import { DiProvider, useDependencyInjection } from '@ns3/react-di';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
-import React from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { AppLayout } from 'react-demo/layout/app-layout';
 import { DelayInterceptor } from 'react-demo/shared/delay.interceptor';
 import theme from '../src/theme';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const container = useDependencyInjection(() => [HttpInterceptors.provide(DelayInterceptor)]);
-  const router = useRouter();
+  const [ready, setReady] = useState(false); // workaround for router not being ready
 
-  React.useEffect(() => {
+  useEffect(() => {
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector('#jss-server-side');
     if (jssStyles) {
       jssStyles.parentElement.removeChild(jssStyles);
     }
+    setReady(true);
   }, []);
 
-  if (!router.isReady) {
+  if (!ready) {
     return null;
   }
 
   return (
-    <React.Fragment>
+    <Fragment>
       <Head>
         <title>My page</title>
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
@@ -41,6 +41,6 @@ export default function MyApp({ Component, pageProps }: AppProps) {
           </AppLayout>
         </ThemeProvider>
       </DiProvider>
-    </React.Fragment>
+    </Fragment>
   );
 }
