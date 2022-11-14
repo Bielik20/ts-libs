@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import NextLink from 'next/link';
 import React from 'react';
 import { examples } from 'react-demo/examples/examples';
 import { Link } from 'react-demo/layout/link';
@@ -26,8 +27,8 @@ export const AppLayout: React.FC<Props> = ({ children }) => {
     <>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6" className={classes.title} component={Link} naked href="/">
-            Reactive State
+          <Typography variant="h6" className={classes.title}>
+            <NextLink href="/">Reactive State</NextLink>
           </Typography>
           {examples.map((example) => (
             <Button key={example.title} color="inherit" component={Link} naked href={example.url}>
