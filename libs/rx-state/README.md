@@ -286,7 +286,7 @@ export class ProductsStore {
   constructor(private readonly service: ProductsService) {}
 
   connect$(id: string): Observable<Product> {
-    return this.entities.connect$(id, () => this.service.get(id)).pipe(omitUndefined());
+    return this.entities.connect$(id, () => this.service.get(id));
   }
 
   patch(id: string, value: Partial<Product>): Observable<Product> {
