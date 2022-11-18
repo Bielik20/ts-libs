@@ -158,7 +158,7 @@ const itemsToSet: Product[] = [
 paginated.set('page-1', itemsToSet);
 
 products.get$('a').subscribe(console.log);
-paginated.get$('page11').subscribe(console.log);
+paginated.get$('page1').subscribe(console.log);
 ```
 
 In the constructor you provide:
