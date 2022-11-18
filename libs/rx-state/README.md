@@ -313,7 +313,6 @@ export class ProductsStore {
         next: () => {
           this.entities.delete(id);
           this.deleting.delete(id);
-          this.queried.invalidateAll();
         },
         error: () => {
           this.deleting.delete(id);
