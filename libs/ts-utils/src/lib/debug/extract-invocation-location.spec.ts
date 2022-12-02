@@ -7,7 +7,7 @@ describe('extractInvocationLocation', () => {
 
   it('should print this file with depth 1', () => {
     expect(extractInvocationLocation({ depth: 1 })).toEqual(
-      'extract-invocation-location.spec.ts:9:12',
+      'extract-invocation-location.spec.ts:9:37',
     );
   });
 });
