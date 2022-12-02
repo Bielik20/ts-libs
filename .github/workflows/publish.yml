@@ -1,34 +1,31 @@
 name: Publish
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.inputs.stage }}
+  group: ${{ github.workflow }}-${{ github.event.inputs.sha }}
   cancel-in-progress: false
 on:
   workflow_dispatch:
     inputs:
-      version:
-        description: 'Version to checkout and publish'
+      sha:
+        description: 'Git sha to checkout and publish'
         required: true
-        default: master
         type: string
-      versionSuffix:
-        description: 'Version suffix to append to published version'
-        required: true
-        default: 1
-        type: string
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
 jobs:
   main:
-    name: Deploy
+    name: Publish
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.event.inputs.version }}
+          ref: ${{ github.event.inputs.sha }}
       - name: Setup
         uses: ./.github/actions/setup
       - name: Publish
         run: yarn nx affected --target publish --parallel 3 --all
         env:
-          NPM_PACKAGE_TAG: ${{ github.event.inputs.version }}
-          NPM_PACKAGE_VERSION: ${{ github.event.inputs.version }}.${{ github.event.inputs.versionSuffix }}
+          NPM_PACKAGE_TAG: alpha
+          NPM_PACKAGE_VERSION: 0.0.0-${{ github.event.inputs.sha }}

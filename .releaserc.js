@@ -5,13 +5,5 @@ module.exports = {
     '@semantic-release/github',
     './tools/src/semantic-release',
   ],
-  branches: [
-    { name: 'master' },
-    { name: 'develop', channel: 'beta', prerelease: 'beta' },
-    {
-      name: 'alpha/*',
-      channel: 'alpha-${name.replace(/^alpha\\//g, "")}',
-      prerelease: 'alpha-${name.replace(/^alpha\\//g, "")}',
-    },
-  ],
+  branches: [{ name: 'master' }],
 };
