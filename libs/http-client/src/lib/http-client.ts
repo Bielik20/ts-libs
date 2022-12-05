@@ -8,6 +8,9 @@ const BackendHandler = <T>(req: AjaxConfig) => {
   return ajax<T>(req);
 };
 
+/**
+ * @deprecated Use FetchClient instead
+ */
 @Injectable()
 export class HttpClient {
   private _handler!: HttpHandler<any>;
