@@ -12,7 +12,7 @@
   </a>
 </p>
 
-Based on [@wikia/dependency-injection](https://www.npmjs.com/package/@wikia/dependency-injection) React implementation of dependency injection. First look into documentation of [@wikia/dependency-injection](https://www.npmjs.com/package/@wikia/dependency-injection) to get a hang of using it. This library simply integrates it with React.
+Based on [@ns3/di](https://www.npmjs.com/package/@ns3/di) React implementation of dependency injection. First look into documentation of [@ns3/di](https://www.npmjs.com/package/@ns3/di) to get a hang of using it. This library simply integrates it with React.
 
 ## Setup
 
@@ -45,7 +45,7 @@ Then in any component:
 
 ```tsx
 import { useDependency } from '@ns3/react-di';
-import { Container } from '@wikia/dependency-injection';
+import { Container } from '@ns3/di';
 import React from 'react';
 import { ClassToInject } from 'somewhere';
 
