@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs';
+import { Observable, ObservableInput } from 'rxjs';
 import { ConnectionsManager } from '../utils/connections-manager';
 import {
   ConnectionsHooks,
@@ -23,7 +23,7 @@ export class RxConnectMap<TKey, TValue> extends RxMap<TKey, TValue> {
     });
   }
 
-  connect$(key: TKey, factory: () => Observable<TValue>): Observable<TValue> {
+  connect$(key: TKey, factory: () => ObservableInput<TValue>): Observable<TValue> {
     return this.connectionsManager.connect$(key, factory);
   }
 

@@ -1,4 +1,14 @@
-import { defer, EMPTY, exhaustMap, merge, Observable, switchMap, tap } from 'rxjs';
+import {
+  defer,
+  EMPTY,
+  exhaustMap,
+  from,
+  merge,
+  Observable,
+  ObservableInput,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { ObservablesCache } from './observables-cache';
 
 export interface ConnectionsManagerConfig<TKey, TValue> {
@@ -40,7 +50,7 @@ export class ConnectionsManager<TKey, TValue> {
     this.strategy = config.strategy || 'eager';
   }
 
-  connect$(key: TKey, factory: () => Observable<TValue>): Observable<TValue> {
+  connect$(key: TKey, factory: () => ObservableInput<TValue>): Observable<TValue> {
     return defer(() => {
       const expiresAt = this.expiresAtMap.get(key);
 
@@ -66,19 +76,19 @@ export class ConnectionsManager<TKey, TValue> {
     });
   }
 
-  protected connectEagerly(key: TKey, factory: () => Observable<TValue>): Observable<TValue> {
+  protected connectEagerly(key: TKey, factory: () => ObservableInput<TValue>): Observable<TValue> {
     return this.executeFactory(key, factory).pipe(exhaustMap(() => this.get$(key)));
   }
 
-  protected connectLazily(key: TKey, factory: () => Observable<TValue>): Observable<TValue> {
+  protected connectLazily(key: TKey, factory: () => ObservableInput<TValue>): Observable<TValue> {
     return merge(this.get$(key), this.executeFactory(key, factory).pipe(switchMap(() => EMPTY)));
   }
 
-  protected executeFactory(key: TKey, factory: () => Observable<TValue>): Observable<TValue> {
+  protected executeFactory(key: TKey, factory: () => ObservableInput<TValue>): Observable<TValue> {
     this.connecting(key);
 
     return this.cache.ensure$(key, () =>
-      factory().pipe(
+      from(factory()).pipe(
         tap({
           next: (value) => {
             this.connected(key);

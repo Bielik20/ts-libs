@@ -1,4 +1,4 @@
-import { map, Observable } from 'rxjs';
+import { map, Observable, ObservableInput } from 'rxjs';
 import { Debuggable, DEBUGGABLE_KEY } from '../models/debuggable';
 import { ConnectionHooks, ConnectionOptions } from '../utils/connection-options';
 import { RxArraysOptions } from './rx-arrays';
@@ -45,7 +45,7 @@ export class RxConnectArray<
     return this.rxArrays.delete('only');
   }
 
-  connect$(factory: () => Observable<Array<TItemValue>>): Observable<Array<TItemValue>> {
+  connect$(factory: () => ObservableInput<Array<TItemValue>>): Observable<Array<TItemValue>> {
     return this.rxArrays.connect$('only', factory);
   }
 
