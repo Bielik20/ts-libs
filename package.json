@@ -78,7 +78,7 @@
     "@testing-library/react": "13.4.0",
     "@types/jest": "28.1.8",
     "@types/lodash": "^4.14.188",
-    "@types/node": "^16.11.7",
+    "@types/node": "^18.11.11",
     "@types/react": "18.0.20",
     "@types/react-dom": "^18.0.6",
     "@types/yargs": "^17.0.13",
