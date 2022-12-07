@@ -1,7 +1,7 @@
+import { Injectable } from '@ns3/di';
 import { RxDevtools } from '@ns3/rx-devtools';
 import { RxConnectArrays, RxConnectMap, RxSet } from '@ns3/rx-state';
-import { Injectable } from '@wikia/dependency-injection';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, from, Observable, tap } from 'rxjs';
 import { Product } from '../models/product';
 import { ProductsQuery } from '../models/products-query';
 import { ProductsService } from './products.service';
@@ -44,7 +44,7 @@ export class ProductsStore {
   delete(id: string): Observable<void> {
     this.deleting.add(id);
 
-    return this.service.delete(id).pipe(
+    return from(this.service.delete(id)).pipe(
       tap({
         next: () => {
           this.entities.delete(id);
@@ -64,7 +64,7 @@ export class ProductsStore {
     this.deleting.add(id);
     this.entities.delete(id);
 
-    return this.service.delete(id).pipe(
+    return from(this.service.delete(id)).pipe(
       tap({
         next: () => {
           this.deleting.delete(id);
@@ -79,15 +79,15 @@ export class ProductsStore {
   }
 
   create(value: Omit<Product, 'id'>): Observable<Product> {
-    return this.service
-      .create(value)
-      .pipe(tap((product) => this.entities.set(product.id, product)));
+    return from(this.service.create(value)).pipe(
+      tap((product) => this.entities.set(product.id, product)),
+    );
   }
 
   patch(id: string, value: Partial<Product>): Observable<Product> {
     this.updating.add(id);
 
-    return this.service.patch(id, value).pipe(
+    return from(this.service.patch(id, value)).pipe(
       tap({
         next: (product) => {
           this.updating.delete(id);

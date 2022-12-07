@@ -1,34 +1,34 @@
-import { HttpClient, toResponse } from '@ns3/http-client';
-import { Injectable } from '@wikia/dependency-injection';
+import { Injectable } from '@ns3/di';
+import { assertOk, toJson } from '@ns3/http-client';
 import { Product } from 'react-demo/products/models/product';
-import { Observable } from 'rxjs';
+import { AppFetchClient } from '../../shared/app-fetch-client';
 import { ProductsQuery } from '../models/products-query';
 
 @Injectable()
 export class ProductsService {
   private url = '/api/products';
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: AppFetchClient) {}
 
-  get(id: string): Observable<Product> {
-    return this.httpClient.get<Product>(`${this.url}/${id}`).pipe(toResponse());
+  get(id: string): Promise<Product> {
+    return this.httpClient.get(`${this.url}/${id}`).then(toJson);
   }
 
-  delete(id: string): Observable<void> {
-    return this.httpClient.delete<void>(`${this.url}/${id}`).pipe(toResponse());
+  delete(id: string): Promise<void> {
+    return this.httpClient.delete(`${this.url}/${id}`).then(assertOk);
   }
 
-  create(value: Omit<Product, 'id'>): Observable<Product> {
-    return this.httpClient.post<Product>(this.url, value).pipe(toResponse());
+  create(value: Omit<Product, 'id'>): Promise<Product> {
+    return this.httpClient.post(this.url, value).then(toJson);
   }
 
-  patch(id: string, value: Partial<Product>): Observable<Product> {
-    return this.httpClient.patch<Product>(`${this.url}/${id}`, value).pipe(toResponse());
+  patch(id: string, value: Partial<Product>): Promise<Product> {
+    return this.httpClient.patch(`${this.url}/${id}`, value).then(toJson);
   }
 
-  query(query: ProductsQuery): Observable<Array<Product>> {
+  query(query: ProductsQuery): Promise<Product[]> {
     const url = `${this.url}?limit=${query.limit}&skip=${query.skip}`;
 
-    return this.httpClient.get<Product[]>(url).pipe(toResponse());
+    return this.httpClient.get(url).then(toJson);
   }
 }
