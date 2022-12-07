@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs';
+import { Observable, ObservableInput } from 'rxjs';
 import { ConnectionsManager, ConnectionsManagerConfig } from './connections-manager';
 
 export interface ConnectionManagerConfig<TValue>
@@ -20,7 +20,7 @@ export class ConnectionManager<TValue> {
     });
   }
 
-  connect$(factory: () => Observable<TValue>): Observable<TValue> {
+  connect$(factory: () => ObservableInput<TValue>): Observable<TValue> {
     return this.connectionsManager.connect$('only', factory);
   }
 

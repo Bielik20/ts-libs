@@ -1,4 +1,4 @@
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, ObservableInput } from 'rxjs';
 import { ConnectionManager } from '../utils/connection-manager';
 import {
   ConnectionHooks,
@@ -27,7 +27,7 @@ export class ConnectSubject<T> extends BehaviorSubject<T | undefined> {
     super.next(value);
   }
 
-  connect$(factory: () => Observable<T>): Observable<T> {
+  connect$(factory: () => ObservableInput<T>): Observable<T> {
     return this.connectionManager.connect$(factory);
   }
 
