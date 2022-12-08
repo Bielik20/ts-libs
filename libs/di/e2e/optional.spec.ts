@@ -48,7 +48,7 @@ describe('Optional', () => {
 
     test('symbol provided', () => {
       const container = Container.make();
-      container.set({ bind: symbol, value: 'value' });
+      container.provide({ bind: symbol, value: 'value' });
       const instance = container.get(TestClassWithAnyDep);
 
       expect(instance.dep).toBe('value');
@@ -72,7 +72,7 @@ describe('Optional', () => {
 
     test('symbol provided', () => {
       const container = Container.make();
-      container.set({ bind: symbol, value: 'value' });
+      container.provide({ bind: symbol, value: 'value' });
       const instance = container.get(TestClassWithAnyDep);
 
       expect(instance.dep).toBe('value');

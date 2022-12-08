@@ -18,7 +18,7 @@ export function Injectable<R>(config: Partial<InjectableConfig<R>> = {}) {
 }
 
 function normalise<T>(config: Partial<InjectableConfig<T>>, target: Klass<T>): InjectableConfig<T> {
-  if ('klass' in config || 'value' in config || 'provider' in config) {
+  if ('klass' in config || 'value' in config || 'factory' in config) {
     return config as InjectableConfig<T>;
   }
 

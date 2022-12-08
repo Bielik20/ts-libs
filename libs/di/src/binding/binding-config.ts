@@ -1,5 +1,5 @@
+import { Factory } from '../factory';
 import { isKlass, Klass } from '../klass';
-import { Provider } from '../provider';
 import { Scope } from '../scope';
 
 export type BindingId<T> = Klass<T> | Function | symbol | string;
@@ -7,7 +7,7 @@ export type BindingId<T> = Klass<T> | Function | symbol | string;
 export type BindingConfig<T> =
   | KlassBindingConfig<T>
   | ValueBindingConfig<T>
-  | ProviderBindingConfig<T>;
+  | FactoryBindingConfig<T>;
 
 export type KlassBindingConfig<T> = {
   bind: BindingId<T>;
@@ -21,9 +21,9 @@ export type ValueBindingConfig<T> = {
   scope?: Scope;
 };
 
-export type ProviderBindingConfig<T> = {
+export type FactoryBindingConfig<T> = {
   bind: BindingId<T>;
-  provider: Provider<T>;
+  factory: Factory<T>;
   scope?: Scope;
 };
 
@@ -49,6 +49,6 @@ export function isValueConfig<T>(config: BindingConfig<T>): config is ValueBindi
   return 'value' in config;
 }
 
-export function isProviderConfig<T>(config: BindingConfig<T>): config is ProviderBindingConfig<T> {
-  return 'provider' in config;
+export function isFactoryConfig<T>(config: BindingConfig<T>): config is FactoryBindingConfig<T> {
+  return 'factory' in config;
 }

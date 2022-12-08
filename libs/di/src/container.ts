@@ -35,7 +35,7 @@ export class Container {
     private readonly options: Required<ContainerOptions>,
     private readonly repository: BindingsRepository,
   ) {
-    this.set({ bind: Container, value: this, scope: Scope.Local });
+    this.provide({ bind: Container, value: this, scope: Scope.Local });
   }
 
   clone(): Container {
@@ -50,26 +50,23 @@ export class Container {
     return binding.getInstance(this, binding.config.scope);
   }
 
-  set<T>(config: BindingConfig<T>): void {
+  provide<T>(config: BindingConfig<T>): void {
     const binding = Binding.make({ scope: this.options.scope, ...config });
 
     this.repository.save(binding);
   }
 
-  resetLocal<T>(bindingId: BindingId<T>): void {
-    this.repository.deleteLocal(bindingId);
+  unprovide<T>(
+    bindingId: BindingId<T>,
+    input: { local?: boolean; global?: boolean } = { local: true, global: true },
+  ): void {
+    input.global && this.repository.deleteGlobal(bindingId);
+    input.local && this.repository.deleteLocal(bindingId);
   }
 
-  resetGlobal<T>(bindingId: BindingId<T>): void {
-    this.repository.deleteGlobal(bindingId);
-  }
-
-  clearLocal() {
-    this.repository.clearLocal();
-  }
-
-  clearGlobal() {
-    this.repository.clearGlobal();
+  clear(input: { local?: boolean; global?: boolean } = { local: true, global: true }) {
+    input.global && this.repository.clearGlobal();
+    input.local && this.repository.clearLocal();
   }
 
   private ensureBinding<T>(bindingId: BindingId<T>): Binding<T> {

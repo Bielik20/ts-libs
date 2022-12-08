@@ -2,13 +2,13 @@ import type { Container } from '../container';
 import { Resolver } from '../resolver';
 import { Scope } from '../scope';
 import { BindingConfig } from './binding-config';
-import { makeProvider } from './make-provider';
+import { makeFactory } from './make-factory';
 
 export class Binding<T> {
   static make<T>(config: Required<BindingConfig<T>>): Binding<T> {
-    const provider = makeProvider(config);
+    const factory = makeFactory(config);
 
-    return new Binding<T>(config, Resolver.make(config.scope, provider));
+    return new Binding<T>(config, Resolver.make(config.scope, factory));
   }
 
   private constructor(

@@ -2,10 +2,10 @@ import 'reflect-metadata';
 import { Container, Injectable } from '@ns3/di';
 
 describe('Injectable - bind', () => {
-  describe('provider', () => {
+  describe('factory', () => {
     const TEST_VALUE = {};
 
-    @Injectable({ provider: () => TEST_VALUE })
+    @Injectable({ factory: () => TEST_VALUE })
     class TestClass {}
 
     test('create instance', () => {
