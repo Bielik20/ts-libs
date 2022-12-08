@@ -23,7 +23,7 @@ const CORRECT_INSTANCE = {
   method: () => 'method',
 };
 
-const CORRECT_PROVIDER = () => CORRECT_INSTANCE;
+const CORRECT_FACTORY = () => CORRECT_INSTANCE;
 
 class WrongClass {
   wrong() {
@@ -35,15 +35,15 @@ const WRONG_INSTANCE = {
   wrong: () => 'wrong',
 };
 
-const WRONG_PROVIDER = () => WRONG_INSTANCE;
+const WRONG_FACTORY = () => WRONG_INSTANCE;
 
 const container = Container.make();
 
-container.set({ bind: BaseClass, klass: CorrectClass });
-container.set({ bind: BaseClass, value: CORRECT_INSTANCE });
-container.set({ bind: BaseClass, provider: CORRECT_PROVIDER });
+container.provide({ bind: BaseClass, klass: CorrectClass });
+container.provide({ bind: BaseClass, value: CORRECT_INSTANCE });
+container.provide({ bind: BaseClass, factory: CORRECT_FACTORY });
 
-expectError(container.set({ bind: BaseClass, klass: WrongClass }));
+expectError(container.provide({ bind: BaseClass, klass: WrongClass }));
 // tsd doesn't interpret that line correctly... I don't know why.
 // expectError(container.set({ bind: BaseClass, value: WRONG_INSTANCE }));
-expectError(container.set({ bind: BaseClass, provider: WRONG_PROVIDER }));
+expectError(container.provide({ bind: BaseClass, factory: WRONG_FACTORY }));

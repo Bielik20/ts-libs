@@ -47,7 +47,7 @@ const client = new FetchClient(makeFetchHandler([delayInterceptor]));
 ## Example usage with `@ns3/di`
 
 ```tsx
-import { Container, Injectable, Klass, Provider } from '@ns3/di';
+import { Container, Injectable, Klass } from '@ns3/di';
 import { FetchClient, FetchInterceptor, makeFetchHandler } from '@ns3/http-client';
 
 @Injectable()

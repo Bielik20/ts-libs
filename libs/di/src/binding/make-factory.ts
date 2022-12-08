@@ -1,29 +1,29 @@
 import type { Container } from '../container';
 import { getParamConfigs } from '../decorators/param-configs';
-import { Provider } from '../provider';
+import { Factory } from '../factory';
 import { Scope } from '../scope';
 import {
   BindingConfig,
+  isFactoryConfig,
   isKlassConfig,
-  isProviderConfig,
   isValueConfig,
   KlassBindingConfig,
   ValueBindingConfig,
 } from './binding-config';
 
-export function makeProvider<T>(config: BindingConfig<T>): Provider<T> {
+export function makeFactory<T>(config: BindingConfig<T>): Factory<T> {
   if (isKlassConfig(config)) {
-    return makeKlassProvider(config);
+    return makeKlassFactory(config);
   } else if (isValueConfig(config)) {
-    return makeValueProvider(config);
-  } else if (isProviderConfig(config)) {
-    return config.provider;
+    return makeValueFactory(config);
+  } else if (isFactoryConfig(config)) {
+    return config.factory;
   } else {
-    throw new Error(`Incorrect BindingConfig. Either klass, value or provider is required`);
+    throw new Error(`Incorrect BindingConfig. Either klass, value or factory is required`);
   }
 }
 
-function makeKlassProvider<T>(config: KlassBindingConfig<T>): Provider<T> {
+function makeKlassFactory<T>(config: KlassBindingConfig<T>): Factory<T> {
   if (config.bind === config.klass) {
     const paramConfigs = getParamConfigs(config.klass);
     return (container: Container, requesterScope: Scope) => {
@@ -47,6 +47,6 @@ function makeKlassProvider<T>(config: KlassBindingConfig<T>): Provider<T> {
   }
 }
 
-function makeValueProvider<T>(config: ValueBindingConfig<T>): Provider<T> {
+function makeValueFactory<T>(config: ValueBindingConfig<T>): Factory<T> {
   return () => config.value;
 }

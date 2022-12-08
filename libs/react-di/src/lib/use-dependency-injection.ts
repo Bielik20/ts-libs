@@ -9,7 +9,7 @@ export function useDependencyInjection(
     const container = Container.make();
     const dependencies = unpackFactoryOrValue(factory);
 
-    dependencies.filter((config) => config).forEach((config) => container.set(config));
+    dependencies.filter((config) => config).forEach((config) => container.provide(config));
 
     return container;
   }, []);

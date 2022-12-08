@@ -1,15 +1,15 @@
 import type { Container } from './container';
-import { Provider } from './provider';
+import { Factory } from './factory';
 import { Scope } from './scope';
 
 export abstract class Resolver<T> {
-  static make<T>(scope: Scope, provider: Provider<T>): Resolver<T> {
+  static make<T>(scope: Scope, factory: Factory<T>): Resolver<T> {
     switch (scope) {
       case Scope.Global:
       case Scope.Local:
-        return new PersistentResolver(provider);
+        return new PersistentResolver(factory);
       case Scope.Transient:
-        return new TransientResolver(provider);
+        return new TransientResolver(factory);
     }
   }
 
@@ -20,15 +20,15 @@ export abstract class Resolver<T> {
 class PersistentResolver<T> implements Resolver<T> {
   private instance?: T;
 
-  constructor(private readonly provider: Provider<T>) {}
+  constructor(private readonly factory: Factory<T>) {}
 
   clone(): Resolver<T> {
-    return new PersistentResolver(this.provider);
+    return new PersistentResolver(this.factory);
   }
 
   resolve(container: Container, requesterScope: Scope): T {
     if (!this.instance) {
-      this.instance = this.provider(container, requesterScope);
+      this.instance = this.factory(container, requesterScope);
     }
 
     return this.instance;
@@ -36,13 +36,13 @@ class PersistentResolver<T> implements Resolver<T> {
 }
 
 class TransientResolver<T> implements Resolver<T> {
-  constructor(private readonly provider: Provider<T>) {}
+  constructor(private readonly factory: Factory<T>) {}
 
   clone(): Resolver<T> {
     return this;
   }
 
   resolve(container: Container, requesterScope: Scope): T {
-    return this.provider(container, requesterScope);
+    return this.factory(container, requesterScope);
   }
 }

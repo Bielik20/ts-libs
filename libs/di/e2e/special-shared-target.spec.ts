@@ -15,8 +15,8 @@ describe('Special - shared target', () => {
     test('be the same', () => {
       const container = Container.make();
 
-      container.set({ bind: A, klass: TargetClass });
-      container.set({ bind: B, klass: TargetClass });
+      container.provide({ bind: A, klass: TargetClass });
+      container.provide({ bind: B, klass: TargetClass });
 
       const a = container.get(A);
       const b = container.get(B);
@@ -34,7 +34,7 @@ describe('Special - shared target', () => {
     test('throw', () => {
       const container = Container.make();
 
-      container.set({ bind: A, klass: TargetClass, scope: Scope.Global });
+      container.provide({ bind: A, klass: TargetClass, scope: Scope.Global });
 
       expect(() => container.get(A)).toThrow('Unsatisfied scope boundary');
     });
@@ -49,8 +49,8 @@ describe('Special - shared target', () => {
     test('act as local', () => {
       const container = Container.make();
 
-      container.set({ bind: A, klass: TargetClass, scope: Scope.Transient });
-      container.set({ bind: B, klass: TargetClass, scope: Scope.Transient });
+      container.provide({ bind: A, klass: TargetClass, scope: Scope.Transient });
+      container.provide({ bind: B, klass: TargetClass, scope: Scope.Transient });
 
       const a = container.get(A);
       const b = container.get(B);

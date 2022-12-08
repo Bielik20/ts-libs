@@ -1,11 +1,11 @@
+import { Factory } from '../factory';
 import { Klass } from '../klass';
-import { Provider } from '../provider';
 import { Scope } from '../scope';
 
 export type InjectableConfig<T> =
   | KlassInjectableConfig<T>
   | ValueInjectableConfig<T>
-  | ProviderInjectableConfig<T>;
+  | FactoryInjectableConfig<T>;
 
 export type KlassInjectableConfig<T> = {
   autobind?: boolean;
@@ -19,10 +19,10 @@ export type ValueInjectableConfig<T> = {
   value: T;
 };
 
-export type ProviderInjectableConfig<T> = {
+export type FactoryInjectableConfig<T> = {
   autobind?: boolean;
   scope?: Scope;
-  provider: Provider<T>;
+  factory: Factory<T>;
 };
 
 const KEY = '@ns3/di:InjectableConfig';

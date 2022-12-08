@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import { Container, Injectable, Scope } from '@ns3/di';
 
 describe('Container - bind', () => {
-  describe('provider', () => {
+  describe('factory', () => {
     @Injectable()
     class DependencyClass {}
 
@@ -13,9 +13,9 @@ describe('Container - bind', () => {
 
     test('create instance', () => {
       const container = Container.make();
-      container.set({
+      container.provide({
         bind: MasterClass,
-        provider: (innerContainer: Container, requesterScope: Scope) => {
+        factory: (innerContainer: Container, requesterScope: Scope) => {
           const dep = innerContainer.get(DependencyClass, requesterScope);
 
           return new MasterClass(dep);
@@ -34,7 +34,7 @@ describe('Container - bind', () => {
 
     test('create instance', () => {
       const container = Container.make();
-      container.set({
+      container.provide({
         bind: TestClass,
         value: TEST_VALUE,
       });
@@ -53,7 +53,7 @@ describe('Container - bind', () => {
 
     test('create instance', () => {
       const container = Container.make();
-      container.set({
+      container.provide({
         bind: TestFooClass,
         klass: TestBarClass,
       });
