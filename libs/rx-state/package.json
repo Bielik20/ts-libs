@@ -11,7 +11,6 @@
     "access": "public"
   },
   "peerDependencies": {
-    "core-js": "^3.0.0",
     "tslib": "^2.0.0"
   }
 }
