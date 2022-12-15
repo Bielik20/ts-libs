@@ -1,27 +1,26 @@
-# @ns3/http-client
+# @ns3/fetch-client
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/@ns3/http-client">
-    <img src="https://img.shields.io/npm/v/@ns3/http-client.svg" alt="npm version">
+  <a href="https://www.npmjs.com/package/@ns3/fetch-client">
+    <img src="https://img.shields.io/npm/v/@ns3/fetch-client.svg" alt="npm version">
   </a>
-  <a href="https://bundlephobia.com/package/@ns3/http-client">
-    <img src="https://img.shields.io/bundlephobia/minzip/@ns3/http-client" alt="bundlephobia">
+  <a href="https://bundlephobia.com/package/@ns3/fetch-client">
+    <img src="https://img.shields.io/bundlephobia/minzip/@ns3/fetch-client" alt="bundlephobia">
   </a>    
-  <a href="https://bundlephobia.com/package/@ns3/http-client">
+  <a href="https://bundlephobia.com/package/@ns3/fetch-client">
     <img src="https://badgen.net/bundlephobia/tree-shaking/react-colorful" alt="bundlephobia">
   </a>
 </p>
 
-Fetch based injectable http-client for web and node (18+) applications.
+A light weight `FetchClient` for web and node (18+) applications.
 
-It was inspired and based on [Angular's HttpClient](https://angular.io/guide/http).
-
-It executes http calls using `fetch` while allowing to provide interceptors.
+It was inspired by [Angular's HttpClient](https://angular.io/guide/http). 
+It provides more object-oriented approach focused on JSON payload with support for interceptors.
 
 ## Base usage + helper functions
 
 ```ts
-import { assertOk, FetchClient, toJson } from '@ns3/http-client';
+import { assertOk, FetchClient, toJson } from '@ns3/fetch-client';
 
 const client = new FetchClient();
 
@@ -33,7 +32,7 @@ client.get('https://example-api.com').then(toJson);
 ## Example FetchInterceptor
 
 ```ts
-import { FetchClient, FetchInterceptor, makeFetchHandler } from '@ns3/http-client';
+import { FetchClient, FetchInterceptor, makeFetchHandler } from '@ns3/fetch-client';
 
 const delayInterceptor: FetchInterceptor = async (req, next) => {
   await new Promise((res) => setTimeout(res, this.delay));
@@ -48,7 +47,7 @@ const client = new FetchClient(makeFetchHandler([delayInterceptor]));
 
 ```tsx
 import { Container, Injectable, Klass } from '@ns3/di';
-import { FetchClient, FetchInterceptor, makeFetchHandler } from '@ns3/http-client';
+import { FetchClient, FetchInterceptor, makeFetchHandler } from '@ns3/fetch-client';
 
 @Injectable()
 export class DelayInterceptor {
