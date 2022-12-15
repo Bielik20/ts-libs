@@ -11,6 +11,8 @@
     "access": "public"
   },
   "peerDependencies": {
+    "@ns3/ts-utils": "*",
+    "rxjs": "^7.5.7",
     "tslib": "^2.0.0"
   }
 }

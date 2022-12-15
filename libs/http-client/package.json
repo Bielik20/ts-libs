@@ -11,6 +11,7 @@
     "access": "public"
   },
   "peerDependencies": {
+    "@ns3/ts-utils": "*",
     "tslib": "^2.0.0"
   }
 }

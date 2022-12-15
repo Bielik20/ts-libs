@@ -11,6 +11,10 @@
     "access": "public"
   },
   "peerDependencies": {
-    "tslib": "^2.0.0"
+    "@ns3/ts-utils": "*",
+    "react": "^18.0.0",
+    "rxjs": "^7.5.7",
+    "tslib": "^2.0.0",
+    "use-constant": "^1.1.1"
   }
 }

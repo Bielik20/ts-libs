@@ -12,7 +12,7 @@
         "tsConfig": "libs/rx-state/tsconfig.lib.json",
         "project": "libs/rx-state/package.json",
         "entryFile": "libs/rx-state/src/index.ts",
-        "external": ["tslib"],
+        "updateBuildableProjectDepsInPackageJson": false,
         "assets": [
           {
             "glob": "libs/rx-state/README.md",
