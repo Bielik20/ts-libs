@@ -12,7 +12,7 @@
         "tsConfig": "libs/ts-utils/tsconfig.lib.json",
         "project": "libs/ts-utils/package.json",
         "entryFile": "libs/ts-utils/src/index.ts",
-        "external": ["tslib"],
+        "updateBuildableProjectDepsInPackageJson": false,
         "assets": [
           {
             "glob": "libs/ts-utils/README.md",
