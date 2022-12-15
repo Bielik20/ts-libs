@@ -1,5 +1,5 @@
 import { Injectable } from '@ns3/di';
-import { FetchHandler } from '@ns3/http-client';
+import { FetchHandler } from '@ns3/fetch-client';
 import { FetchClassInterceptor } from './app-fetch-client-utils';
 
 @Injectable()

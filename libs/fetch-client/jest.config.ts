@@ -1,11 +1,11 @@
 /* eslint-disable */
 export default {
-  displayName: 'http-client',
+  displayName: 'fetch-client',
   transform: {
     '^.+\\.[tj]sx?$': ['babel-jest', { presets: ['@nrwl/react/babel'] }],
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../coverage/libs/http-client',
+  coverageDirectory: '../../coverage/libs/fetch-client',
   testEnvironment: 'node',
   preset: '../../jest.preset.js',
 };

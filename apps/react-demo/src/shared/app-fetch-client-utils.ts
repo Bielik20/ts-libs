@@ -1,5 +1,5 @@
 import { Factory, Klass } from '@ns3/di';
-import { FetchClient, FetchHandler, FetchInterceptor, makeFetchHandler } from '@ns3/http-client';
+import { FetchClient, FetchHandler, FetchInterceptor, makeFetchHandler } from '@ns3/fetch-client';
 
 export interface FetchClassInterceptor {
   intercept: FetchInterceptor;

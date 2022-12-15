@@ -1,21 +1,21 @@
 {
-  "name": "http-client",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/http-client/src",
+  "name": "fetch-client",
+  "sourceRoot": "libs/fetch-client/src",
   "projectType": "library",
   "targets": {
     "build": {
       "executor": "@nrwl/rollup:rollup",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/libs/http-client",
-        "tsConfig": "libs/http-client/tsconfig.lib.json",
-        "project": "libs/http-client/package.json",
-        "entryFile": "libs/http-client/src/index.ts",
+        "outputPath": "dist/libs/fetch-client",
+        "tsConfig": "libs/fetch-client/tsconfig.lib.json",
+        "project": "libs/fetch-client/package.json",
+        "entryFile": "libs/fetch-client/src/index.ts",
         "updateBuildableProjectDepsInPackageJson": false,
         "assets": [
           {
-            "glob": "libs/http-client/README.md",
+            "glob": "libs/fetch-client/README.md",
             "input": ".",
             "output": "."
           },
@@ -30,15 +30,15 @@
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "options": {
-        "lintFilePatterns": ["libs/http-client/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": ["libs/fetch-client/**/*.{ts,tsx,js,jsx}"]
       },
       "outputs": ["{options.outputFile}"]
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/libs/http-client"],
+      "outputs": ["{workspaceRoot}/coverage/libs/fetch-client"],
       "options": {
-        "jestConfig": "libs/http-client/jest.config.ts",
+        "jestConfig": "libs/fetch-client/jest.config.ts",
         "passWithNoTests": true
       }
     },
