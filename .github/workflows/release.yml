@@ -25,7 +25,7 @@ jobs:
         run: npx semantic-release --dry-run
       - name: Publish
         if: ${{ steps.semantic.outputs.next-version }}
-        run: yarn nx affected --target publish --parallel 3 --exclude di
+        run: yarn nx affected --target publish --parallel 3
         env:
           NPM_PACKAGE_TAG: ${{ steps.semantic.outputs.channel }}
           NPM_PACKAGE_VERSION: ${{ steps.semantic.outputs.next-version }}
