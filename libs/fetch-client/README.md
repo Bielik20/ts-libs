@@ -12,7 +12,7 @@
   </a>
 </p>
 
-A light weight `FetchClient` for web and node (18+) applications.
+A light weight `FetchClient` for web and node (min v18) applications.
 
 It was inspired by [Angular's HttpClient](https://angular.io/guide/http). 
 It provides more object-oriented approach focused on JSON payload with support for interceptors.
