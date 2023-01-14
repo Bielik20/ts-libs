@@ -1,5 +1,6 @@
 {
   "name": "@ns3/react-di",
+  "description": "React implementation of dependency injection based on @ns3/di",
   "version": "0.0.1",
   "license": "MIT",
   "sideEffects": false,
@@ -7,9 +8,21 @@
     "type": "git",
     "url": "https://github.com/Bielik20/ts-libs"
   },
+  "homepage": "https://github.com/Bielik20/ts-libs/tree/master/libs/react-di#readme",
   "publishConfig": {
     "access": "public"
   },
+  "keywords": [
+    "react",
+    "dependency injection",
+    "dependency inversion",
+    "di",
+    "inversion of control container",
+    "ioc",
+    "javascript",
+    "node",
+    "typescript"
+  ],
   "peerDependencies": {
     "@ns3/di": "*",
     "@ns3/ts-utils": "*",

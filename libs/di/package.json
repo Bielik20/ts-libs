@@ -1,5 +1,6 @@
 {
   "name": "@ns3/di",
+  "description": "A powerful and lightweight inversion of control container for TypeScript.",
   "version": "0.0.1",
   "sideEffects": false,
   "tsd": {
@@ -9,9 +10,20 @@
     "type": "git",
     "url": "https://github.com/Bielik20/ts-libs"
   },
+  "homepage": "https://github.com/Bielik20/ts-libs/tree/master/libs/di#readme",
   "publishConfig": {
     "access": "public"
   },
+  "keywords": [
+    "dependency injection",
+    "dependency inversion",
+    "di",
+    "inversion of control container",
+    "ioc",
+    "javascript",
+    "node",
+    "typescript"
+  ],
   "license": "MIT",
   "peerDependencies": {
     "tslib": "^2.0.0"
