@@ -1,5 +1,6 @@
 {
   "name": "@ns3/fetch-client",
+  "description": "A light weight `FetchClient` and utilities for web and node (min v18)",
   "version": "0.0.1",
   "license": "MIT",
   "sideEffects": false,
@@ -7,9 +8,22 @@
     "type": "git",
     "url": "https://github.com/Bielik20/ts-libs"
   },
+  "homepage": "https://github.com/Bielik20/ts-libs/tree/master/libs/fetch-client#readme",
   "publishConfig": {
     "access": "public"
   },
+  "keywords": [
+    "xhr",
+    "fetch",
+    "http",
+    "ajax",
+    "axios",
+    "promise",
+    "interceptors",
+    "javascript",
+    "node",
+    "typescript"
+  ],
   "peerDependencies": {
     "@ns3/ts-utils": "*",
     "tslib": "^2.0.0"

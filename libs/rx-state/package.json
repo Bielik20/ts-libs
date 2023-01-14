@@ -1,5 +1,6 @@
 {
   "name": "@ns3/rx-state",
+  "description": "Platform agnostic solution for state management built as an extension on RxJs",
   "version": "0.0.1",
   "license": "MIT",
   "sideEffects": false,
@@ -7,9 +8,23 @@
     "type": "git",
     "url": "https://github.com/Bielik20/ts-libs"
   },
+  "homepage": "https://github.com/Bielik20/ts-libs/tree/master/libs/rx-state#readme",
   "publishConfig": {
     "access": "public"
   },
+  "keywords": [
+    "rxjs",
+    "state",
+    "memoization",
+    "cache",
+    "platform agnostic",
+    "predictable",
+    "immutable",
+    "hot",
+    "live",
+    "replay",
+    "flux"
+  ],
   "peerDependencies": {
     "@ns3/ts-utils": "*",
     "rxjs": "^7.5.7",
