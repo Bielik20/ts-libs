@@ -19,7 +19,7 @@ jobs:
           affected: true
       - run: npx nx-cloud start-ci-run
       - name: Run Commands
-        uses: ./.github/actions/run-commands-in-parallel
+        uses: Bielik20/nx-plugins/.github/actions/run-commands-in-parallel@v3.4.0
         with:
           parallel-commands-on-agents: |
             npx nx affected --target=build --parallel=3
