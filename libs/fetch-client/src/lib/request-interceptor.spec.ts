@@ -1,7 +1,7 @@
 import { FetchClient } from './fetch-client';
-import { FetchInterceptor, makeFetchHandler } from './fetch-interceptor';
+import { interceptFetch, RequestInterceptor } from './request-interceptor';
 
-describe('FetchInterceptor', () => {
+describe('RequestInterceptor', () => {
   const fetchMock = jest.fn();
   const spy = jest.fn();
 
@@ -15,7 +15,7 @@ describe('FetchInterceptor', () => {
   });
 
   describe('Regular', () => {
-    const firstInterceptor: FetchInterceptor = async (req, next) => {
+    const firstInterceptor: RequestInterceptor = async (req, next) => {
       spy('first req', req);
 
       req.headers.set('common', 'first');
@@ -28,7 +28,7 @@ describe('FetchInterceptor', () => {
 
       return updatedResult;
     };
-    const secondInterceptor: FetchInterceptor = async (req, next) => {
+    const secondInterceptor: RequestInterceptor = async (req, next) => {
       spy('second req', req);
 
       req.headers.set('common', 'second');
@@ -42,7 +42,7 @@ describe('FetchInterceptor', () => {
       return updatedResult;
     };
     const fetchClient = new FetchClient(
-      makeFetchHandler([firstInterceptor, secondInterceptor], fetchMock),
+      interceptFetch([firstInterceptor, secondInterceptor], fetchMock),
     );
 
     test('call interceptors in the right order', async () => {
@@ -76,7 +76,7 @@ describe('FetchInterceptor', () => {
     });
 
     test('extend client', async () => {
-      const extendInterceptor: FetchInterceptor = async (req, next) => {
+      const extendInterceptor: RequestInterceptor = async (req, next) => {
         spy('extendInterceptor req');
 
         const result = await next(req);
@@ -86,7 +86,7 @@ describe('FetchInterceptor', () => {
         return result;
       };
       const extendedClient = new FetchClient(
-        makeFetchHandler([extendInterceptor], fetchClient.handler),
+        interceptFetch([extendInterceptor], fetchClient.fetch),
       );
 
       await extendedClient.get('https://example.com/');
@@ -104,14 +104,14 @@ describe('FetchInterceptor', () => {
   });
 
   describe('Circular', () => {
-    const interceptorWithFetch: FetchInterceptor = async (req, next) => {
+    const interceptorWithFetch: RequestInterceptor = async (req, next) => {
       spy(fetchClient);
 
       const result = await next(req);
 
       return { ...result, withClient: 'works' };
     };
-    const fetchClient = new FetchClient(makeFetchHandler([interceptorWithFetch], fetchMock));
+    const fetchClient = new FetchClient(interceptFetch([interceptorWithFetch], fetchMock));
 
     it('should be able to use fetchClient', async () => {
       const res = await fetchClient.get('https://example.com/');

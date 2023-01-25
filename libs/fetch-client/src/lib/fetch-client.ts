@@ -6,38 +6,37 @@ export class FetchError extends CustomError<'FetchError'> {
   }
 }
 
-export type FetchHandler = (req: Request) => Promise<Response>;
+export type Fetch = typeof fetch;
 
 export class FetchClient {
-  constructor(readonly handler: FetchHandler = fetch) {}
+  constructor(readonly fetch: Fetch = fetch) {}
 
   get(url: string, config: RequestInit = {}) {
-    return this.handler(this.createRequest(url, 'GET', undefined, config));
+    return this.fetch(url, this.createRequestInit('GET', undefined, config));
   }
 
   delete(url: string, config: RequestInit = {}) {
-    return this.handler(this.createRequest(url, 'DELETE', undefined, config));
+    return this.fetch(url, this.createRequestInit('DELETE', undefined, config));
   }
 
   patch(url: string, body?: Record<string, any>, config: RequestInit = {}) {
-    return this.handler(this.createRequest(url, 'PATCH', body, config));
+    return this.fetch(url, this.createRequestInit('PATCH', body, config));
   }
 
   post(url: string, body?: Record<string, any>, config: RequestInit = {}) {
-    return this.handler(this.createRequest(url, 'POST', body, config));
+    return this.fetch(url, this.createRequestInit('POST', body, config));
   }
 
   put(url: string, body?: Record<string, any>, config: RequestInit = {}) {
-    return this.handler(this.createRequest(url, 'PUT', body, config));
+    return this.fetch(url, this.createRequestInit('PUT', body, config));
   }
 
-  private createRequest(
-    url: string,
+  private createRequestInit(
     method: string,
     body?: Record<string, any>,
     config: RequestInit = {},
-  ): Request {
-    return new Request(url, {
+  ): RequestInit {
+    return {
       body: typeof body === 'object' ? JSON.stringify(body) : body,
       method,
       ...config,
@@ -45,7 +44,7 @@ export class FetchClient {
         'Content-Type': 'application/json',
         ...(config.headers || {}),
       },
-    });
+    };
   }
 }
 

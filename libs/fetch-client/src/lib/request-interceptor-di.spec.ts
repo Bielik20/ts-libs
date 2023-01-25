@@ -1,25 +1,25 @@
 import 'reflect-metadata';
 import { Container, Factory, Injectable, Klass } from '@ns3/di';
-import { FetchClient, FetchHandler } from './fetch-client';
-import { FetchInterceptor, makeFetchHandler } from './fetch-interceptor';
+import { Fetch, FetchClient } from './fetch-client';
+import { interceptFetch, RequestHandler, RequestInterceptor } from './request-interceptor';
 
-interface FetchClassInterceptor {
-  intercept: FetchInterceptor;
+interface RequestClassInterceptor {
+  intercept: RequestInterceptor;
 }
 
 function fetchClientFactory(
-  interceptorClasses: Klass<FetchClassInterceptor>[],
-  base?: FetchHandler,
+  interceptorClasses: Klass<RequestClassInterceptor>[],
+  base?: Fetch,
 ): Factory<FetchClient> {
   return (container, requesterScope) => {
     const interceptors = interceptorClasses.map(
       (klass) => (req, next) => container.get(klass, requesterScope).intercept(req, next),
     );
-    return new FetchClient(makeFetchHandler(interceptors, base));
+    return new FetchClient(interceptFetch(interceptors, base));
   };
 }
 
-describe('FetchInterceptorDi', () => {
+describe('RequestInterceptorDi', () => {
   const fetchMock = jest.fn();
   const spy = jest.fn();
 
@@ -34,8 +34,8 @@ describe('FetchInterceptorDi', () => {
 
   describe('Regular', () => {
     @Injectable()
-    class FirstInterceptor implements FetchClassInterceptor {
-      async intercept(req: Request, next: FetchHandler): Promise<Response> {
+    class FirstInterceptor implements RequestClassInterceptor {
+      async intercept(req: Request, next: RequestHandler): Promise<Response> {
         spy('first req', req);
 
         req.headers.set('common', 'first');
@@ -51,8 +51,8 @@ describe('FetchInterceptorDi', () => {
     }
 
     @Injectable()
-    class SecondInterceptor implements FetchClassInterceptor {
-      async intercept(req: Request, next: FetchHandler): Promise<Response> {
+    class SecondInterceptor implements RequestClassInterceptor {
+      async intercept(req: Request, next: RequestHandler): Promise<Response> {
         spy('second req', req);
 
         req.headers.set('common', 'second');
@@ -108,10 +108,10 @@ describe('FetchInterceptorDi', () => {
     class FetchDiClient extends FetchClient {}
 
     @Injectable()
-    class InterceptorWithFetchClient implements FetchClassInterceptor {
+    class InterceptorWithFetchClient implements RequestClassInterceptor {
       constructor(private client: FetchDiClient) {}
 
-      async intercept(req: Request, next: FetchHandler): Promise<Response> {
+      async intercept(req: Request, next: RequestHandler): Promise<Response> {
         spy(this.client);
 
         const result = await next(req);
