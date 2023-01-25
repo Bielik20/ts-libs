@@ -12,4 +12,4 @@
   </a>
 </p>
 
-Library to keep custom hooks and utility code related to react.
+Library to keep custom hooks and utility code related to React.

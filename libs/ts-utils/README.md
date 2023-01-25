@@ -12,4 +12,4 @@
   </a>
 </p>
 
-Library to keep custom hooks and utility code unrelated to any specific framework.
+Library to keep utility code unrelated to any specific framework.
