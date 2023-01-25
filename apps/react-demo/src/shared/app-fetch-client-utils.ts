@@ -1,18 +1,18 @@
 import { Factory, Klass } from '@ns3/di';
-import { FetchClient, FetchHandler, FetchInterceptor, makeFetchHandler } from '@ns3/fetch-client';
+import { Fetch, FetchClient, interceptFetch, RequestInterceptor } from '@ns3/fetch-client';
 
-export interface FetchClassInterceptor {
-  intercept: FetchInterceptor;
+export interface RequestClassInterceptor {
+  intercept: RequestInterceptor;
 }
 
 export function fetchClientFactory(
-  interceptorClasses: Klass<FetchClassInterceptor>[],
-  base?: FetchHandler,
+  interceptorClasses: Klass<RequestClassInterceptor>[],
+  base?: Fetch,
 ): Factory<FetchClient> {
   return (container, requesterScope) => {
     const interceptors = interceptorClasses.map(
       (klass) => (req, next) => container.get(klass, requesterScope).intercept(req, next),
     );
-    return new FetchClient(makeFetchHandler(interceptors, base));
+    return new FetchClient(interceptFetch(interceptors, base));
   };
 }

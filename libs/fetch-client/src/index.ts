@@ -1,2 +1,2 @@
 export * from './lib/fetch-client';
-export * from './lib/fetch-interceptor';
+export * from './lib/request-interceptor';
