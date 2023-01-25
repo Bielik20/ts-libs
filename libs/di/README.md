@@ -12,12 +12,12 @@
   </a>
 </p>
 
-This is a lightweight (weights around 5 KB) dependency injection container for TypeScript.
+This is a powerful and lightweight (weights around 5 KB) dependency injection container for TypeScript.
 It is designed to be used on both browser and node.js server.
 
 It was inspired by:
 
-- [InversifyJS](https://github.com/inversify/InversifyJS) - it was too big, I didn't need all the features.
+- [InversifyJS](https://github.com/inversify/InversifyJS) - it is too big, weights almost 10 times more. I don't need all the features it offers.
 - [@wikia/dependency-injection](https://github.com/Wikia/dependency-injection-js) - from the time I worked at Fandom :)
 
 
@@ -37,7 +37,7 @@ You can get the latest release and the type definitions using your preferred pac
 
 To use decorators enable compilation options in your tsconfig.json file:
 
-```ts
+```json
 {
   "compilerOptions": {
     "experimentalDecorators": true,
