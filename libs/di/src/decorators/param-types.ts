@@ -1,4 +1,5 @@
 import { Klass } from '../klass';
+import { SafeReflect } from '../safe-reflect';
 
 export type ParamTypes = Klass<any>[];
 
@@ -7,8 +8,8 @@ export type ParamTypes = Klass<any>[];
  */
 const DESIGN_PARAM_TYPES_KEY = 'design:paramtypes';
 
-export function getDesignParamTypes(target: Object): ParamTypes {
-  return Reflect.getMetadata(DESIGN_PARAM_TYPES_KEY, target);
+export function getDesignParamTypes(target: Object): ParamTypes | undefined {
+  return SafeReflect.getMetadata(DESIGN_PARAM_TYPES_KEY, target);
 }
 
 /**
@@ -17,13 +18,13 @@ export function getDesignParamTypes(target: Object): ParamTypes {
 const PARAM_TYPES_KEY = '@ns3/di:ParamTypes';
 
 export function hasParamTypes(target: Object): boolean {
-  return Reflect.hasOwnMetadata(PARAM_TYPES_KEY, target);
+  return SafeReflect.hasOwnMetadata(PARAM_TYPES_KEY, target);
 }
 
-export function getParamTypes(target: Object): ParamTypes {
-  return Reflect.getMetadata(PARAM_TYPES_KEY, target);
+export function getParamTypes(target: Object): ParamTypes | undefined {
+  return SafeReflect.getMetadata(PARAM_TYPES_KEY, target);
 }
 
 export function setParamTypes(target: Object, value: ParamTypes): void {
-  return Reflect.defineMetadata(PARAM_TYPES_KEY, value, target);
+  return SafeReflect.defineMetadata(PARAM_TYPES_KEY, value, target);
 }

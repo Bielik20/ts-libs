@@ -1,5 +1,6 @@
 import { Factory } from '../factory';
 import { Klass } from '../klass';
+import { SafeReflect } from '../safe-reflect';
 import { Scope } from '../scope';
 
 export type InjectableConfig<T> =
@@ -28,9 +29,9 @@ export type FactoryInjectableConfig<T> = {
 const KEY = '@ns3/di:InjectableConfig';
 
 export function getInjectableConfig<T>(target: Object): InjectableConfig<T> | undefined {
-  return Reflect.getMetadata(KEY, target);
+  return SafeReflect.getMetadata(KEY, target);
 }
 
 export function setInjectableConfig<T>(target: Object, value: InjectableConfig<T>): void {
-  return Reflect.defineMetadata(KEY, value, target);
+  return SafeReflect.defineMetadata(KEY, value, target);
 }
