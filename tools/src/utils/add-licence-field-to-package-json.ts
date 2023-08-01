@@ -1,4 +1,4 @@
-import { joinPathFragments, readProjectConfiguration, Tree, updateJson } from '@nrwl/devkit';
+import { joinPathFragments, readProjectConfiguration, Tree, updateJson } from '@nx/devkit';
 
 export function addLicenceFieldToPackageJson(tree: Tree, schema: { project: string }) {
   const projectConfig = readProjectConfiguration(tree, schema.project);

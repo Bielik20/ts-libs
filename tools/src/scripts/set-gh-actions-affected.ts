@@ -1,5 +1,5 @@
 import * as core from '@actions/core';
-import { workspaceRoot } from '@nrwl/devkit';
+import { workspaceRoot } from '@nx/devkit';
 import { execSync } from 'child_process';
 
 export function setGhActionsAffected() {
