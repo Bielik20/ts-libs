@@ -7,7 +7,7 @@
     "lint": {
       "executor": "@nx/linter:eslint",
       "options": {
-        "lintFilePatterns": ["libs/rx-actions/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": ["libs/rx-actions/**/*.{ts,tsx,js,jsx}", "libs/rx-actions/package.json"]
       },
       "outputs": ["{options.outputFile}"]
     },

@@ -8,8 +8,8 @@ import {
 } from '@nx/devkit';
 import { Linter } from '@nx/linter';
 import { libraryGenerator } from '@nx/react';
-import { addCoreJsTslibAsPeerDeps } from '../../../../src/utils/add-corejs-tslib-as-peer-deps';
-import { addLicenceFieldToPackageJson } from '../../../../src/utils/add-licence-field-to-package-json';
+import { addCoreJsTslibAsPeerDeps } from '../../utils/add-corejs-tslib-as-peer-deps';
+import { addLicenceFieldToPackageJson } from '../../utils/add-licence-field-to-package-json';
 import { Schema } from './schema';
 
 export default async function (host: Tree, schema: Schema) {

@@ -5,7 +5,7 @@
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nrwl/rollup:rollup",
+      "executor": "@nx/rollup:rollup",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/react-di",
@@ -13,7 +13,6 @@
         "project": "libs/react-di/package.json",
         "entryFile": "libs/react-di/src/index.ts",
         "rollupConfig": "@nx/react/plugins/bundle-rollup",
-        "updateBuildableProjectDepsInPackageJson": false,
         "assets": [
           {
             "glob": "libs/react-di/README.md",
@@ -31,7 +30,7 @@
     "lint": {
       "executor": "@nx/linter:eslint",
       "options": {
-        "lintFilePatterns": ["libs/react-di/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": ["libs/react-di/**/*.{ts,tsx,js,jsx}", "libs/react-di/package.json"]
       },
       "outputs": ["{options.outputFile}"]
     },

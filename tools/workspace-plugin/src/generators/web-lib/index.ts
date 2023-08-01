@@ -6,10 +6,10 @@ import {
   Tree,
   updateProjectConfiguration,
 } from '@nx/devkit';
+import { libraryGenerator } from '@nx/js';
 import { Linter } from '@nx/linter';
-import { libraryGenerator } from '@nx/workspace';
-import { addCoreJsTslibAsPeerDeps } from '../../../../src/utils/add-corejs-tslib-as-peer-deps';
-import { addLicenceFieldToPackageJson } from '../../../../src/utils/add-licence-field-to-package-json';
+import { addCoreJsTslibAsPeerDeps } from '../../utils/add-corejs-tslib-as-peer-deps';
+import { addLicenceFieldToPackageJson } from '../../utils/add-licence-field-to-package-json';
 import { Schema } from './schema';
 
 export default async function (host: Tree, schema: Schema) {
@@ -22,7 +22,6 @@ export default async function (host: Tree, schema: Schema) {
     linter: Linter.EsLint,
     strict: true,
     buildable: true,
-    babelJest: true,
   });
   await updateWorkspaceConfig(host, { project: schema.name });
   await npmGenerator(host, { project: schema.name, skipFormat: true, access: 'public' });

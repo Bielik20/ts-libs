@@ -5,14 +5,13 @@
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nrwl/rollup:rollup",
+      "executor": "@nx/rollup:rollup",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/react-utils",
         "tsConfig": "libs/react-utils/tsconfig.lib.json",
         "project": "libs/react-utils/package.json",
         "entryFile": "libs/react-utils/src/index.ts",
-        "updateBuildableProjectDepsInPackageJson": false,
         "rollupConfig": "@nx/react/plugins/bundle-rollup",
         "assets": [
           {
@@ -31,7 +30,10 @@
     "lint": {
       "executor": "@nx/linter:eslint",
       "options": {
-        "lintFilePatterns": ["libs/react-utils/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": [
+          "libs/react-utils/**/*.{ts,tsx,js,jsx}",
+          "libs/react-utils/package.json"
+        ]
       },
       "outputs": ["{options.outputFile}"]
     },

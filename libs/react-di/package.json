@@ -26,7 +26,6 @@
   "peerDependencies": {
     "@ns3/di": "*",
     "@ns3/ts-utils": "*",
-    "tslib": "^2.0.0",
     "react": "^18.0.0"
   }
 }

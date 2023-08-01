@@ -25,7 +25,6 @@
     "typescript"
   ],
   "peerDependencies": {
-    "@ns3/ts-utils": "*",
-    "tslib": "^2.0.0"
+    "@ns3/ts-utils": "*"
   }
 }

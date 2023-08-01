@@ -14,7 +14,7 @@ describe('Reflect Metadata', () => {
 
     const container = Container.make();
     expect(() => container.get(ExampleClass)).toThrow(
-      'class ExampleClass {} is not bound to anything',
+      'class ExampleClass {\n' + '        } is not bound to anything.',
     );
   });
 });

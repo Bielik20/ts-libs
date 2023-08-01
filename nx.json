@@ -42,11 +42,10 @@
     }
   },
   "namedInputs": {
-    "default": ["{projectRoot}/**/*", "sharedGlobals"],
-    "sharedGlobals": ["{workspaceRoot}/babel.config.json"],
+    "default": ["{projectRoot}/**/*"],
     "production": [
       "default",
-      "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
+      "!{projectRoot}/**/?(*.)+(spec|test|test-d).[jt]s?(x)?(.snap)",
       "!{projectRoot}/tsconfig.spec.json",
       "!{projectRoot}/jest.config.[jt]s",
       "!{projectRoot}/.eslintrc.json",
