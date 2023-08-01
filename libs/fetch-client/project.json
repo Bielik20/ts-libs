@@ -5,14 +5,13 @@
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nrwl/rollup:rollup",
+      "executor": "@nx/rollup:rollup",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/fetch-client",
         "tsConfig": "libs/fetch-client/tsconfig.lib.json",
         "project": "libs/fetch-client/package.json",
         "entryFile": "libs/fetch-client/src/index.ts",
-        "updateBuildableProjectDepsInPackageJson": false,
         "assets": [
           {
             "glob": "libs/fetch-client/README.md",
@@ -30,7 +29,10 @@
     "lint": {
       "executor": "@nx/linter:eslint",
       "options": {
-        "lintFilePatterns": ["libs/fetch-client/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": [
+          "libs/fetch-client/**/*.{ts,tsx,js,jsx}",
+          "libs/fetch-client/package.json"
+        ]
       },
       "outputs": ["{options.outputFile}"]
     },

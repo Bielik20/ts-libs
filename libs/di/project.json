@@ -5,14 +5,13 @@
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nrwl/rollup:rollup",
+      "executor": "@nx/rollup:rollup",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/di",
         "tsConfig": "libs/di/tsconfig.lib.json",
         "project": "libs/di/package.json",
         "entryFile": "libs/di/src/index.ts",
-        "updateBuildableProjectDepsInPackageJson": false,
         "assets": [
           {
             "glob": "libs/di/README.md",
@@ -31,7 +30,7 @@
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/di/**/*.ts"]
+        "lintFilePatterns": ["libs/di/**/*.ts", "libs/di/package.json"]
       }
     },
     "test": {

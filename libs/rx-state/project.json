@@ -5,14 +5,13 @@
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nrwl/rollup:rollup",
+      "executor": "@nx/rollup:rollup",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/rx-state",
         "tsConfig": "libs/rx-state/tsconfig.lib.json",
         "project": "libs/rx-state/package.json",
         "entryFile": "libs/rx-state/src/index.ts",
-        "updateBuildableProjectDepsInPackageJson": false,
         "assets": [
           {
             "glob": "libs/rx-state/README.md",
@@ -30,7 +29,7 @@
     "lint": {
       "executor": "@nx/linter:eslint",
       "options": {
-        "lintFilePatterns": ["libs/rx-state/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": ["libs/rx-state/**/*.{ts,tsx,js,jsx}", "libs/rx-state/package.json"]
       },
       "outputs": ["{options.outputFile}"]
     },

@@ -12,7 +12,6 @@
     "access": "public"
   },
   "peerDependencies": {
-    "rxjs": "^7.5.7",
-    "tslib": "^2.0.0"
+    "rxjs": "^7.5.7"
   }
 }
