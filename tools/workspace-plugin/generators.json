@@ -1,0 +1,19 @@
+{
+  "generators": {
+    "react-lib": {
+      "implementation": "./src/generators/react-lib",
+      "schema": "./src/generators/react-lib/schema.json",
+      "description": "Generator react-lib"
+    },
+    "ts-lib": {
+      "implementation": "./src/generators/ts-lib",
+      "schema": "./src/generators/ts-lib/schema.json",
+      "description": "Generator ts-lib"
+    },
+    "web-lib": {
+      "implementation": "./src/generators/web-lib",
+      "schema": "./src/generators/web-lib/schema.json",
+      "description": "Generator web-lib"
+    }
+  }
+}

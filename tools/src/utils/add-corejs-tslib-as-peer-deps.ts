@@ -1,4 +1,4 @@
-import { joinPathFragments, readProjectConfiguration, Tree, updateJson } from '@nrwl/devkit';
+import { joinPathFragments, readProjectConfiguration, Tree, updateJson } from '@nx/devkit';
 
 export function addCoreJsTslibAsPeerDeps(tree: Tree, options: { project: string }) {
   const projectConfig = readProjectConfiguration(tree, options.project);

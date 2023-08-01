@@ -1,15 +1,15 @@
+import npmGenerator from '@ns3/nx-npm/src/generators/npm/generator';
 import {
   formatFiles,
   installPackagesTask,
   readProjectConfiguration,
   Tree,
   updateProjectConfiguration,
-} from '@nrwl/devkit';
-import { Linter } from '@nrwl/linter';
-import { libraryGenerator } from '@nrwl/workspace';
-import npmGenerator from '@ns3/nx-npm/src/generators/npm/generator';
-import { addCoreJsTslibAsPeerDeps } from '../../src/utils/add-corejs-tslib-as-peer-deps';
-import { addLicenceFieldToPackageJson } from '../../src/utils/add-licence-field-to-package-json';
+} from '@nx/devkit';
+import { Linter } from '@nx/linter';
+import { libraryGenerator } from '@nx/workspace';
+import { addCoreJsTslibAsPeerDeps } from '../../../../src/utils/add-corejs-tslib-as-peer-deps';
+import { addLicenceFieldToPackageJson } from '../../../../src/utils/add-licence-field-to-package-json';
 import { Schema } from './schema';
 
 export default async function (host: Tree, schema: Schema) {
@@ -39,7 +39,7 @@ function updateWorkspaceConfig(tree: Tree, schema: { project: string }) {
   const projectConfig = readProjectConfiguration(tree, schema.project);
 
   projectConfig.targets.build = {
-    executor: '@nrwl/web:rollup',
+    executor: '@nx/web:rollup',
     outputs: ['{options.outputPath}'],
     options: {
       outputPath: `dist/${projectConfig.root}`,

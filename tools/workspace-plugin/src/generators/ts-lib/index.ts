@@ -1,33 +1,34 @@
+import npmGenerator from '@ns3/nx-npm/src/generators/npm/generator';
 import {
   formatFiles,
   installPackagesTask,
   readProjectConfiguration,
   Tree,
+  updateJson,
   updateProjectConfiguration,
-} from '@nrwl/devkit';
-import { Linter } from '@nrwl/linter';
-import { libraryGenerator } from '@nrwl/react';
-import npmGenerator from '@ns3/nx-npm/src/generators/npm/generator';
-import { addCoreJsTslibAsPeerDeps } from '../../src/utils/add-corejs-tslib-as-peer-deps';
-import { addLicenceFieldToPackageJson } from '../../src/utils/add-licence-field-to-package-json';
+} from '@nx/devkit';
+import { Linter } from '@nx/linter';
+import { libraryGenerator } from '@nx/workspace';
+import { addCoreJsTslibAsPeerDeps } from '../../../../src/utils/add-corejs-tslib-as-peer-deps';
+import { addLicenceFieldToPackageJson } from '../../../../src/utils/add-licence-field-to-package-json';
 import { Schema } from './schema';
 
 export default async function (host: Tree, schema: Schema) {
   await libraryGenerator(host, {
     name: schema.name,
-    style: schema.style,
     tags: schema.tags,
     skipTsConfig: false,
     skipFormat: true,
     unitTestRunner: 'jest',
     linter: Linter.EsLint,
     strict: true,
-    publishable: true,
-    importPath: `@ns3/${schema.name}`,
+    buildable: true,
+    babelJest: true,
   });
   await updateWorkspaceConfig(host, { project: schema.name });
   await npmGenerator(host, { project: schema.name, skipFormat: true, access: 'public' });
   await addLicenceFieldToPackageJson(host, { project: schema.name });
+  await addModuleFieldsToPackageJson(host, { project: schema.name });
   await addCoreJsTslibAsPeerDeps(host, { project: schema.name });
   await formatFiles(host);
 
@@ -39,10 +40,6 @@ export default async function (host: Tree, schema: Schema) {
 function updateWorkspaceConfig(tree: Tree, schema: { project: string }) {
   const projectConfig = readProjectConfiguration(tree, schema.project);
 
-  projectConfig.targets.build.options.external = [
-    ...projectConfig.targets.build.options.external,
-    'tslib',
-  ];
   projectConfig.targets.build.options.assets = [
     ...projectConfig.targets.build.options.assets,
     {
@@ -53,4 +50,23 @@ function updateWorkspaceConfig(tree: Tree, schema: { project: string }) {
   ];
 
   updateProjectConfiguration(tree, schema.project, projectConfig);
+}
+
+export function addModuleFieldsToPackageJson(tree: Tree, schema: { project: string }) {
+  const projectConfig = readProjectConfiguration(tree, schema.project);
+
+  updateJson(tree, projectConfig.targets.build.options.packageJson, (json) => {
+    json.type = 'module';
+    json.main = './src/index.js';
+    json.typings = './src/index.d.ts';
+    json.module = './src/index.js';
+    json.exports = {
+      '.': {
+        types: './src/index.d.ts',
+        import: './src/index.js',
+      },
+    };
+
+    return json;
+  });
 }
