@@ -41,9 +41,9 @@ describe('RequestInterceptor', () => {
 
       return updatedResult;
     };
-    const fetchClient = new FetchClient(
-      interceptFetch([firstInterceptor, secondInterceptor], fetchMock),
-    );
+    const fetchClient = new FetchClient({
+      fetch: interceptFetch([firstInterceptor, secondInterceptor], fetchMock),
+    });
 
     test('call interceptors in the right order', async () => {
       await fetchClient.get('https://example.com/');
@@ -85,9 +85,9 @@ describe('RequestInterceptor', () => {
 
         return result;
       };
-      const extendedClient = new FetchClient(
-        interceptFetch([extendInterceptor], fetchClient.fetch),
-      );
+      const extendedClient = new FetchClient({
+        fetch: interceptFetch([extendInterceptor], fetchClient.fetch),
+      });
 
       await extendedClient.get('https://example.com/');
 
@@ -111,7 +111,9 @@ describe('RequestInterceptor', () => {
 
       return { ...result, withClient: 'works' };
     };
-    const fetchClient = new FetchClient(interceptFetch([interceptorWithFetch], fetchMock));
+    const fetchClient = new FetchClient({
+      fetch: interceptFetch([interceptorWithFetch], fetchMock),
+    });
 
     it('should be able to use fetchClient', async () => {
       const res = await fetchClient.get('https://example.com/');

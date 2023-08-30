@@ -17,7 +17,7 @@ function fetchClientFactory(
         (req, next) =>
           container.get(klass, requesterScope).intercept(req, next),
     );
-    return new FetchClient(interceptFetch(interceptors, base));
+    return new FetchClient({ fetch: interceptFetch(interceptors, base) });
   };
 }
 
