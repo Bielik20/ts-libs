@@ -174,7 +174,7 @@ You can use `interceptFetch` to provide it a `fetch` instance interceptable with
 import { FetchClient, interceptFetch } from '@ns3/fetch-client';
 import { firstInterceptor, secondInterceptor } from './somewhere';
 
-const client = new FetchClient(interceptFetch([firstInterceptor, secondInterceptor]));
+const client = new FetchClient({ fetch: interceptFetch([firstInterceptor, secondInterceptor]) });
 ```
 
 ### With `@ns3/di`
