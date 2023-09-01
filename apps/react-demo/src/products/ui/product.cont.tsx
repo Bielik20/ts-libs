@@ -1,5 +1,4 @@
-import { useDependency } from '@ns3/react-di';
-import { useStreamValue, useUnsubscribe } from '@ns3/react-utils';
+import { useDependency, useStreamValue, useUnsubscribe } from '@ns3/react-utils';
 import { useRouter } from 'next/router';
 import React, { FunctionComponent } from 'react';
 import { Product, Product as ProductModel } from 'react-demo/products/models/product';
