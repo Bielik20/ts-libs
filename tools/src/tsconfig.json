@@ -3,6 +3,8 @@
   "compilerOptions": {
     "outDir": ".",
     "rootDir": ".",
+    "strict": false,
+    "noPropertyAccessFromIndexSignature": false,
     "removeComments": true,
     "sourceMap": false
   },

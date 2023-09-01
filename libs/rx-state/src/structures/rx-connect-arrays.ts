@@ -46,7 +46,7 @@ export class RxConnectArrays<
     return this.connectionsManager.invalidateAll();
   }
 
-  protected updateImpl(key: TKey, updatedItemKeys: Array<TItemKey> | undefined): boolean {
+  protected override updateImpl(key: TKey, updatedItemKeys: Array<TItemKey> | undefined): boolean {
     this.connectionsManager.validate(key);
     return super.updateImpl(key, updatedItemKeys);
   }

@@ -4,7 +4,7 @@ let connection: RxDevtoolsConnection | undefined;
 
 export function getConnection(): RxDevtoolsConnection | undefined {
   if (typeof window === 'undefined') {
-    return;
+    return undefined;
   }
 
   if (!connection) {
