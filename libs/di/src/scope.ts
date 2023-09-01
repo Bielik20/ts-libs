@@ -1,7 +1,7 @@
-export const enum Scope {
-  Global,
-  Local,
-  Transient,
+export enum Scope {
+  Global = 'Global',
+  Local = 'Local',
+  Transient = 'Transient',
 }
 
 /**
