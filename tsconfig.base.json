@@ -25,7 +25,6 @@
     "paths": {
       "@ns3/di": ["libs/di/src/index.ts"],
       "@ns3/fetch-client": ["libs/fetch-client/src/index.ts"],
-      "@ns3/react-di": ["libs/react-di/src/index.ts"],
       "@ns3/react-utils": ["libs/react-utils/src/index.ts"],
       "@ns3/rx-actions": ["libs/rx-actions/src/index.ts"],
       "@ns3/rx-devtools": ["libs/rx-devtools/src/index.ts"],

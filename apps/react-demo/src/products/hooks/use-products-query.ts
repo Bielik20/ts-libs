@@ -1,4 +1,4 @@
-import { useDependency } from '@ns3/react-di';
+import { useDependency } from '@ns3/react-utils';
 import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 import { ProductsQuery } from '../models/products-query';

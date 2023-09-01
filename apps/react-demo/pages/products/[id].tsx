@@ -1,5 +1,4 @@
-import { useDependency } from '@ns3/react-di';
-import { useStream } from '@ns3/react-utils';
+import { useDependency, useStream } from '@ns3/react-utils';
 import React from 'react';
 import { useProductQuery } from 'react-demo/products/hooks/use-product-query';
 import { ProductsStore } from 'react-demo/products/services/products.store';
