@@ -16,7 +16,7 @@ export class RxSet<TKey> extends RxBase<TKey, boolean> {
     return this.set.size;
   }
 
-  keys(): TKey[] {
+  override keys(): TKey[] {
     return Array.from(this.set.keys());
   }
 

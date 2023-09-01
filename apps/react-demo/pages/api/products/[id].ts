@@ -13,7 +13,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 }
 
 async function getProduct(req: NextApiRequest, res: NextApiResponse) {
-  const product = await productsRepository.get(req.query.id as string);
+  const product = await productsRepository.get(req.query['id'] as string);
 
   if (!product) {
     res.status(404).send('Not Found');
@@ -23,13 +23,13 @@ async function getProduct(req: NextApiRequest, res: NextApiResponse) {
 }
 
 async function deleteProduct(req: NextApiRequest, res: NextApiResponse) {
-  await productsRepository.delete(req.query.id as string);
+  await productsRepository.delete(req.query['id'] as string);
 
   return res.status(204).send(null);
 }
 
 async function patchProduct(req: NextApiRequest, res: NextApiResponse) {
-  const patchProduct = await productsRepository.patch(req.query.id as string, req.body);
+  const patchProduct = await productsRepository.patch(req.query['id'] as string, req.body);
 
   return res.send(patchProduct);
 }

@@ -13,7 +13,9 @@ function fetchClientFactory(
 ): Factory<FetchClient> {
   return (container, requesterScope) => {
     const interceptors = interceptorClasses.map(
-      (klass) => (req, next) => container.get(klass, requesterScope).intercept(req, next),
+      (klass): RequestInterceptor =>
+        (req, next) =>
+          container.get(klass, requesterScope).intercept(req, next),
     );
     return new FetchClient(interceptFetch(interceptors, base));
   };

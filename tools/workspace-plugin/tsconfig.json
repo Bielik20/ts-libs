@@ -1,7 +1,9 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "module": "commonjs"
+    "module": "commonjs",
+    "strict": false,
+    "noPropertyAccessFromIndexSignature": false
   },
   "files": [],
   "include": [],

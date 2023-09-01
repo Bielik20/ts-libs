@@ -8,7 +8,7 @@ export default class MyDocument extends Document {
    * `getInitialProps` belongs to `_document` (instead of `_app`),
    * it's compatible with server-side generation (SSG).
    */
-  static async getInitialProps(ctx) {
+  static override async getInitialProps(ctx) {
     // Resolution order
     //
     // On the server:
@@ -49,7 +49,7 @@ export default class MyDocument extends Document {
     };
   }
 
-  render() {
+  override render() {
     return (
       <Html lang="en">
         <Head>

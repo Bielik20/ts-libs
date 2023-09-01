@@ -22,7 +22,7 @@ export class ConnectSubject<T> extends BehaviorSubject<T | undefined> {
     });
   }
 
-  next(value: T | undefined) {
+  override next(value: T | undefined) {
     this.connectionManager.validate();
     super.next(value);
   }

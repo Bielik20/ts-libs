@@ -9,7 +9,10 @@ export function useProductsQuery(): ProductsQuery {
   const router = useRouter();
 
   return useMemo(() => {
-    if (typeof router.query.limit === 'undefined' || typeof router.query.skip === 'undefined') {
+    if (
+      typeof router.query['limit'] === 'undefined' ||
+      typeof router.query['skip'] === 'undefined'
+    ) {
       router.replace({
         pathname: router.pathname,
         query: store.query$.value as any, // There is a problem with NextJS typing
@@ -19,8 +22,8 @@ export function useProductsQuery(): ProductsQuery {
     }
 
     return {
-      limit: +router.query.limit,
-      skip: +router.query.skip,
+      limit: +router.query['limit'],
+      skip: +router.query['skip'],
     };
   }, [router.query, router.isReady]);
 }

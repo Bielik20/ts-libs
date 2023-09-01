@@ -5,6 +5,6 @@ export function useProductQuery(): ProductQuery {
   const router = useRouter();
 
   return {
-    id: router.query.id as string,
+    id: router.query['id'] as string,
   };
 }
