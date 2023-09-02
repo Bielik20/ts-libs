@@ -1,9 +1,15 @@
-import { Class } from '../class';
+import { AbstractClass, Class } from '../class';
 import { InjectableConfig, setInjectableConfig } from './injectable-config';
 import { getDesignParamTypes, hasParamTypes, setParamTypes } from './param-types';
 
+export function Injectable<R>(
+  config: InjectableConfig<R>,
+): <T extends AbstractClass<R>>(target: T) => T;
+export function Injectable<R>(
+  config?: Partial<InjectableConfig<R>>,
+): <T extends Class<R>>(target: T) => T;
 export function Injectable<R>(config: Partial<InjectableConfig<R>> = {}) {
-  return function <T extends Class<R>>(target: T): T {
+  return function <T extends Class<R> | AbstractClass<R>>(target: T): T {
     if (hasParamTypes(target)) {
       throw new Error('Cannot apply @Injectable decorator multiple times.');
     }
@@ -17,13 +23,17 @@ export function Injectable<R>(config: Partial<InjectableConfig<R>> = {}) {
   };
 }
 
-function normalise<T>(config: Partial<InjectableConfig<T>>, target: Class<T>): InjectableConfig<T> {
+function normalise<T>(
+  config: Partial<InjectableConfig<T>>,
+  target: Class<T> | AbstractClass<T>,
+): InjectableConfig<T> {
   if ('useClass' in config || 'useValue' in config || 'useFactory' in config) {
     return config as InjectableConfig<T>;
   }
 
   return {
     ...config,
+    // AbstractClass is required to have useClass | useValue | useFactory, so we can safely cast here
     useClass: target as Class<T>,
   };
 }

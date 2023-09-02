@@ -1,8 +1,9 @@
-import { Class, isClass } from '../class';
+import { AbstractClass, Class, isClass } from '../class';
 import { Factory } from '../factory';
 import { Scope } from '../scope';
 
-export type BindingId<T> = Class<T> | Function | symbol | string;
+// AbstractClass doesn't seem to do anything but Function is necessary, not sure why
+export type BindingId<T> = Class<T> | AbstractClass<T> | Function | symbol | string;
 
 export type BindingConfig<T> =
   | ClassBindingConfig<T>

@@ -12,7 +12,7 @@ export {
   isFactoryConfig,
   isValueConfig,
 } from './binding/binding-config';
-export type { Class } from './class';
+export type { AbstractClass, AbstractConstructor, Class, Constructor } from './class';
 export { assertClass, isClass } from './class';
 export type { ContainerOptions } from './container';
 export { Container } from './container';
