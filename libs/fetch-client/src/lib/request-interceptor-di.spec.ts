@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { Container, Factory, Injectable, Klass } from '@ns3/di';
+import { Class, Container, Factory, Injectable } from '@ns3/di';
 import { Fetch, FetchClient } from './fetch-client';
 import { interceptFetch, RequestHandler, RequestInterceptor } from './request-interceptor';
 
@@ -8,7 +8,7 @@ interface RequestClassInterceptor {
 }
 
 function fetchClientFactory(
-  interceptorClasses: Klass<RequestClassInterceptor>[],
+  interceptorClasses: Class<RequestClassInterceptor>[],
   base?: Fetch,
 ): Factory<FetchClient> {
   return (container, requesterScope) => {
@@ -69,7 +69,9 @@ describe('RequestInterceptorDi', () => {
       }
     }
 
-    @Injectable({ factory: fetchClientFactory([FirstInterceptor, SecondInterceptor], fetchMock) })
+    @Injectable({
+      useFactory: fetchClientFactory([FirstInterceptor, SecondInterceptor], fetchMock),
+    })
     class FetchDiClient extends FetchClient {}
 
     const container = Container.make();
@@ -123,8 +125,8 @@ describe('RequestInterceptorDi', () => {
     }
     const container = Container.make();
     container.provide({
-      bind: FetchDiClient,
-      factory: fetchClientFactory([InterceptorWithFetchClient], fetchMock),
+      token: FetchDiClient,
+      useFactory: fetchClientFactory([InterceptorWithFetchClient], fetchMock),
     });
     const fetchClient = container.get(FetchDiClient);
 

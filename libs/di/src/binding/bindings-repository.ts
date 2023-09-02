@@ -41,9 +41,9 @@ export class BindingsRepository {
 
   save<T>(binding: Binding<T>): void {
     if (binding.config.scope === Scope.Global) {
-      this.global.set(binding.config.bind, binding);
+      this.global.set(binding.config.token, binding);
     } else {
-      this.local.set(binding.config.bind, binding);
+      this.local.set(binding.config.token, binding);
     }
   }
 

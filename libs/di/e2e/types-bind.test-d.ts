@@ -39,11 +39,11 @@ const WRONG_FACTORY = () => WRONG_INSTANCE;
 
 const container = Container.make();
 
-container.provide({ bind: BaseClass, klass: CorrectClass });
-container.provide({ bind: BaseClass, value: CORRECT_INSTANCE });
-container.provide({ bind: BaseClass, factory: CORRECT_FACTORY });
+container.provide({ token: BaseClass, useClass: CorrectClass });
+container.provide({ token: BaseClass, useValue: CORRECT_INSTANCE });
+container.provide({ token: BaseClass, useFactory: CORRECT_FACTORY });
 
-expectError(container.provide({ bind: BaseClass, klass: WrongClass }));
+expectError(container.provide({ token: BaseClass, useClass: WrongClass }));
 // tsd doesn't interpret that line correctly... I don't know why.
-// expectError(container.set({ bind: BaseClass, value: WRONG_INSTANCE }));
-expectError(container.provide({ bind: BaseClass, factory: WRONG_FACTORY }));
+// expectError(container.provide({ bind: BaseClass, toValue: WRONG_INSTANCE }));
+expectError(container.provide({ token: BaseClass, useFactory: WRONG_FACTORY }));

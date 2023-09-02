@@ -231,7 +231,7 @@ import {
   retryInterceptor,
 } from '@ns3/fetch-client';
 
-@Injectable({ toValue: fetch })
+@Injectable({ useValue: fetch })
 export abstract class IFetch {}
 export interface IFetch extends Fetch {}
 

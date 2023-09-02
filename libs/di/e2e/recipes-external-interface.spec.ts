@@ -14,7 +14,7 @@ function ExternalInterfaceFactory(): ExternalInterface {
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface AppClass extends ExternalInterface {}
 
-@Injectable({ factory: () => ExternalInterfaceFactory() })
+@Injectable({ useFactory: () => ExternalInterfaceFactory() })
 class AppClass {}
 
 /**

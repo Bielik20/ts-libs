@@ -1,8 +1,8 @@
 import { Binding } from './binding/binding';
 import { BindingConfig, BindingId } from './binding/binding-config';
 import { BindingsRepository } from './binding/bindings-repository';
+import { isClass } from './class';
 import { getInjectableConfig, InjectableConfig } from './decorators/injectable-config';
-import { isKlass } from './klass';
 import { assertScopeBoundary, Scope } from './scope';
 
 export interface ContainerOptions {
@@ -35,7 +35,7 @@ export class Container {
     private readonly options: Required<ContainerOptions>,
     private readonly repository: BindingsRepository,
   ) {
-    this.provide({ bind: Container, value: this, scope: Scope.Local });
+    this.provide({ token: Container, useValue: this, scope: Scope.Local });
   }
 
   clone(): Container {
@@ -76,7 +76,7 @@ export class Container {
   private makeBinding<T>(bindingId: BindingId<T>): Binding<T> {
     const config = this.ensureConfig(bindingId);
     const newBinding = Binding.make({
-      bind: bindingId,
+      token: bindingId,
       ...config,
     });
 
@@ -86,7 +86,7 @@ export class Container {
   }
 
   private ensureConfig<T>(bindingId: BindingId<T>): Required<InjectableConfig<T>> {
-    const configFlaky = isKlass(bindingId) ? getInjectableConfig<T>(bindingId) : undefined;
+    const configFlaky = isClass(bindingId) ? getInjectableConfig<T>(bindingId) : undefined;
     if (!configFlaky) {
       throw new Error(`${bindingId.toString()} is not bound to anything.`);
     }

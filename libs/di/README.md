@@ -20,8 +20,6 @@ It was inspired by:
 - [InversifyJS](https://github.com/inversify/InversifyJS) - it is too big, weights almost 10 times more. I don't need all the features it offers.
 - [@wikia/dependency-injection](https://github.com/Wikia/dependency-injection-js) - from the time I worked at Fandom :)
 
-
-
 ## 📦 Installation
 
 You can get the latest release and the type definitions using your preferred package manager:
@@ -31,6 +29,7 @@ You can get the latest release and the type definitions using your preferred pac
 > yarn add @ns3/di reflect-metadata
 > pnpm add @ns3/di reflect-metadata
 ```
+
 > ❕**Hint!** If you want to use a more type-safe version of reflect-metadata, try [`@abraham/reflection`](https://www.npmjs.com/package/@abraham/reflection)
 
 ### Configuration
@@ -109,12 +108,11 @@ class PersonDAOImpl implements IPersonDAO {
 }
 
 // NOT SUPPORTED
-container.provide({ bind: IPersonDAO, klass: PersonDAOImpl });
+container.provide({ token: IPersonDAO, useClass: PersonDAOImpl });
 
 // SUPPORTED
-container.provide({ bind: PersonDAO, klass: PersonDAOImpl });
+container.provide({ token: PersonDAO, useClass: PersonDAOImpl });
 ```
-
 
 ## Restrictions
 

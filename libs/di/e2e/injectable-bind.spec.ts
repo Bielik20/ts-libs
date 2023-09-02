@@ -1,11 +1,11 @@
 import 'reflect-metadata';
 import { Container, Injectable } from '@ns3/di';
 
-describe('Injectable - bind', () => {
+describe('Injectable - binding', () => {
   describe('factory', () => {
     const TEST_VALUE = {};
 
-    @Injectable({ factory: () => TEST_VALUE })
+    @Injectable({ useFactory: () => TEST_VALUE })
     class TestClass {}
 
     test('create instance', () => {
@@ -19,7 +19,7 @@ describe('Injectable - bind', () => {
   describe('value', () => {
     const TEST_VALUE = {};
 
-    @Injectable({ value: TEST_VALUE })
+    @Injectable({ useValue: TEST_VALUE })
     class TestClass {}
 
     test('create instance', () => {
@@ -30,11 +30,11 @@ describe('Injectable - bind', () => {
     });
   });
 
-  describe('klass', () => {
+  describe('Class', () => {
     @Injectable()
     class TestFooClass {}
 
-    @Injectable({ klass: TestFooClass })
+    @Injectable({ useClass: TestFooClass })
     class TestBarClass {}
 
     test('create instance', () => {

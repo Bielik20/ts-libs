@@ -1,4 +1,4 @@
-import { Factory, Klass } from '@ns3/di';
+import { Class, Factory } from '@ns3/di';
 import { Fetch, FetchClient, interceptFetch, RequestInterceptor } from '@ns3/fetch-client';
 
 export interface RequestClassInterceptor {
@@ -6,7 +6,7 @@ export interface RequestClassInterceptor {
 }
 
 export function fetchClientFactory(
-  interceptorClasses: Klass<RequestClassInterceptor>[],
+  interceptorClasses: Class<RequestClassInterceptor>[],
   base?: Fetch,
 ): Factory<FetchClient> {
   return (container, requesterScope) => {
