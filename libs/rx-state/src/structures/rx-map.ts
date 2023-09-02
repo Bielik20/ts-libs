@@ -3,8 +3,8 @@ import { Change, makeChange } from '../models/change';
 import { Debuggable } from '../models/debuggable';
 import { RxBase } from './rx-base';
 
-export type RxMapKey<Type> = Type extends RxMap<infer X, unknown> ? X : never;
-export type RxMapValue<Type> = Type extends RxMap<unknown, infer X> ? X : never;
+export type RxMapKey<Type> = Type extends RxMap<infer X, any> ? X : never;
+export type RxMapValue<Type> = Type extends RxMap<any, infer X> ? X : never;
 
 export class RxMap<TKey, TValue> extends RxBase<TKey, TValue | undefined> implements Debuggable {
   protected readonly change$$ = new Subject<Change<TKey, TValue>>();

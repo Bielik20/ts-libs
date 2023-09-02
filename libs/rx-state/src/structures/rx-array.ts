@@ -4,7 +4,7 @@ import { RxArrays, RxArraysOptions } from './rx-arrays';
 import { RxMap, RxMapKey, RxMapValue } from './rx-map';
 
 export class RxArray<
-  TItemsMap extends RxMap<unknown, unknown>,
+  TItemsMap extends RxMap<any, any>,
   TItemKey = RxMapKey<TItemsMap>,
   TItemValue = RxMapValue<TItemsMap>,
 > implements Debuggable

@@ -10,7 +10,7 @@ type RxConnectArrayOptions<TMapKey, TMapValue> = RxArraysOptions<TMapKey, TMapVa
   ConnectionHooks;
 
 export class RxConnectArray<
-  TItemsMap extends RxMap<unknown, unknown>,
+  TItemsMap extends RxMap<any, any>,
   TItemKey = RxMapKey<TItemsMap>,
   TItemValue = RxMapValue<TItemsMap>,
 > implements Debuggable
