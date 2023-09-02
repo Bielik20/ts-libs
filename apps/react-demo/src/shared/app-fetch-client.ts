@@ -3,5 +3,5 @@ import { FetchClient } from '@ns3/fetch-client';
 import { fetchClientFactory } from './app-fetch-client-utils';
 import { DelayInterceptor } from './delay.interceptor';
 
-@Injectable({ factory: fetchClientFactory([DelayInterceptor]) })
+@Injectable({ useFactory: fetchClientFactory([DelayInterceptor]) })
 export class AppFetchClient extends FetchClient {}

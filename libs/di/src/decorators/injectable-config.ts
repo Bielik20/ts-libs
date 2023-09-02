@@ -1,29 +1,29 @@
+import { Class } from '../class';
 import { Factory } from '../factory';
-import { Klass } from '../klass';
 import { SafeReflect } from '../safe-reflect';
 import { Scope } from '../scope';
 
 export type InjectableConfig<T> =
-  | KlassInjectableConfig<T>
+  | ClassInjectableConfig<T>
   | ValueInjectableConfig<T>
   | FactoryInjectableConfig<T>;
 
-export type KlassInjectableConfig<T> = {
+export type ClassInjectableConfig<T> = {
   autobind?: boolean;
   scope?: Scope;
-  klass: Klass<T>;
+  useClass: Class<T>;
 };
 
 export type ValueInjectableConfig<T> = {
   autobind?: boolean;
   scope?: Scope;
-  value: T;
+  useValue: T;
 };
 
 export type FactoryInjectableConfig<T> = {
   autobind?: boolean;
   scope?: Scope;
-  factory: Factory<T>;
+  useFactory: Factory<T>;
 };
 
 const KEY = '@ns3/di:InjectableConfig';

@@ -9,7 +9,7 @@ const TEST_VALUE = {};
 describe('Container - unprovide', () => {
   test('global', () => {
     const container = Container.make();
-    container.provide({ bind: TestClass, value: TEST_VALUE, scope: Scope.Global });
+    container.provide({ token: TestClass, useValue: TEST_VALUE, scope: Scope.Global });
 
     const instance1 = container.get(TestClass);
     expect(instance1).toBe(TEST_VALUE);
@@ -27,7 +27,7 @@ describe('Container - unprovide', () => {
 
   test('local', () => {
     const container = Container.make();
-    container.provide({ bind: TestClass, value: TEST_VALUE, scope: Scope.Local });
+    container.provide({ token: TestClass, useValue: TEST_VALUE, scope: Scope.Local });
 
     const instance1 = container.get(TestClass);
     expect(instance1).toBe(TEST_VALUE);
@@ -45,7 +45,7 @@ describe('Container - unprovide', () => {
 
   test('all', () => {
     const container = Container.make();
-    container.provide({ bind: TestClass, value: TEST_VALUE, scope: Scope.Local });
+    container.provide({ token: TestClass, useValue: TEST_VALUE, scope: Scope.Local });
 
     const instance1 = container.get(TestClass);
     expect(instance1).toBe(TEST_VALUE);

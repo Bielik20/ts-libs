@@ -12,7 +12,7 @@ const TEST_VALUE = {};
 describe('Container - clear', () => {
   test('global', () => {
     const container = Container.make();
-    container.provide({ bind: TestGlobalClass, value: TEST_VALUE, scope: Scope.Global });
+    container.provide({ token: TestGlobalClass, useValue: TEST_VALUE, scope: Scope.Global });
     const global1 = container.get(TestGlobalClass);
     const local1 = container.get(TestLocalClass);
 
@@ -29,7 +29,7 @@ describe('Container - clear', () => {
 
   test('local', () => {
     const container = Container.make();
-    container.provide({ bind: TestLocalClass, value: TEST_VALUE, scope: Scope.Local });
+    container.provide({ token: TestLocalClass, useValue: TEST_VALUE, scope: Scope.Local });
     const global1 = container.get(TestGlobalClass);
     const local1 = container.get(TestLocalClass);
 
@@ -46,7 +46,7 @@ describe('Container - clear', () => {
 
   test('all', () => {
     const container = Container.make();
-    container.provide({ bind: TestLocalClass, value: TEST_VALUE, scope: Scope.Local });
+    container.provide({ token: TestLocalClass, useValue: TEST_VALUE, scope: Scope.Local });
     const global1 = container.get(TestGlobalClass);
     const local1 = container.get(TestLocalClass);
 

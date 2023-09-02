@@ -1,29 +1,29 @@
+import { Class, isClass } from '../class';
 import { Factory } from '../factory';
-import { isKlass, Klass } from '../klass';
 import { Scope } from '../scope';
 
-export type BindingId<T> = Klass<T> | Function | symbol | string;
+export type BindingId<T> = Class<T> | Function | symbol | string;
 
 export type BindingConfig<T> =
-  | KlassBindingConfig<T>
+  | ClassBindingConfig<T>
   | ValueBindingConfig<T>
   | FactoryBindingConfig<T>;
 
-export type KlassBindingConfig<T> = {
-  bind: BindingId<T>;
-  klass: Klass<T>;
+export type ClassBindingConfig<T> = {
+  token: BindingId<T>;
+  useClass: Class<T>;
   scope?: Scope;
 };
 
 export type ValueBindingConfig<T> = {
-  bind: BindingId<T>;
-  value: T;
+  token: BindingId<T>;
+  useValue: T;
   scope?: Scope;
 };
 
 export type FactoryBindingConfig<T> = {
-  bind: BindingId<T>;
-  factory: Factory<T>;
+  token: BindingId<T>;
+  useFactory: Factory<T>;
   scope?: Scope;
 };
 
@@ -38,17 +38,17 @@ export function assertBindingId<T = any>(input: any): asserts input is BindingId
 export function isBindingId<T = any>(input: any): input is BindingId<T> {
   const type = typeof input;
 
-  return isKlass(input) || type === 'symbol' || type === 'string';
+  return isClass(input) || type === 'symbol' || type === 'string';
 }
 
-export function isKlassConfig<T>(config: BindingConfig<T>): config is KlassBindingConfig<T> {
-  return 'klass' in config;
+export function isClassConfig<T>(config: BindingConfig<T>): config is ClassBindingConfig<T> {
+  return 'useClass' in config;
 }
 
 export function isValueConfig<T>(config: BindingConfig<T>): config is ValueBindingConfig<T> {
-  return 'value' in config;
+  return 'useValue' in config;
 }
 
 export function isFactoryConfig<T>(config: BindingConfig<T>): config is FactoryBindingConfig<T> {
-  return 'factory' in config;
+  return 'useFactory' in config;
 }

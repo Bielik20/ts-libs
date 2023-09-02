@@ -12,7 +12,7 @@ describe('Container - clone', () => {
     const containerA1 = Container.make();
     const containerB1 = containerA1.clone();
 
-    containerB1.provide({ bind: Foo, klass: Bar });
+    containerB1.provide({ token: Foo, useClass: Bar });
 
     const containerA2 = containerA1.clone();
     const containerB2 = containerB1.clone();
@@ -34,7 +34,7 @@ describe('Container - clone', () => {
     const container1 = Container.make();
     const container2 = container1.clone();
 
-    container2.provide({ bind: Foo, klass: Foo, scope: Scope.Global });
+    container2.provide({ token: Foo, useClass: Foo, scope: Scope.Global });
 
     const instance1 = container1.get(Foo);
     const instance2 = container2.get(Foo);

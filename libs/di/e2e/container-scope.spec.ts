@@ -7,8 +7,8 @@ describe('Container - scope', () => {
 
   describe('Global', () => {
     const config: BindingConfig<TestClass> = {
-      bind: TestClass,
-      klass: TestClass,
+      token: TestClass,
+      useClass: TestClass,
       scope: Scope.Global,
     };
 
@@ -28,8 +28,8 @@ describe('Container - scope', () => {
 
   describe('Local', () => {
     const config: BindingConfig<TestClass> = {
-      bind: TestClass,
-      klass: TestClass,
+      token: TestClass,
+      useClass: TestClass,
       scope: Scope.Local,
     };
 
@@ -60,8 +60,8 @@ describe('Container - scope', () => {
 
   describe('Transient', () => {
     const config: BindingConfig<TestClass> = {
-      bind: TestClass,
-      klass: TestClass,
+      token: TestClass,
+      useClass: TestClass,
       scope: Scope.Transient,
     };
 

@@ -1,7 +1,7 @@
-import { Klass } from '../klass';
+import { Class } from '../class';
 import { SafeReflect } from '../safe-reflect';
 
-export type ParamTypes = Klass<any>[];
+export type ParamTypes = Class<any>[];
 
 /**
  * used to access design time types
