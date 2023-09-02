@@ -42,6 +42,9 @@ export function action(factory: () => void): Action<undefined, undefined>;
 export function action<O extends ObservableInput<any>>(
   factory: () => O,
 ): Action<undefined, ObservedValueOf<O>>;
+export function action<I, O extends ObservableInput<any>>(
+  factory: (input: I) => O,
+): Action<I, ObservedValueOf<O>>;
 export function action<I>(factory: (input: I) => void): Action<I, undefined>;
 export function action<I, O extends ObservableInput<any>>(
   factory: (input: I) => O = () => undefined as any,

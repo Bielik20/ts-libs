@@ -14,7 +14,7 @@ type RxConnectArraysOptions<TKey, TMapKey, TMapValue> = RxArraysOptions<TMapKey,
 
 export class RxConnectArrays<
   TKey,
-  TItemsMap extends RxMap<unknown, unknown>,
+  TItemsMap extends RxMap<any, any>,
   TItemKey = RxMapKey<TItemsMap>,
   TItemValue = RxMapValue<TItemsMap>,
 > extends RxArrays<TKey, TItemsMap, TItemKey, TItemValue> {

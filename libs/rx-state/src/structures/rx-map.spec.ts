@@ -11,7 +11,7 @@ describe('RxMap', () => {
   it('should start with undefined values', () => {
     const aValues: string[] = [];
 
-    rxMap.get$('a').subscribe((v) => aValues.push(v));
+    rxMap.get$('a').subscribe((v) => aValues.push(v!));
 
     expect(aValues).toEqual([undefined]);
   });
@@ -20,7 +20,7 @@ describe('RxMap', () => {
     it('should should only emit on change value', () => {
       const aValues: string[] = [];
 
-      rxMap.get$('a').subscribe((v) => aValues.push(v));
+      rxMap.get$('a').subscribe((v) => aValues.push(v!));
 
       rxMap.set('a', 'foo');
       rxMap.delete('a');
@@ -47,11 +47,11 @@ describe('RxMap', () => {
       const values: string[][] = [];
       const entries: [string, string][][] = [];
 
-      rxMap.get$('a').subscribe((v) => aValues.push(v));
-      rxMap.get$('b').subscribe((v) => bValues.push(v));
+      rxMap.get$('a').subscribe((v) => aValues.push(v!));
+      rxMap.get$('b').subscribe((v) => bValues.push(v!));
       rxMap.keys$().subscribe((v) => keys.push(v));
-      rxMap.values$().subscribe((v) => values.push(v));
-      rxMap.entries$().subscribe((v) => entries.push(v));
+      rxMap.values$().subscribe((v) => values.push(v as string[]));
+      rxMap.entries$().subscribe((v) => entries.push(v as [string, string][]));
 
       rxMap.set('a', 'foo');
 
@@ -101,10 +101,10 @@ describe('RxMap', () => {
 
       rxMap.set('a', 'foo');
 
-      rxMap.get$('a').subscribe((v) => aValues.push(v));
+      rxMap.get$('a').subscribe((v) => aValues.push(v!));
       rxMap.keys$().subscribe((v) => keys.push(v));
-      rxMap.values$().subscribe((v) => values.push(v));
-      rxMap.entries$().subscribe((v) => entries.push(v));
+      rxMap.values$().subscribe((v) => values.push(v as string[]));
+      rxMap.entries$().subscribe((v) => entries.push(v as [string, string][]));
 
       expect(aValues).toEqual(['foo']);
       expect(keys).toEqual([['a']]);

@@ -12,7 +12,7 @@ export interface RxArraysOptions<TMapKey, TMapValue> {
 
 export class RxArrays<
     TKey,
-    TItemsMap extends RxMap<unknown, unknown>,
+    TItemsMap extends RxMap<any, any>,
     TItemKey = RxMapKey<TItemsMap>,
     TItemValue = RxMapValue<TItemsMap>,
   >

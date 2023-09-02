@@ -21,7 +21,7 @@ describe('RxArrays', () => {
   it('should start with undefined values', () => {
     const aValues: Item[][] = [];
 
-    rxArrays.get$('default').subscribe((v) => aValues.push(v));
+    rxArrays.get$('default').subscribe((v) => aValues.push(v!));
 
     expect(aValues).toEqual([undefined]);
   });
@@ -30,7 +30,7 @@ describe('RxArrays', () => {
     it('should only emit on change value', () => {
       const aValues: Item[][] = [];
 
-      rxArrays.get$('default').subscribe((v) => aValues.push(v));
+      rxArrays.get$('default').subscribe((v) => aValues.push(v!));
       rxArrays.set('default', [{ id: 'a', value: 1 }]);
       rxArrays.delete('default');
       rxArrays.set('default', [{ id: 'a', value: 2 }]);
@@ -60,7 +60,7 @@ describe('RxArrays', () => {
       const aValues: Item[][] = [];
 
       rxArrays.set('default', [{ id: 'start', value: 1 }]);
-      rxArrays.get$('default').subscribe((v) => aValues.push(v));
+      rxArrays.get$('default').subscribe((v) => aValues.push(v!));
       rxArrays.modify('default', (current) => [
         ...current,
         { id: 'a', value: 2 },
@@ -83,7 +83,7 @@ describe('RxArrays', () => {
       const aValues: Item[][] = [];
 
       rxArrays.set('default', [{ id: 'start', value: 1 }]);
-      rxArrays.get$('default').subscribe((v) => aValues.push(v));
+      rxArrays.get$('default').subscribe((v) => aValues.push(v!));
       rxArrays.modify('default', (current) => [
         { id: 'a', value: 2 },
         { id: 'b', value: 2 },
@@ -110,7 +110,7 @@ describe('RxArrays', () => {
         { id: 'b', value: 2 },
         { id: 'c', value: 3 },
       ]);
-      rxArrays.get$('default').subscribe((v) => aValues.push(v));
+      rxArrays.get$('default').subscribe((v) => aValues.push(v!));
       rxArrays.modify('default', (current) =>
         current.filter((item) => !['a', 'c'].includes(item.id)),
       );
@@ -133,8 +133,8 @@ describe('RxArrays', () => {
 
       rxArrays.set('arrayA', [{ id: 'a', value: 1 }]);
       rxArrays.set('arrayB', [{ id: 'b', value: 1 }]);
-      rxArrays.get$('arrayA').subscribe((v) => aValues.push(v));
-      rxArrays.get$('arrayB').subscribe((v) => bValues.push(v));
+      rxArrays.get$('arrayA').subscribe((v) => aValues.push(v!));
+      rxArrays.get$('arrayB').subscribe((v) => bValues.push(v!));
 
       rxArrays.clear();
 
@@ -148,8 +148,8 @@ describe('RxArrays', () => {
       const aValues: Item[][] = [];
       const bValues: Item[][] = [];
 
-      rxArrays.get$('arrayA').subscribe((v) => aValues.push(v));
-      rxArrays.get$('arrayB').subscribe((v) => bValues.push(v));
+      rxArrays.get$('arrayA').subscribe((v) => aValues.push(v!));
+      rxArrays.get$('arrayB').subscribe((v) => bValues.push(v!));
       rxArrays.set('arrayA', [{ id: 'a', value: 1 }]);
       rxArrays.set('arrayB', [{ id: 'a', value: 2 }]);
 
@@ -166,7 +166,7 @@ describe('RxArrays', () => {
         { id: 'a', value: 1 },
         { id: 'b', value: 2 },
       ]);
-      rxArrays.get$('default').subscribe((v) => aValues.push(v));
+      rxArrays.get$('default').subscribe((v) => aValues.push(v!));
       itemsMap.set('a', { id: 'a', value: 10 });
       itemsMap.delete('b');
 
