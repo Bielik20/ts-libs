@@ -23,7 +23,7 @@ import { assertOk, toJson } from '@ns3/fetch-client';
 fetch('https://google.com').then(assertOk);
 
 // Ensures status ok and returns parsed body Promise<any>
-fetch('https://example-api.com').then(toJson);
+fetch('https://example-api.com').then(toJson());
 ```
 
 In case `response.ok !== true` those helpers will throw `FetchError` that you can type check against:
@@ -138,6 +138,41 @@ The call order of `extendedFetch` would be:
 - `first res`
 - `extendInterceptor res`
 
+### Built-in interceptors
+
+Library offers some built-in interceptors to address common use cases.
+
+#### Timeout
+
+To add timeout to a fetch call you can use `timeoutInterceptor`:
+
+```ts
+import { interceptFetch, timeoutInterceptor } from '@ns3/fetch-client';
+
+const interceptableFetch1 = interceptFetch([timeoutInterceptor()]); // default 5000ms
+const interceptableFetch2 = interceptFetch([timeoutInterceptor({ timeout: 1000 })]);
+```
+
+It will return response with status `408` if timeout is reached.
+
+#### Retry
+
+To add retry to a fetch call you can use `retryInterceptor`:
+
+```ts
+import { interceptFetch, retryInterceptor } from '@ns3/fetch-client';
+
+// default 2 retries (3 calls in total) with scalling duration 1500ms, exclude 4xx responses
+const interceptableFetch1 = interceptFetch([retryInterceptor()]);
+const interceptableFetch2 = interceptFetch([
+  retryInterceptor({
+    maxRetryAttempts: 3, // 4 calls in total
+    scalingDuration: 1000, // retries will be delayed respectively by [1000, 2000, 3000]
+    excludePredicate: (res) => response.status < 500, // wont retry 4xx responses
+  }),
+]);
+```
+
 ## FetchClient
 
 A light weight `FetchClient`. It was inspired by [Angular's HttpClient](https://angular.io/guide/http) and [axios](https://axios-http.com/docs/intro).
@@ -147,6 +182,8 @@ It features:
 - An object-oriented, [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) based API.
 - Request transformation (`JSON.stringify` + `'Content-Type': 'application/json'` header).
 - Response transformation via `toJson` utility function.
+- `baseUrl` support.
+- `headers` support.
 - Interceptors via `interceptFetch`.
 
 ### Base usage
@@ -154,13 +191,16 @@ It features:
 ```ts
 import { FetchClient, toJson } from '@ns3/fetch-client';
 
-const client = new FetchClient();
+const client = new FetchClient({
+  baseUrl: 'https://example-api.com',
+  headers: { 'x-api-key': '123' },
+});
 
-client.get('https://example-api.com').then(console.log);
+client.get('/retrieve').then(console.log);
 
 // Body is `JSON.stringify`
 // 'Content-Type': 'application/json' header is added
-client.post('https://example-api.com', { foo: 'bar' }).then(toJson).then(console.log);
+client.post('/upsert', { foo: 'bar' }).then(toJson()).then(console.log);
 // Response is transformed using toJson function
 ```
 
@@ -183,26 +223,27 @@ For those using [@ns3/di](https://www.npmjs.com/package/@ns3/di) this is an exam
 
 ```tsx
 import { Container, Injectable } from '@ns3/di';
-import { FetchClient, interceptFetch, RequestHandler } from '@ns3/fetch-client';
+import {
+  Fetch,
+  FetchClient,
+  interceptFetch,
+  RequestHandler,
+  retryInterceptor,
+} from '@ns3/fetch-client';
+
+@Injectable({ toValue: fetch })
+export abstract class IFetch {}
+export interface IFetch extends Fetch {}
 
 @Injectable()
-export class DelayInterceptor {
-  private readonly delay = 300;
-
-  async intercept(req: Request, next: RequestHandler): Promise<Response> {
-    await new Promise((res) => setTimeout(res, this.delay));
-
-    return next(req);
-  }
-}
-
-@Injectable()
-export class FetchDiClient extends FetchClient {
-  constructor(delayInterceptor: DelayInterceptor) {
-    super(interceptFetch([(req, next) => delayInterceptor.intercept(req, next)]));
+export class AppFetchClient extends FetchClient {
+  constructor(_fetch: IFetch) {
+    super(interceptFetch([retryInterceptor()], _fetch));
   }
 }
 
 const container = Container.make();
-const client = container.get(FetchDiClient);
+const client = container.get(AppFetchClient);
 ```
+
+This way you can easily mock `IFetch` in your tests while still maintain convenient default `Fetch` value through `IFetch` symbol.
