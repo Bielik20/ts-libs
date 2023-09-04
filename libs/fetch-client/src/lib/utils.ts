@@ -12,10 +12,12 @@ export async function assertOk(response: Response): Promise<void> {
   }
 }
 
-export async function toJson(response: Response): Promise<any> {
-  await assertOk(response);
+export function toJson<T = any>(): (response: Response) => Promise<T> {
+  return async (response) => {
+    await assertOk(response);
 
-  return response.json();
+    return response.json();
+  };
 }
 
 export function combineUrls(baseURL: string, relativeURL: string): string {

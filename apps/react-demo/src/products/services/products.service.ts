@@ -11,7 +11,7 @@ export class ProductsService {
   constructor(private fetchClient: AppFetchClient) {}
 
   get(id: string): Promise<Product> {
-    return this.fetchClient.get(`${this.url}/${id}`).then(toJson);
+    return this.fetchClient.get(`${this.url}/${id}`).then(toJson<Product>());
   }
 
   delete(id: string): Promise<void> {
@@ -19,16 +19,16 @@ export class ProductsService {
   }
 
   create(value: Omit<Product, 'id'>): Promise<Product> {
-    return this.fetchClient.post(this.url, value).then(toJson);
+    return this.fetchClient.post(this.url, value).then(toJson<Product>());
   }
 
   patch(id: string, value: Partial<Product>): Promise<Product> {
-    return this.fetchClient.patch(`${this.url}/${id}`, value).then(toJson);
+    return this.fetchClient.patch(`${this.url}/${id}`, value).then(toJson<Product>());
   }
 
   query(query: ProductsQuery): Promise<Product[]> {
     const url = `${this.url}?limit=${query.limit}&skip=${query.skip}`;
 
-    return this.fetchClient.get(url).then(toJson);
+    return this.fetchClient.get(url).then(toJson<Product[]>());
   }
 }
