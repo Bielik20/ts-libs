@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { Container, Injectable } from '@ns3/di';
+import { binding, Container, Injectable } from '@ns3/di';
 import { expectError } from 'tsd';
 
 class BaseClass {
@@ -49,7 +49,9 @@ container.provide({ token: AbstractClass, useClass: CorrectClass });
 container.provide({ token: BaseClass, useClass: CorrectClass });
 container.provide({ token: BaseClass, useValue: CORRECT_INSTANCE });
 container.provide({ token: BaseClass, useFactory: CORRECT_FACTORY });
+binding({ token: BaseClass, useClass: CorrectClass });
 
+expectError(binding({ token: AbstractClass, useClass: BaseClass }));
 expectError(container.provide({ token: AbstractClass, useClass: BaseClass }));
 expectError(container.provide({ token: AbstractClass, useClass: WrongClass }));
 expectError(container.provide({ token: BaseClass, useClass: AbstractClass }));

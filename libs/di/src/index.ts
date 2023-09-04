@@ -7,6 +7,7 @@ export type {
 } from './binding/binding-config';
 export {
   assertBindingId,
+  binding,
   isBindingId,
   isClassConfig,
   isFactoryConfig,

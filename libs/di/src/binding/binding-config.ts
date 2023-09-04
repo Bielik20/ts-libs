@@ -53,3 +53,7 @@ export function isValueConfig<T>(config: BindingConfig<T>): config is ValueBindi
 export function isFactoryConfig<T>(config: BindingConfig<T>): config is FactoryBindingConfig<T> {
   return 'useFactory' in config;
 }
+
+export function binding<T>(config: BindingConfig<T>): BindingConfig<T> {
+  return config;
+}
