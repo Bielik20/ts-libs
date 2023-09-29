@@ -1,14 +1,14 @@
 export type {
   BindingConfig,
-  BindingId,
+  BindingToken,
   ClassBindingConfig,
   FactoryBindingConfig,
   ValueBindingConfig,
 } from './binding/binding-config';
 export {
-  assertBindingId,
+  assertBindingToken,
   binding,
-  isBindingId,
+  isBindingToken,
   isClassConfig,
   isFactoryConfig,
   isValueConfig,

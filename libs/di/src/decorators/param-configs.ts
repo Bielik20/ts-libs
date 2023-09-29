@@ -8,7 +8,7 @@ export function getParamConfigs(target: Object): ParamConfigs {
   const paramConfigsDict = getParamConfigsDict(target) || {};
 
   return paramTypes.map((type, index) => ({
-    id: paramConfigsDict[index]?.id || type,
+    token: paramConfigsDict[index]?.token || type,
     optional: paramConfigsDict[index]?.optional === true,
   }));
 }

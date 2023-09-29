@@ -3,7 +3,7 @@ import { Factory } from '../factory';
 import { Scope } from '../scope';
 
 // AbstractClass doesn't seem to do anything but Function is necessary, not sure why
-export type BindingId<T> = Class<T> | AbstractClass<T> | Function | symbol | string;
+export type BindingToken<T> = Class<T> | AbstractClass<T> | Function | symbol | string;
 
 export type BindingConfig<T> =
   | ClassBindingConfig<T>
@@ -11,32 +11,32 @@ export type BindingConfig<T> =
   | FactoryBindingConfig<T>;
 
 export type ClassBindingConfig<T> = {
-  token: BindingId<T>;
+  token: BindingToken<T>;
   useClass: Class<T>;
   scope?: Scope;
 };
 
 export type ValueBindingConfig<T> = {
-  token: BindingId<T>;
+  token: BindingToken<T>;
   useValue: T;
   scope?: Scope;
 };
 
 export type FactoryBindingConfig<T> = {
-  token: BindingId<T>;
+  token: BindingToken<T>;
   useFactory: Factory<T>;
   scope?: Scope;
 };
 
-export function assertBindingId<T = any>(input: any): asserts input is BindingId<T> {
-  if (!isBindingId(input)) {
+export function assertBindingToken<T = any>(input: any): asserts input is BindingToken<T> {
+  if (!isBindingToken(input)) {
     throw new TypeError(
       'Invalid type requested to IoC container. TypeKey must be Class, symbol or string.',
     );
   }
 }
 
-export function isBindingId<T = any>(input: any): input is BindingId<T> {
+export function isBindingToken<T = any>(input: any): input is BindingToken<T> {
   const type = typeof input;
 
   return isClass(input) || type === 'symbol' || type === 'string';

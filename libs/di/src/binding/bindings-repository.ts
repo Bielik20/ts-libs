@@ -1,22 +1,22 @@
 import { Scope } from '../scope';
 import { Binding } from './binding';
-import { BindingId } from './binding-config';
+import { BindingToken } from './binding-config';
 
 export class BindingsRepository {
   static make(): BindingsRepository {
     return new BindingsRepository(
-      new Map<BindingId<any>, Binding<any>>(),
-      new Map<BindingId<any>, Binding<any>>(),
+      new Map<BindingToken<any>, Binding<any>>(),
+      new Map<BindingToken<any>, Binding<any>>(),
     );
   }
 
   private constructor(
-    private readonly global: Map<BindingId<any>, Binding<any>>,
-    private readonly local: Map<BindingId<any>, Binding<any>>,
+    private readonly global: Map<BindingToken<any>, Binding<any>>,
+    private readonly local: Map<BindingToken<any>, Binding<any>>,
   ) {}
 
   clone(): BindingsRepository {
-    const local = new Map<BindingId<any>, Binding<any>>();
+    const local = new Map<BindingToken<any>, Binding<any>>();
 
     this.local.forEach((value, key) => {
       local.set(key, value.clone());
@@ -25,13 +25,13 @@ export class BindingsRepository {
     return new BindingsRepository(this.global, local);
   }
 
-  get<T>(id: BindingId<T>): Binding<T> | undefined {
-    const localBinding = this.local.get(id);
+  get<T>(token: BindingToken<T>): Binding<T> | undefined {
+    const localBinding = this.local.get(token);
     if (localBinding) {
       return localBinding;
     }
 
-    const rootBinding = this.global.get(id);
+    const rootBinding = this.global.get(token);
     if (rootBinding && rootBinding.config.scope === Scope.Global) {
       return rootBinding;
     }
@@ -47,12 +47,12 @@ export class BindingsRepository {
     }
   }
 
-  deleteLocal<T>(id: BindingId<T>): void {
-    this.local.delete(id);
+  deleteLocal<T>(token: BindingToken<T>): void {
+    this.local.delete(token);
   }
 
-  deleteGlobal<T>(id: BindingId<T>): void {
-    this.global.delete(id);
+  deleteGlobal<T>(token: BindingToken<T>): void {
+    this.global.delete(token);
   }
 
   clearLocal() {

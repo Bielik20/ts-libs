@@ -29,7 +29,7 @@ function makeClassFactory<T>(config: ClassBindingConfig<T>): Factory<T> {
     return (container: Container, requesterScope: Scope) => {
       const params = paramConfigs.map((paramConfig) => {
         try {
-          return container.get(paramConfig.id, requesterScope);
+          return container.get(paramConfig.token, requesterScope);
         } catch (e) {
           if (paramConfig.optional) {
             return undefined;
