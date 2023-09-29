@@ -1,10 +1,10 @@
-import { BindingId } from '../binding/binding-config';
+import { BindingToken } from '../binding/binding-config';
 import { SafeReflect } from '../safe-reflect';
 
 export type ParamConfigsDict = Record<number, ParamConfig<any>>;
 
 export type ParamConfig<T> = {
-  id?: BindingId<T>;
+  token?: BindingToken<T>;
   optional?: boolean;
 };
 

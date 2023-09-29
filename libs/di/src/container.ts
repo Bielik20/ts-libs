@@ -1,5 +1,5 @@
 import { Binding } from './binding/binding';
-import { BindingConfig, BindingId } from './binding/binding-config';
+import { BindingConfig, BindingToken } from './binding/binding-config';
 import { BindingsRepository } from './binding/bindings-repository';
 import { isClass } from './class';
 import { getInjectableConfig, InjectableConfig } from './decorators/injectable-config';
@@ -42,8 +42,8 @@ export class Container {
     return new Container(this.options, this.repository.clone());
   }
 
-  get<T>(bindingId: BindingId<T>, requesterScope: Scope = Scope.Transient): T {
-    const binding = this.ensureBinding(bindingId);
+  get<T>(bindingToken: BindingToken<T>, requesterScope: Scope = Scope.Transient): T {
+    const binding = this.ensureBinding(bindingToken);
 
     assertScopeBoundary(binding.config.scope, requesterScope);
 
@@ -57,11 +57,11 @@ export class Container {
   }
 
   unprovide<T>(
-    bindingId: BindingId<T>,
+    bindingToken: BindingToken<T>,
     input: { local?: boolean; global?: boolean } = { local: true, global: true },
   ): void {
-    input.global && this.repository.deleteGlobal(bindingId);
-    input.local && this.repository.deleteLocal(bindingId);
+    input.global && this.repository.deleteGlobal(bindingToken);
+    input.local && this.repository.deleteLocal(bindingToken);
   }
 
   clear(input: { local?: boolean; global?: boolean } = { local: true, global: true }) {
@@ -69,14 +69,14 @@ export class Container {
     input.local && this.repository.clearLocal();
   }
 
-  private ensureBinding<T>(bindingId: BindingId<T>): Binding<T> {
-    return this.repository.get(bindingId) ?? this.makeBinding(bindingId);
+  private ensureBinding<T>(bindingToken: BindingToken<T>): Binding<T> {
+    return this.repository.get(bindingToken) ?? this.makeBinding(bindingToken);
   }
 
-  private makeBinding<T>(bindingId: BindingId<T>): Binding<T> {
-    const config = this.ensureConfig(bindingId);
+  private makeBinding<T>(bindingToken: BindingToken<T>): Binding<T> {
+    const config = this.ensureConfig(bindingToken);
     const newBinding = Binding.make({
-      token: bindingId,
+      token: bindingToken,
       ...config,
     });
 
@@ -85,10 +85,10 @@ export class Container {
     return newBinding;
   }
 
-  private ensureConfig<T>(bindingId: BindingId<T>): Required<InjectableConfig<T>> {
-    const configFlaky = isClass(bindingId) ? getInjectableConfig<T>(bindingId) : undefined;
+  private ensureConfig<T>(bindingToken: BindingToken<T>): Required<InjectableConfig<T>> {
+    const configFlaky = isClass(bindingToken) ? getInjectableConfig<T>(bindingToken) : undefined;
     if (!configFlaky) {
-      throw new Error(`${bindingId.toString()} is not bound to anything.`);
+      throw new Error(`${bindingToken.toString()} is not bound to anything.`);
     }
 
     const config: Required<InjectableConfig<T>> = {
@@ -97,7 +97,7 @@ export class Container {
     };
 
     if (!config.autobind) {
-      throw new Error(`${bindingId.toString()} is not bound to anything.`);
+      throw new Error(`${bindingToken.toString()} is not bound to anything.`);
     }
 
     return config;
