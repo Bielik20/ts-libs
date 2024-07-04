@@ -17,14 +17,14 @@ jobs:
         uses: ./.github/actions/setup
         with:
           affected: true
-      - run: npx nx-cloud start-ci-run
+      - run: npx nx-cloud start-ci-run --stop-agents-on-failure=false
       - name: Run Commands
         uses: Bielik20/nx-plugins/.github/actions/run-commands-in-parallel@v3.4.0
         with:
           parallel-commands-on-agents: |
             npx nx affected --target=build --parallel=3
-            npx nx affected --target=lint --parallel=3 --silent
-            npx nx affected --target=test --parallel=3 --quiet
+            npx nx affected --target=lint --parallel=3
+            npx nx affected --target=test --parallel=3
             npx nx affected --target=tsd --parallel=3
       - run: npx nx-cloud stop-all-agents
         if: ${{ always() }}
