@@ -3,6 +3,7 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/react-utils/src",
   "projectType": "library",
+  "tags": [],
   "targets": {
     "build": {
       "executor": "@nx/rollup:rollup",
@@ -28,26 +29,17 @@
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
-      "options": {
-        "lintFilePatterns": [
-          "libs/react-utils/**/*.{ts,tsx,js,jsx}",
-          "libs/react-utils/package.json"
-        ]
-      },
-      "outputs": ["{options.outputFile}"]
+      "executor": "@nx/eslint:lint"
     },
     "test": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/libs/react-utils"],
       "options": {
-        "jestConfig": "libs/react-utils/jest.config.ts",
-        "passWithNoTests": true
+        "jestConfig": "libs/react-utils/jest.config.ts"
       }
     },
     "publish": {
       "executor": "@ns3/nx-npm:publish"
     }
-  },
-  "tags": []
+  }
 }

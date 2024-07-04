@@ -3,6 +3,7 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/fetch-client/src",
   "projectType": "library",
+  "tags": [],
   "targets": {
     "build": {
       "executor": "@nx/rollup:rollup",
@@ -27,26 +28,17 @@
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
-      "options": {
-        "lintFilePatterns": [
-          "libs/fetch-client/**/*.{ts,tsx,js,jsx}",
-          "libs/fetch-client/package.json"
-        ]
-      },
-      "outputs": ["{options.outputFile}"]
+      "executor": "@nx/eslint:lint"
     },
     "test": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/libs/fetch-client"],
       "options": {
-        "jestConfig": "libs/fetch-client/jest.config.ts",
-        "passWithNoTests": true
+        "jestConfig": "libs/fetch-client/jest.config.ts"
       }
     },
     "publish": {
       "executor": "@ns3/nx-npm:publish"
     }
-  },
-  "tags": []
+  }
 }
