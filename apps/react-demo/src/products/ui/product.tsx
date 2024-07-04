@@ -2,7 +2,7 @@ import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import { FunctionComponent, MouseEventHandler } from 'react';
-import { Product as ProductModel } from 'react-demo/products/models/product';
+import { Product as ProductModel } from '../models/product';
 import { ProductCard } from './product-card';
 import { ProductForm } from './product-form';
 

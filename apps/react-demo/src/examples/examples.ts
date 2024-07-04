@@ -1,4 +1,4 @@
-import { Example } from 'react-demo/examples/example';
+import { Example } from './example';
 
 export const productsExample: Example = {
   title: 'Products',

@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { Product } from 'react-demo/products/models/product';
+import { Product } from '../models/product';
 
 export function generateProducts(): Product[] {
   faker.seed(100);

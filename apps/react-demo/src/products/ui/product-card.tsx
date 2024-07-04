@@ -1,7 +1,7 @@
 import { Button, Card, CardActions, CardContent, CardHeader } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import { FunctionComponent, MouseEventHandler } from 'react';
-import { Product } from 'react-demo/products/models/product';
+import { Product } from '../models/product';
 import { ProductAvatar } from './product-avatar';
 
 type Props = {

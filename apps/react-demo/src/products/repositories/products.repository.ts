@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
-import { generateProducts } from 'react-demo/products/debug/generate-products';
-import { Product } from 'react-demo/products/models/product';
+import { generateProducts } from '../debug/generate-products';
+import { Product } from '../models/product';
 import { ProductsQuery } from '../models/products-query';
 
 export class ProductsRepository {

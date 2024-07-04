@@ -1,11 +1,11 @@
 import { List } from '@material-ui/core';
 import { useDependency, useStream } from '@ns3/react-utils';
-import { useProductsQuery } from 'react-demo/products/hooks/use-products-query';
-import { ProductsStore } from 'react-demo/products/services/products.store';
-import { ProductListItemCont } from 'react-demo/products/ui/product-list-item.cont';
-import { ProductsShell } from 'react-demo/products/ui/products-shell';
-import { ErrorComp } from 'react-demo/shared/error.comp';
-import { LoaderComp } from 'react-demo/shared/loader.comp';
+import { useProductsQuery } from '../../src/products/hooks/use-products-query';
+import { ProductsStore } from '../../src/products/services/products.store';
+import { ProductListItemCont } from '../../src/products/ui/product-list-item.cont';
+import { ProductsShell } from '../../src/products/ui/products-shell';
+import { ErrorComp } from '../../src/shared/error.comp';
+import { LoaderComp } from '../../src/shared/loader.comp';
 
 export default function Products() {
   const store = useDependency(ProductsStore);
