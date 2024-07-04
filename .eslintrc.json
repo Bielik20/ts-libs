@@ -38,6 +38,7 @@
       "extends": ["plugin:@nx/typescript"],
       "rules": {
         "@typescript-eslint/ban-ts-comment": "off",
+        "@typescript-eslint/no-unsafe-declaration-merging": "off",
         "@typescript-eslint/no-extra-semi": "error",
         "no-extra-semi": "off"
       }
