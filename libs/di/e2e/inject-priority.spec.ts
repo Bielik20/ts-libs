@@ -9,7 +9,10 @@ class Bar {}
 
 @Injectable()
 class TestClass {
-  constructor(public param1: Bar, @Inject('symbol') public param2: Bar) {}
+  constructor(
+    public param1: Bar,
+    @Inject('symbol') public param2: Bar,
+  ) {}
 }
 
 describe('Inject - priority', () => {

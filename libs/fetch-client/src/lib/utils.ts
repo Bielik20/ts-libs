@@ -1,7 +1,10 @@
 import { CustomError } from '@ns3/ts-utils';
 
 export class FetchError extends CustomError<'FetchError'> {
-  constructor(readonly response: Response, private readonly body: string = '') {
+  constructor(
+    readonly response: Response,
+    private readonly body = '',
+  ) {
     super({ name: 'FetchError', message: 'Response returned with status not ok.' });
   }
 
