@@ -1,0 +1,14 @@
+upgrade: true
+install: never
+format: group
+reject:
+  # Nx Managed
+  - jest
+  - '@types/jest'
+  - jest-environment-jsdom
+  - ts-jest
+  - tslib
+  - typescript
+  - dotenv
+  - '@nx/*'
+  - '@swc*'
