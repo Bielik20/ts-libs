@@ -5,7 +5,7 @@ import { useStream } from './use-stream';
 
 export function useStreamValue<T>(
   factory: FactoryOrValue<Falsy | Observable<T>>,
-  deps: DependencyList | undefined,
+  deps: DependencyList,
 ): T | undefined {
   const result = useStream(factory, deps);
   const value = result.status === 'success' ? result.value : undefined;
