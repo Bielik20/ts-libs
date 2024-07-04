@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { productsRepository } from 'react-demo/products/repositories/products.repository';
+import { productsRepository } from '../../../src/products/repositories/products.repository';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   switch (req.method) {

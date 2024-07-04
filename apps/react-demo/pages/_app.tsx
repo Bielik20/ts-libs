@@ -5,7 +5,7 @@ import { DiProvider, useDependencyInjection } from '@ns3/react-utils';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import { Fragment, useEffect, useState } from 'react';
-import { AppLayout } from 'react-demo/layout/app-layout';
+import { AppLayout } from '../src/layout/app-layout';
 import theme from '../src/theme';
 
 export default function MyApp({ Component, pageProps }: AppProps) {

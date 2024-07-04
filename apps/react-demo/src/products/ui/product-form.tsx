@@ -1,6 +1,6 @@
 import { Box, Button, TextField } from '@material-ui/core';
 import { FunctionComponent, useState } from 'react';
-import { Product } from 'react-demo/products/models/product';
+import { Product } from '../models/product';
 
 type Props = {
   product: Product;

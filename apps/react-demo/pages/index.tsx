@@ -3,8 +3,8 @@ import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
-import { examples } from 'react-demo/examples/examples';
-import { Link } from 'react-demo/layout/link';
+import { examples } from '../src/examples/examples';
+import { Link } from '../src/layout/link';
 
 export default function Index() {
   return (

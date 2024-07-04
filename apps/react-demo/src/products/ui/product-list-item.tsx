@@ -8,8 +8,8 @@ import {
 import { Delete, DeleteForever } from '@material-ui/icons';
 import { useRouter } from 'next/router';
 import { FunctionComponent, MouseEventHandler } from 'react';
-import { Link } from 'react-demo/layout/link';
-import { Product } from 'react-demo/products/models/product';
+import { Link } from '../../layout/link';
+import { Product } from '../models/product';
 import { ProductAvatar } from './product-avatar';
 
 type Props = {

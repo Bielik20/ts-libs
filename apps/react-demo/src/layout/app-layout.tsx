@@ -6,9 +6,9 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import NextLink from 'next/link';
 import React from 'react';
-import { examples } from 'react-demo/examples/examples';
-import { Link } from 'react-demo/layout/link';
+import { examples } from '../examples/examples';
 import { ProductsFlagsCont } from '../products/ui/products-flags.cont';
+import { Link } from './link';
 
 const useStyles = makeStyles((theme) => ({
   title: {

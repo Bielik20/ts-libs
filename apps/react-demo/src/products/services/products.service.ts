@@ -1,7 +1,7 @@
 import { Injectable } from '@ns3/di';
 import { assertOk, toJson } from '@ns3/fetch-client';
-import { Product } from 'react-demo/products/models/product';
 import { AppFetchClient } from '../../shared/app-fetch-client';
+import { Product } from '../models/product';
 import { ProductsQuery } from '../models/products-query';
 
 @Injectable()

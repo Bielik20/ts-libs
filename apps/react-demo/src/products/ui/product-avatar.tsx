@@ -2,7 +2,7 @@ import { Avatar, createStyles, Theme } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Check, Close } from '@material-ui/icons';
 import { FunctionComponent } from 'react';
-import { Product } from 'react-demo/products/models/product';
+import { Product } from '../models/product';
 
 type Props = {
   product: Product;

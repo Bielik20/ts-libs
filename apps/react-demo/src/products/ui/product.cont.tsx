@@ -1,10 +1,10 @@
 import { useDependency, useStreamValue, useUnsubscribe } from '@ns3/react-utils';
 import { useRouter } from 'next/router';
 import React, { FunctionComponent } from 'react';
-import { Product, Product as ProductModel } from 'react-demo/products/models/product';
-import { ProductsStore } from 'react-demo/products/services/products.store';
-import { Product as ProductComponent } from 'react-demo/products/ui/product';
 import { combineLatest, takeUntil } from 'rxjs';
+import { Product as ProductModel } from '../models/product';
+import { ProductsStore } from '../services/products.store';
+import { Product as ProductComponent } from './product';
 
 type Props = {
   product: ProductModel;
@@ -27,7 +27,7 @@ export const ProductCont: FunctionComponent<Props> = ({ product }) => {
       .pipe(takeUntil(unsubscribe$))
       .subscribe(() => router.push('.'));
   };
-  const onEdit = (newProduct: Product) => {
+  const onEdit = (newProduct: ProductModel) => {
     productsStore
       .patch(newProduct.id, newProduct)
       .subscribe({ error: (error) => alert(error.message) });

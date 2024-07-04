@@ -4,7 +4,7 @@ import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import { useRouter } from 'next/router';
 import React, { FunctionComponent } from 'react';
-import { Link } from 'react-demo/layout/link';
+import { Link } from '../../layout/link';
 import { ProductsQuery } from '../models/products-query';
 
 type Props = {
