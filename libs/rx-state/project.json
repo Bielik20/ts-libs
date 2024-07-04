@@ -3,6 +3,7 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/rx-state/src",
   "projectType": "library",
+  "tags": [],
   "targets": {
     "build": {
       "executor": "@nx/rollup:rollup",
@@ -27,23 +28,17 @@
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
-      "options": {
-        "lintFilePatterns": ["libs/rx-state/**/*.{ts,tsx,js,jsx}", "libs/rx-state/package.json"]
-      },
-      "outputs": ["{options.outputFile}"]
+      "executor": "@nx/eslint:lint"
     },
     "test": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/libs/rx-state"],
       "options": {
-        "jestConfig": "libs/rx-state/jest.config.ts",
-        "passWithNoTests": true
+        "jestConfig": "libs/rx-state/jest.config.ts"
       }
     },
     "publish": {
       "executor": "@ns3/nx-npm:publish"
     }
-  },
-  "tags": []
+  }
 }

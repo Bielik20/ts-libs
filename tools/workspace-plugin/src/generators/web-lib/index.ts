@@ -6,8 +6,8 @@ import {
   Tree,
   updateProjectConfiguration,
 } from '@nx/devkit';
+import { Linter } from '@nx/eslint';
 import { libraryGenerator } from '@nx/js';
-import { Linter } from '@nx/linter';
 import { addCoreJsTslibAsPeerDeps } from '../../utils/add-corejs-tslib-as-peer-deps';
 import { addLicenceFieldToPackageJson } from '../../utils/add-licence-field-to-package-json';
 import { Schema } from './schema';

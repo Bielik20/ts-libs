@@ -3,22 +3,17 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/rx-devtools/src",
   "projectType": "library",
+  "tags": [],
   "targets": {
     "lint": {
-      "executor": "@nx/linter:eslint",
-      "options": {
-        "lintFilePatterns": ["libs/rx-devtools/**/*.ts", "libs/rx-devtools/package.json"]
-      },
-      "outputs": ["{options.outputFile}"]
+      "executor": "@nx/eslint:lint"
     },
     "test": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/libs/rx-devtools"],
       "options": {
-        "jestConfig": "libs/rx-devtools/jest.config.ts",
-        "passWithNoTests": true
+        "jestConfig": "libs/rx-devtools/jest.config.ts"
       }
     }
-  },
-  "tags": []
+  }
 }
