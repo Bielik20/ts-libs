@@ -2,6 +2,7 @@
   "name": "@ns3/ts-libs",
   "version": "0.0.0-development",
   "license": "MIT",
+  "packageManager": "pnpm@9.4.0+sha256.b6fd0bfda555e7e584ad7e56b30c68b01d5a04f9ee93989f4b93ca8473c49c74",
   "repository": {
     "type": "git",
     "url": "https://github.com/Bielik20/ts-libs"
