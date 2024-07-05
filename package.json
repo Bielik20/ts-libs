@@ -30,10 +30,7 @@
     "dep-graph": "nx dep-graph",
     "help": "nx help",
     "commit": "git-cz",
-    "tools": "tsc --project tools/src/tsconfig.json",
-    "postinstall": "npm run tools",
-    "prepare": "husky",
-    "semantic-release": "semantic-release"
+    "prepare": "husky"
   },
   "private": true,
   "dependencies": {
@@ -107,7 +104,6 @@
     "nx": "19.4.0",
     "prettier": "3.3.2",
     "react-refresh": "^0.14.2",
-    "semantic-release": "^19.0.5",
     "style-loader": "^4.0.0",
     "stylus": "^0.63.0",
     "stylus-loader": "^8.1.0",
