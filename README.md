@@ -15,5 +15,7 @@ Most of there are showcased in `react-demo` application in this repository.
 
 To start demo run:
 
-* `yarn` - to install dependencies
-* `yarn nx run react-demo:serve` - to serve Next.js react application.
+* `pnpm intall` - to install dependencies
+* `npx nx run react-demo:serve` - to serve Next.js react application.
+
+`pnpm` version is managed using [Corepack](https://pnpm.io/installation#using-corepack).

@@ -27,7 +27,7 @@ jobs:
           dry-run: true
       - name: Publish
         if: steps.semantic.outputs.new_release_published == 'true'
-        run: yarn nx affected --target publish --parallel 3
+        run: npx nx affected --target publish --parallel 3
         env:
           NPM_PACKAGE_VERSION: ${{ steps.semantic.outputs.new_release_version }}
       - name: Finish Release
