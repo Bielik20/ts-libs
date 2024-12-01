@@ -7,9 +7,15 @@ function makeSafeReflect(): SafeReflect {
     return Reflect;
   } else {
     return {
-      getMetadata: () => {},
-      hasOwnMetadata: () => false,
-      defineMetadata: () => {},
+      getMetadata: (metadataKey: any, target: Object) => {
+        return (target as any)[metadataKey];
+      },
+      hasOwnMetadata: (metadataKey: any, target: Object) => {
+        return metadataKey in target;
+      },
+      defineMetadata: (metadataKey: any, metadataValue: any, target: Object) => {
+        (target as any)[metadataKey] = metadataValue;
+      },
     };
   }
 }
